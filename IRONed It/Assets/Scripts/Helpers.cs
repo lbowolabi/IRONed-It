@@ -18,6 +18,12 @@ public class Helpers : MonoBehaviour
         assigner(true);
     }
 
+    public IEnumerator WaitOneFrame(Action<bool> assigner)
+    {
+        yield return null;
+        assigner(true);
+    }
+
     public IEnumerator Shake(Transform t, float trauma = 1, float traumaExponent = 1, float recoverySpeed = 1, float frequency = 25, float maximumTranslationShakeMulitiplier = 1, float maximumAngularShakeMultiplier = 15)
     {
         Vector2 maximumTranslationShake = Vector2.one * maximumTranslationShakeMulitiplier;

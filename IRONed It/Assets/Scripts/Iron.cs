@@ -9,6 +9,8 @@ public class Iron : MonoBehaviour
     // child collides with player, parent collides with particles
 
     public bool chelated { get; private set; }
+    float speed;
+
     CircleCollider2D cc;
     SpriteRenderer childSR;
 
@@ -17,6 +19,12 @@ public class Iron : MonoBehaviour
         cc = GetComponent<CircleCollider2D>();
         childSR = transform.GetChild(0).GetComponent<SpriteRenderer>();
         childSR.enabled = false;
+        chelated = false;
+    }
+
+    private void FixedUpdate()
+    {
+        transform.Translate(Vector2.left * speed * Time.fixedDeltaTime);
     }
 
     private void OnParticleCollision(GameObject p)
@@ -59,5 +67,10 @@ public class Iron : MonoBehaviour
         cc.isTrigger = false;
         childSR.enabled = false;
         childSR.transform.localScale = Vector3.one;
+    }
+
+    private void OnEnable()
+    {
+        speed = Random.Range(LevelManager.instance.ironSpeedRange.x, LevelManager.instance.ironSpeedRange.y);
     }
 }
