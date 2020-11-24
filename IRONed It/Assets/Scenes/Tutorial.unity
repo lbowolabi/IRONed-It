@@ -359,7 +359,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -293, y: 141}
+  m_AnchoredPosition: {x: -293, y: 110}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &736638748
@@ -708,9 +708,9 @@ MonoBehaviour:
   defaultDoxyProbability: 500
   defaultEnergyProbability: 500
   defaultIronProbability: 500
+  ironSpeedRange: {x: 0, y: 0}
   ironSpawnYRange: {x: 0, y: 0}
-  topWallY: 3.526361
-  bottomWallY: -5.610001
+  wallSpeed: 0
   wallPool: {fileID: 989709285}
   ironPool: {fileID: 65622574}
 --- !u!4 &1757370878
