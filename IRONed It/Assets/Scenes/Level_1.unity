@@ -314,6 +314,21 @@ PrefabInstance:
       propertyPath: fe3PickupWorth
       value: 0.03
       objectReference: {fileID: 0}
+    - target: {fileID: 8648719865275608866, guid: de5e5e807dc00ca478d4647a4612ed33,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.5029666
+      objectReference: {fileID: 0}
+    - target: {fileID: 8648719865275608866, guid: de5e5e807dc00ca478d4647a4612ed33,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.5029666
+      objectReference: {fileID: 0}
+    - target: {fileID: 8648719865275608866, guid: de5e5e807dc00ca478d4647a4612ed33,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.9245283
+      objectReference: {fileID: 0}
     - target: {fileID: 8648719865275608867, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}
       propertyPath: m_RootOrder
