@@ -56,6 +56,7 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator IronIntro() // all concrete numbers are guesstimates <.< will need to tweak
     {
+        yield return null;
         StartCoroutine(UpdateTutorialText("This is iron."));
         lm.SpawnIron();
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
