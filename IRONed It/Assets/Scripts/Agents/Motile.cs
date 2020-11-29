@@ -37,13 +37,107 @@ public class Motile : MonoBehaviour
 
     [Header("Component References")]
     Rigidbody2D rb;
+<<<<<<< Updated upstream:IRONed It/Assets/Scripts/Agents/Motile.cs
     BoxCollider2D bc;
+=======
+    PolygonCollider2D bc;
+    SpriteRenderer sr;
+    Color defaultColor;
+
+    public static Player instance;
+>>>>>>> Stashed changes:IRONed It/Assets/Scripts/Player.cs
 
     void Awake()
     {
         wallLayerMask = LayerMask.GetMask("Wall");
         rb = GetComponent<Rigidbody2D>();
+<<<<<<< Updated upstream:IRONed It/Assets/Scripts/Agents/Motile.cs
         bc = GetComponent<BoxCollider2D>();
+=======
+        bc = GetComponent<PolygonCollider2D>();
+        sr = GetComponent<SpriteRenderer>();
+        defaultColor = sr.color;
+    }
+
+    private void Start()
+    {
+        lifeCount = CanvasManager.instance.lifeCount;
+        fe3BarFill = CanvasManager.instance.fe3BarFill;
+        atpBarFill = CanvasManager.instance.atpBarFill;
+        lifeCount.text = lives.ToString();
+    }
+
+    void Update()
+    {
+        if (expendingResources)
+        {
+            ChangeIronCount(-Time.deltaTime * fe3LossRateOverTime);
+            //ChangeEnergyCount(-Time.deltaTime * atpLossRateOverTime);
+        }
+    }
+
+    public void ActivateGene()
+    {
+        if (fe3BarFill.fillAmount > 0 && !viuaActive)
+        {
+            viuaActive = true;
+            ChangeEnergyCount(-atpCostToActivateGene);
+            StartCoroutine(Helpers.instance.Timer(deactivateGene => viuaActive = false, 10));
+        }
+    }
+
+    void ChangeLifeCount(int amount)
+    {
+        if (amount > 0)
+        {
+
+        }
+        else if (amount < 0)
+        {
+            StartCoroutine(Death());
+        }
+
+        lives += amount;
+        lifeCount.text = lives.ToString();
+    }
+
+    void ChangeIronCount(float amount)
+    {
+        if (amount > 0)
+        {
+
+        }
+        else if (amount < 0)
+        {
+
+        }
+
+        fe3BarFill.fillAmount += amount;
+    }
+
+    public void ChangeEnergyCount(float amount)
+    {
+        if (amount > 0)
+        {
+            if (atpBarFill.fillAmount + amount >= 1)
+            {
+                if (lives < 3 && atpBarFill.fillAmount != 1)
+                {
+                    ChangeLifeCount(1);
+                }
+                LevelManager.instance.SetEnergySpawnProbability(false); // turn off energy spawn if player at max energy
+            }
+        }
+        else if (amount < 0)
+        {
+            if (atpBarFill.fillAmount == 1)
+            {
+                LevelManager.instance.SetEnergySpawnProbability(true); // turn energy spawn back on
+            }
+        }
+
+        atpBarFill.fillAmount += amount;
+>>>>>>> Stashed changes:IRONed It/Assets/Scripts/Player.cs
     }
 
     void FixedUpdate()
