@@ -64,17 +64,62 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        motile.SetMovementVector(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+        motile.SetMovementVector(Vector2.up * Input.GetAxisRaw("Vertical"));
     }
 
     public void ActivateViua()
     {
-        if (geneDurationTimer != null) StopCoroutine(geneDurationTimer);
         if (fe3BarFill.fillAmount > 0)
         {
             if (activeGene != ActiveGene.viuA)
             {
+                if (geneDurationTimer != null) StopCoroutine(geneDurationTimer);
                 activeGene = ActiveGene.viuA;
+                ChangeEnergyCount(-atpCostToActivateGene);
+                geneDurationTimer = Helpers.instance.Timer(deactivateGene => activeGene = ActiveGene.None, 10);
+                StartCoroutine(geneDurationTimer);
+            }
+        }
+    }
+
+    public void ActiveIrga()
+    {
+        if (fe3BarFill.fillAmount > 0)
+        {
+            if (activeGene != ActiveGene.irgA)
+            {
+                if (geneDurationTimer != null) StopCoroutine(geneDurationTimer);
+                activeGene = ActiveGene.irgA;
+                ChangeEnergyCount(-atpCostToActivateGene);
+                geneDurationTimer = Helpers.instance.Timer(deactivateGene => activeGene = ActiveGene.None, 10);
+                StartCoroutine(geneDurationTimer);
+            }
+        }
+    }
+
+    public void ActivateHuta()
+    {
+        if (fe3BarFill.fillAmount > 0)
+        {
+            if (activeGene != ActiveGene.hutA)
+            {
+                if (geneDurationTimer != null) StopCoroutine(geneDurationTimer);
+                activeGene = ActiveGene.hutA;
+                ChangeEnergyCount(-atpCostToActivateGene);
+                geneDurationTimer = Helpers.instance.Timer(deactivateGene => activeGene = ActiveGene.None, 10);
+                StartCoroutine(geneDurationTimer);
+            }
+        }
+    }
+
+    public void ActivateFhua()
+    {
+        if (fe3BarFill.fillAmount > 0)
+        {
+            if (activeGene != ActiveGene.fhuA)
+            {
+                if (geneDurationTimer != null) StopCoroutine(geneDurationTimer);
+                activeGene = ActiveGene.fhuA;
                 ChangeEnergyCount(-atpCostToActivateGene);
                 geneDurationTimer = Helpers.instance.Timer(deactivateGene => activeGene = ActiveGene.None, 10);
                 StartCoroutine(geneDurationTimer);
@@ -96,7 +141,7 @@ public class Player : MonoBehaviour
         fe3BarFill.fillAmount += amount;
     }
 
-    void IronPickup() // gets called by motile
+    public void IronPickup() // gets called by motile
     {
         ChangeIronCount(fe3PickupWorth);
     }
@@ -125,12 +170,12 @@ public class Player : MonoBehaviour
         atpBarFill.fillAmount += amount;
     }
 
-    void EnergyPickup() // gets called by motile
+    public void EnergyPickup() // gets called by motile
     {
         ChangeEnergyCount(atpPickupWorth);
     }
 
-    void ChangeLifeCount(int amount) // also gets called by motile
+    public void ChangeLifeCount(int amount) // also gets called by motile
     {
         if (amount > 0)
         {
@@ -151,14 +196,14 @@ public class Player : MonoBehaviour
         motile.agentCanMove = false;
         expendingResources = false;
         motile.iFrames = true;
-        GetComponent<CapsuleCollider2D>().enabled = false;
+        GetComponent<CapsuleCollider2D>().isTrigger = true;
 
         if (motile.lives != 0)
         {
             StartCoroutine(Helpers.instance.Timer(revive => motile.agentCanMove = true, motile.deathDuration));
             StartCoroutine(Helpers.instance.Timer(revive => expendingResources = true, motile.deathDuration));
             StartCoroutine(Helpers.instance.Timer(revive => motile.iFrames = false, motile.deathDuration));
-            StartCoroutine(Helpers.instance.Timer(revive => GetComponent<CapsuleCollider2D>().enabled = true, motile.deathDuration));
+            StartCoroutine(Helpers.instance.Timer(revive => GetComponent<CapsuleCollider2D>().isTrigger = false, motile.deathDuration));
             while (!motile.agentCanMove)
             {
                 sr.color = sr.color == Color.grey ? defaultColor : Color.grey;
@@ -178,6 +223,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D c)
+    {
+        if (c.CompareTag("Victory"))
+        {
+            motile.agentCanMove = false;
+            GetComponent<CapsuleCollider2D>().isTrigger = true;
+            LevelManager.instance.EndLevel();
+        }
+    }
+
     private void OnTriggerStay2D(Collider2D c)
     {
         if (c.CompareTag("Iron"))
@@ -186,6 +241,21 @@ public class Player : MonoBehaviour
             if (currentIron.chelatedBy != ChelatedBy.None)
             {
                 if (activeGene == ActiveGene.viuA && currentIron.chelatedBy == ChelatedBy.Cholera)
+                {
+                    c.transform.parent.gameObject.SetActive(false);
+                    ChangeIronCount(fe3PickupWorth);
+                }
+                else if (activeGene == ActiveGene.irgA && currentIron.chelatedBy == ChelatedBy.Coli)
+                {
+                    c.transform.parent.gameObject.SetActive(false);
+                    ChangeIronCount(fe3PickupWorth);
+                }
+                else if (activeGene == ActiveGene.hutA && currentIron.chelatedBy == ChelatedBy.Heme)
+                {
+                    c.transform.parent.gameObject.SetActive(false);
+                    ChangeIronCount(fe3PickupWorth);
+                }
+                else if (activeGene == ActiveGene.fhuA && currentIron.chelatedBy == ChelatedBy.Sphaerogena)
                 {
                     c.transform.parent.gameObject.SetActive(false);
                     ChangeIronCount(fe3PickupWorth);

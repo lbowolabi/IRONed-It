@@ -21,6 +21,15 @@ public class Iron : MonoBehaviour
         childSR.enabled = false;
     }
 
+    public void HemeIron()
+    {
+        chelatedBy = ChelatedBy.Heme;
+        cc.isTrigger = true;
+        childSR.transform.localScale *= 1.5f;
+        childSR.enabled = true;
+        childSR.color = Color.red;
+    }
+
     private void FixedUpdate()
     {
         transform.Translate(Vector2.left * speed * Time.fixedDeltaTime);
@@ -28,13 +37,27 @@ public class Iron : MonoBehaviour
 
     private void OnParticleCollision(GameObject p)
     {
-        if (p.name == "Vibriobactin")
+        if (chelatedBy == ChelatedBy.None)
         {
-            chelatedBy = ChelatedBy.Cholera;
+            if (p.name == "Vibriobactin")
+            {
+                chelatedBy = ChelatedBy.Cholera;
+                childSR.color = Color.blue;
+            }
+            else if (p.name == "Enterobactin") // linear enterobactin
+            {
+                chelatedBy = ChelatedBy.Coli;
+                childSR.color = Color.black;
+            }
+            else if (p.name == "Ferrichrome")
+            {
+                chelatedBy = ChelatedBy.Sphaerogena;
+                childSR.color = Color.green;
+            }
+            cc.isTrigger = true; // this object can't collide with particles again
+            childSR.transform.localScale *= 1.5f;
+            childSR.enabled = true;
         }
-        cc.isTrigger = true; // this object can't collide with particles again
-        childSR.transform.localScale *= 1.5f;
-        childSR.enabled = true;
     }
 
     void OnDisable() // reset values for reuse in next spawn

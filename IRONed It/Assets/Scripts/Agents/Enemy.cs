@@ -9,33 +9,35 @@ public class Enemy : MonoBehaviour
     [SerializeField] ChelatedBy targetType;
     Transform target;
     CircleCollider2D targetCollider;
-    float maxSpeed;
-    float currentSpeed;
+    float maxSpeed, currentSpeed;
+    float speedSmoothing;
 
     [Header("Component References")]
     Motile motile;
     SpriteRenderer sr;
     Color defaultColor;
+    CapsuleCollider2D cc;
     int defaultLayer;
 
     void Awake()
     {
         motile = GetComponent<Motile>();
         sr = GetComponent<SpriteRenderer>();
+        cc = GetComponent<CapsuleCollider2D>();
         defaultColor = sr.color;
         defaultLayer = LayerMask.NameToLayer("Default");
     }
 
-    //private void OnEnable()
-    //{
-    //    // temporary speed pick
-
-    //maxSpeed = currentSpeed = Random.Range(LevelManager.instance.choleraSpeedRange.x, LevelManager.instance.choleraSpeedRange.y);
-    //}
-
-    void Start()
+    private void OnEnable()
     {
-        maxSpeed = currentSpeed = -Random.Range(LevelManager.instance.choleraSpeedRange.x, LevelManager.instance.choleraSpeedRange.y);
+        if (targetType == ChelatedBy.Cholera)
+        {
+            maxSpeed = currentSpeed = Random.Range(LevelManager.instance.choleraSpeedRange.x, LevelManager.instance.choleraSpeedRange.y);
+        }
+        else if (targetType == ChelatedBy.Coli)
+        {
+            maxSpeed = currentSpeed = Random.Range(LevelManager.instance.coliSpeedRange.x, LevelManager.instance.coliSpeedRange.y);
+        }
     }
 
     void Update()
@@ -51,9 +53,10 @@ public class Enemy : MonoBehaviour
     private void FixedUpdate()
     {
         transform.Translate(Vector2.left * currentSpeed * Time.fixedDeltaTime);
+
         if (target != null)
         {
-            if (Mathf.Abs(target.position.y - transform.position.y) <= targetCollider.bounds.size.x / 2 )
+            if (Mathf.Abs(target.position.y - transform.position.y) <= targetCollider.bounds.size.x / 2)
             {
                 motile.SetMovementVector(Vector2.zero);
             }
@@ -65,6 +68,22 @@ public class Enemy : MonoBehaviour
         else
         {
             motile.SetMovementVector(Vector2.zero);
+        }
+
+        if (!motile.agentCanMove)
+        {
+            if (Motile.playerInstance.agentCanMove)
+            {
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, 2, ref speedSmoothing, 2 * Time.fixedDeltaTime);
+            }
+            else
+            {
+                currentSpeed = Mathf.SmoothDamp(currentSpeed, 1, ref speedSmoothing, 2 * Time.fixedDeltaTime);
+            }
+        }
+        else if (currentSpeed < maxSpeed)
+        {
+            currentSpeed = Mathf.SmoothDamp(currentSpeed, maxSpeed, ref speedSmoothing, 2 * Time.fixedDeltaTime);
         }
     }
 
@@ -102,7 +121,7 @@ public class Enemy : MonoBehaviour
         motile.lives = 3;
     }
 
-    void ChangeLifeCount(int amount) // gets called by motile
+    public void ChangeLifeCount(int amount) // gets called by motile
     {
         if (amount > 0)
         {
@@ -121,10 +140,12 @@ public class Enemy : MonoBehaviour
     {
         motile.agentCanMove = false;
         motile.iFrames = true;
+        cc.isTrigger = true;
         if (motile.lives != 0)
         {
             StartCoroutine(Helpers.instance.Timer(revive => motile.agentCanMove = true, motile.deathDuration));
             StartCoroutine(Helpers.instance.Timer(revive => motile.iFrames = false, motile.deathDuration));
+            StartCoroutine(Helpers.instance.Timer(revive => cc.isTrigger = false, motile.deathDuration));
             while (!motile.agentCanMove)
             {
                 sr.color = sr.color == Color.grey ? defaultColor : Color.grey;

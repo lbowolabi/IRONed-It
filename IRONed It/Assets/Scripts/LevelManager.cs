@@ -10,12 +10,15 @@ public class LevelManager : MonoBehaviour
     [SerializeField] float levelLengthInSeconds;
 
     [Header("RNG")] // one out of probability, called multiple times per second
-    [SerializeField] int defaultDoxyProbability;
-    [SerializeField] int defaultEnergyProbability;
-    [SerializeField] int defaultIronProbability;
-    int currentDoxyProbability;
-    int currentEnergyProbability;
-    int currentIronProbability;
+    [SerializeField] int defaultDoxyProbability = -1;
+    [SerializeField] int defaultEnergyProbability = -1;
+    [SerializeField] int defaultIronProbability = -1;
+    [SerializeField] int defaultHemeProbability = -1;
+    [SerializeField] int defaultCholeraProbability = -1;
+    [SerializeField] int defaultColiProbability = -1;
+    [SerializeField] int defaultSphaerogenaProbability = -1;
+    int currentDoxyProbability, currentEnergyProbability, currentIronProbability, currentHemeProbability;
+    int currentCholeraProbability, currentColiProbability, currentSphaerogenaProbability;
 
     [Header("Resources")]
     public Vector2 ironSpeedRange;
@@ -25,7 +28,9 @@ public class LevelManager : MonoBehaviour
     [Header("Enemies")]
     public Vector2 choleraSpeedRange;
     GameObject choleraPrefab;
+    public Vector2 coliSpeedRange;
     GameObject coliPrefab;
+    GameObject sphaerogenaPrefab;
 
     [Header("Walls")]
     [SerializeField] float wallSpeed;
@@ -38,13 +43,15 @@ public class LevelManager : MonoBehaviour
     [Header("Component References")]
     [SerializeField] Transform wallPool;
     [SerializeField] Transform ironPool;
-    [SerializeField] Transform choleraPool; // unfortunate names <.<
+    [Tooltip("unfortunate names <.<")]
+    [SerializeField] Transform choleraPool;
+    [SerializeField] Transform coliPool;
+    [SerializeField] Transform sphaerogenaPool;
     public ParticleSystem doxycycline { get; private set; }
     public ParticleSystem energy { get; private set; }
+    GameObject victoryGate;
 
     Transform player;
-    Motile playerMovement;
-    Rigidbody2D playerRB;
 
     Camera mainCam;
     //Plane[] cameraBounds;
@@ -59,6 +66,8 @@ public class LevelManager : MonoBehaviour
         wallLayerMask = LayerMask.GetMask("Wall");
         ironPrefab = (GameObject)Resources.Load("Prefabs/Iron");
         choleraPrefab = (GameObject)Resources.Load("Prefabs/Cholera");
+        coliPrefab = (GameObject)Resources.Load("Prefabs/Coli");
+        sphaerogenaPrefab = (GameObject)Resources.Load("Prefabs/Sphaerogena");
 
         SetAllResourceSpawnsToDefault();
     }
@@ -68,10 +77,11 @@ public class LevelManager : MonoBehaviour
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         //cameraBounds = GeometryUtility.CalculateFrustumPlanes(mainCam);
-
         player = Player.instance.transform;
-        playerRB = player.GetComponent<Rigidbody2D>();
-        playerMovement = player.GetComponent<Motile>();
+
+        victoryGate = GameObject.FindGameObjectWithTag("Victory");
+        victoryGate.SetActive(false);
+
         if (CanvasManager.instance.GetAtpBarFill().fillAmount == 1)
         {
             SetEnergySpawnProbability(false);
@@ -109,22 +119,30 @@ public class LevelManager : MonoBehaviour
     {
         if (levelLengthInSeconds > 0)
         {
-            if (playerMovement.agentCanMove)
+            if (Motile.playerInstance.agentCanMove)
             {
                 levelLengthInSeconds -= Time.deltaTime;
-                // on hitting zero, spawn victory gate as part of level; when it moves past player, end game
-                if (currentWallSpeed != wallSpeed)
+                if (currentWallSpeed < wallSpeed - .05f || currentWallSpeed > wallSpeed + .05f)
                 {
-                    currentWallSpeed += Mathf.SmoothDamp(currentWallSpeed, wallSpeed, ref wallSpeedSmoothing, 2 * Time.deltaTime);
+                    currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, wallSpeed, ref wallSpeedSmoothing, 2 * Time.deltaTime);
+                }
+
+                if (levelLengthInSeconds <= 0)
+                {
+                    Vector2 gateSpawnPosition = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
+                    gateSpawnPosition.x += 5;
+                    victoryGate.transform.position = gateSpawnPosition;
+                    victoryGate.SetActive(true);
+                    activeObjects.Add(victoryGate);
                 }
             }
             else
             {
-                currentWallSpeed += Mathf.SmoothDamp(currentWallSpeed, 1, ref wallSpeedSmoothing, 2 * Time.deltaTime);
+                currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, 1, ref wallSpeedSmoothing, 2 * Time.deltaTime);
             }
         }
 
-        for (int i = 0; i < activeObjects.Count; i++) // loop through all in-scene objects
+        for (int i = 0; i < activeObjects.Count; i++) // loop through all static in-scene objects
         {
             Transform curr = activeObjects[i].transform;
             if (curr.position.x < -15) // if object has moved out of camera range
@@ -145,26 +163,69 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void EndLevel()
+    {
+        StartCoroutine(EndLevelSequence());
+    }
+
+    IEnumerator EndLevelSequence()
+    {
+        Vector2 cameraEdge = mainCam.ViewportToWorldPoint(new Vector2(1, 1));
+        float playerTranslateSpeed = 0;
+        float smoothing = 0;
+        while (Player.instance.transform.position.x < cameraEdge.x + 5)
+        {
+            Player.instance.transform.Translate(playerTranslateSpeed * Vector2.right);
+            playerTranslateSpeed = Mathf.SmoothDamp(playerTranslateSpeed, wallSpeed / 8, ref smoothing, 3);
+            yield return null;
+        }
+        // call victory, etc
+    }
+
     void FixedUpdate() // putting this in fixed update to prevent item spawn rate from being affected by frame rate
     {
-        if (playerRB.velocity.x > 0)
+        if (wallSpeed > 0)
         {
             if (currentDoxyProbability != -1)
             {
-                int r = (int)Random.Range(0, currentDoxyProbability / playerRB.velocity.x);
+                int r = (int)Random.Range(0, currentDoxyProbability / wallSpeed);
                 if (r == 0) SpawnDoxy();
             }
 
             if (currentEnergyProbability != -1)
             {
-                int r = (int)Random.Range(0, currentEnergyProbability / playerRB.velocity.x);
+                int r = (int)Random.Range(0, currentEnergyProbability / wallSpeed);
                 if (r == 0) SpawnEnergy();
             }
 
             if (currentIronProbability != -1)
             {
-                int r = (int)Random.Range(0, currentIronProbability / playerRB.velocity.x);
-                if (r == 0) SpawnIron();
+                int r = (int)Random.Range(0, currentIronProbability / wallSpeed);
+                if (r == 0) SpawnIron(false);
+            }
+
+            if (currentHemeProbability != -1)
+            {
+                int r = (int)Random.Range(0, currentHemeProbability / wallSpeed);
+                if (r == 0) SpawnIron(true);
+            }
+
+            if (currentCholeraProbability != -1)
+            {
+                int r = (int)Random.Range(0, currentCholeraProbability / wallSpeed);
+                if (r == 0) SpawnCholera();
+            }
+
+            if (currentColiProbability != -1)
+            {
+                int r = (int)Random.Range(0, currentColiProbability / wallSpeed);
+                if (r == 0) SpawnColi();
+            }
+
+            if (currentSphaerogenaProbability != -1)
+            {
+                int r = (int)Random.Range(0, currentSphaerogenaProbability / wallSpeed);
+                if (r == 0) SpawnSphaerogena();
             }
         }
     }
@@ -174,6 +235,11 @@ public class LevelManager : MonoBehaviour
         SetIronSpawnProbability(true);
         SetEnergySpawnProbability(true);
         SetDoxySpawnProbability(true);
+        SetHemeSpawnProbability(true);
+
+        SetColiSpawnProbability(true);
+        SetCholeraSpawnProbability(true);
+        SetSphaerogenaSpawnProbability(true);
     }
 
     public void SetIronSpawnProbability(bool resetToDefault, int newIron = -1)
@@ -209,6 +275,54 @@ public class LevelManager : MonoBehaviour
         else
         {
             currentEnergyProbability = newEnergy;
+        }
+    }
+
+    public void SetHemeSpawnProbability(bool resetToDefault, int newHeme = -1)
+    {
+        if (resetToDefault)
+        {
+            currentHemeProbability = defaultHemeProbability;
+        }
+        else
+        {
+            currentHemeProbability = newHeme;
+        }
+    }
+
+    public void SetCholeraSpawnProbability(bool resetToDefault, int newCholera = -1)
+    {
+        if (resetToDefault)
+        {
+            currentCholeraProbability = defaultCholeraProbability;
+        }
+        else
+        {
+            currentCholeraProbability = newCholera;
+        }
+    }
+
+    public void SetColiSpawnProbability(bool resetToDefault, int newColi = -1)
+    {
+        if (resetToDefault)
+        {
+            currentColiProbability = defaultColiProbability;
+        }
+        else
+        {
+            currentColiProbability = newColi;
+        }
+    }
+
+    public void SetSphaerogenaSpawnProbability(bool resetToDefault, int newSphaerogena = -1)
+    {
+        if (resetToDefault)
+        {
+            currentSphaerogenaProbability = defaultSphaerogenaProbability;
+        }
+        else
+        {
+            currentSphaerogenaProbability = newSphaerogena;
         }
     }
 
@@ -280,14 +394,14 @@ public class LevelManager : MonoBehaviour
         Vector2 r = Vector2.zero;
 
         Vector2 p = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
-        RaycastHit2D hit = Physics2D.Raycast(p + (Vector2.right * 5), Vector2.up, 20, wallLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(p + (Vector2.right * 3), Vector2.up, 20, wallLayerMask);
         if (hit.collider != null)
         {
             r.x = hit.point.y;
         }
 
         p = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
-        hit = Physics2D.Raycast(p + (Vector2.right * 5), Vector2.down, 20, wallLayerMask);
+        hit = Physics2D.Raycast(p + (Vector2.right * 3), Vector2.down, 20, wallLayerMask);
         if (hit.collider != null)
         {
             r.y = hit.point.y;
@@ -296,13 +410,13 @@ public class LevelManager : MonoBehaviour
         return r;
     }
 
-    public void SpawnIron(float _spawnY = -100)
+    public void SpawnIron(bool heme, float _spawnY = -100)
     {
-        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 5;
+        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 3;
         if (_spawnY == -100)
         {
             Vector2 ySpawnRange = SpawnRange();
-            _spawnY = Random.Range(ySpawnRange.x, ySpawnRange.y);
+            _spawnY = Random.Range(ySpawnRange.x - ironPrefab.GetComponent<CircleCollider2D>().bounds.size.y / 2, ySpawnRange.y + ironPrefab.GetComponent<CircleCollider2D>().bounds.size.y / 2);
         }
         for (int i = 0; i < ironPool.childCount; i++)
         {
@@ -312,17 +426,25 @@ public class LevelManager : MonoBehaviour
                 curr.position = new Vector2(spawnX, _spawnY);
                 curr.gameObject.SetActive(true);
                 activeObjects.Add(curr.gameObject);
+                if (heme)
+                {
+                    StartCoroutine(Helpers.instance.WaitOneFrame(changeIronType => curr.GetComponent<Iron>().HemeIron()));
+                }
                 return;
             }
         }
         GameObject newIron = Instantiate(ironPrefab, new Vector2(spawnX, _spawnY), Quaternion.identity);
         activeObjects.Add(newIron);
         newIron.transform.parent = ironPool;
+        if (heme)
+        {
+            StartCoroutine(Helpers.instance.WaitOneFrame(changeIronType => newIron.GetComponent<Iron>().HemeIron()));
+        }
     }
 
     public void SpawnCholera(float _spawnY = -100)
     {
-        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 5;
+        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 3;
         if (_spawnY == -100)
         {
             Vector2 ySpawnRange = SpawnRange();
@@ -342,5 +464,53 @@ public class LevelManager : MonoBehaviour
         GameObject newCholera = Instantiate(choleraPrefab, new Vector2(spawnX, _spawnY), Quaternion.identity);
         activeObjects.Add(newCholera);
         newCholera.transform.parent = choleraPool;
+    }
+
+    public void SpawnColi(float _spawnY = -100)
+    {
+        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 3;
+        if (_spawnY == -100)
+        {
+            Vector2 ySpawnRange = SpawnRange();
+            _spawnY = Random.Range(ySpawnRange.x, ySpawnRange.y);
+        }
+        for (int i = 0; i < coliPool.childCount; i++)
+        {
+            var curr = coliPool.GetChild(i);
+            if (!curr.gameObject.activeInHierarchy)
+            {
+                curr.position = new Vector2(spawnX, _spawnY);
+                curr.gameObject.SetActive(true);
+                activeObjects.Add(curr.gameObject);
+                return;
+            }
+        }
+        GameObject newColi = Instantiate(coliPrefab, new Vector2(spawnX, _spawnY), Quaternion.identity);
+        activeObjects.Add(newColi);
+        newColi.transform.parent = coliPool;
+    }
+
+    public void SpawnSphaerogena(float _spawnY = -100)
+    {
+        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 3;
+        if (_spawnY == -100)
+        {
+            Vector2 ySpawnRange = SpawnRange();
+            _spawnY = Random.Range(ySpawnRange.x - sphaerogenaPrefab.GetComponent<SpriteRenderer>().bounds.size.y / 2, ySpawnRange.y + sphaerogenaPrefab.GetComponent<SpriteRenderer>().bounds.size.y / 2);
+        }
+        for (int i = 0; i < sphaerogenaPool.childCount; i++)
+        {
+            var curr = sphaerogenaPool.GetChild(i);
+            if (!curr.gameObject.activeInHierarchy)
+            {
+                curr.position = new Vector2(spawnX, _spawnY);
+                curr.gameObject.SetActive(true);
+                activeObjects.Add(curr.gameObject);
+                return;
+            }
+        }
+        GameObject newSphaerogena = Instantiate(sphaerogenaPrefab, new Vector2(spawnX, _spawnY), Quaternion.identity);
+        activeObjects.Add(newSphaerogena);
+        newSphaerogena.transform.parent = sphaerogenaPool;
     }
 }

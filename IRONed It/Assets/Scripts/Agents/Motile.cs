@@ -38,12 +38,20 @@ public class Motile : MonoBehaviour
     [Header("Component References")]
     Rigidbody2D rb;
     CapsuleCollider2D cc;
+    Player playerScript;
+    Enemy enemyScript;
+
+    public static Motile playerInstance;
 
     void Awake()
     {
         wallLayerMask = LayerMask.GetMask("Wall");
         rb = GetComponent<Rigidbody2D>();
         cc = GetComponent<CapsuleCollider2D>();
+        playerScript = GetComponent<Player>();
+        enemyScript = GetComponent<Enemy>();
+
+        if (playerScript != null) playerInstance = this;
     }
 
     void FixedUpdate()
@@ -120,13 +128,14 @@ public class Motile : MonoBehaviour
 
         if (p.CompareTag("Energy"))
         {
-            SendMessage("EnergyPickup", SendMessageOptions.DontRequireReceiver);
+            if (playerScript != null) playerScript.EnergyPickup();
         }
         if (p.CompareTag("Doxycycline"))
         {
             if (!iFrames)
             {
-                SendMessage("ChangeLifeCount", -1, SendMessageOptions.DontRequireReceiver);
+                if (playerScript != null) playerScript.ChangeLifeCount(-1);
+                else if (enemyScript != null) enemyScript.ChangeLifeCount(-1);
             }
             else
             {
@@ -156,7 +165,7 @@ public class Motile : MonoBehaviour
                     {
                         m_Particles[i].remainingLifetime = -1; //Kills the particle
                         m_System.SetParticles(m_Particles); // Update particle system
-                        //return;
+                        break;
                     }
                 }
             }
@@ -173,7 +182,7 @@ public class Motile : MonoBehaviour
                 if (r == 0)
                 {
                     c.transform.parent.gameObject.SetActive(false);
-                    SendMessage("IronPickup", SendMessageOptions.DontRequireReceiver);
+                    if (playerScript != null) playerScript.IronPickup();
                 }
             }
         }

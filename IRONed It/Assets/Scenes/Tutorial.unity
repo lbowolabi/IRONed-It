@@ -167,6 +167,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_RootOrder
@@ -273,6 +288,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.4943396
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8172861
+      objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_RootOrder
@@ -330,6 +360,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d17c48ad8ffb63c41a1a380c4879abcf, type: 3}
+--- !u!1 &407640065
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 407640066}
+  m_Layer: 0
+  m_Name: ColiPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &407640066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407640065}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.846003, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &516668093
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +697,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.3962264
+      objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_RootOrder
@@ -778,6 +853,36 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 9027325376748892570}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1706981203
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1706981204}
+  m_Layer: 0
+  m_Name: SphaerogenaPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1706981204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706981203}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 24.846003, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1750053347 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1815143023077493592, guid: 7a4325e47ad24e64ab972f553e00cd51,
@@ -820,9 +925,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 0
-  defaultDoxyProbability: 0
-  defaultEnergyProbability: 0
-  defaultIronProbability: 0
+  defaultDoxyProbability: -1
+  defaultEnergyProbability: -1
+  defaultIronProbability: -1
+  defaultHemeProbability: -1
+  defaultCholeraProbability: -1
+  defaultColiProbability: -1
+  defaultSphaerogenaProbability: -1
   ironSpeedRange: {x: 0, y: 0}
   targetedIron: []
   choleraSpeedRange: {x: 80, y: 80}
@@ -830,6 +939,10 @@ MonoBehaviour:
   wallPool: {fileID: 989709285}
   ironPool: {fileID: 65622574}
   choleraPool: {fileID: 361116276}
+  coliPool: {fileID: 0}
+  sphaerogenaPool: {fileID: 0}
+  doxycycline: {fileID: 0}
+  energy: {fileID: 0}
 --- !u!4 &1757370878
 Transform:
   m_ObjectHideFlags: 0
@@ -855,6 +968,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -942,6 +1070,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.4943396
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.8172861
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -1154,6 +1297,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.3962264
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}

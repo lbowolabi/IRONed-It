@@ -57,7 +57,7 @@ public class TutorialManager : MonoBehaviour
     {
         yield return null;
         StartCoroutine(UpdateTutorialText("This is iron."));
-        lm.SpawnIron(0);
+        lm.SpawnIron(false, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
         GameObject iron = null;
         while (ironSearch == null)
@@ -115,7 +115,7 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         StartCoroutine(UpdateTutorialText("These are vibriobactin! When they touch iron, they create chelated iron."));
-        lm.SpawnIron(0);
+        lm.SpawnIron(false, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
         GameObject iron = null;
         while (ironSearch == null)
