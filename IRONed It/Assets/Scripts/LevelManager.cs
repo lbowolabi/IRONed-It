@@ -19,9 +19,11 @@ public class LevelManager : MonoBehaviour
 
     [Header("Resources")]
     public Vector2 ironSpeedRange;
+    [HideInInspector] public List<Transform> targetedIron = new List<Transform>();
     GameObject ironPrefab;
 
     [Header("Enemies")]
+    public Vector2 choleraSpeedRange;
     GameObject choleraPrefab;
     GameObject coliPrefab;
 
@@ -36,6 +38,7 @@ public class LevelManager : MonoBehaviour
     [Header("Component References")]
     [SerializeField] Transform wallPool;
     [SerializeField] Transform ironPool;
+    [SerializeField] Transform choleraPool; // unfortunate names <.<
     public ParticleSystem doxycycline { get; private set; }
     public ParticleSystem energy { get; private set; }
 
@@ -55,6 +58,7 @@ public class LevelManager : MonoBehaviour
         instance = this;
         wallLayerMask = LayerMask.GetMask("Wall");
         ironPrefab = (GameObject)Resources.Load("Prefabs/Iron");
+        choleraPrefab = (GameObject)Resources.Load("Prefabs/Cholera");
 
         SetAllResourceSpawnsToDefault();
     }
@@ -276,14 +280,14 @@ public class LevelManager : MonoBehaviour
         Vector2 r = Vector2.zero;
 
         Vector2 p = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
-        RaycastHit2D hit = Physics2D.Raycast(p, Vector2.up, 20, wallLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(p + (Vector2.right * 5), Vector2.up, 20, wallLayerMask);
         if (hit.collider != null)
         {
             r.x = hit.point.y;
         }
 
         p = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
-        hit = Physics2D.Raycast(p, Vector2.down, 20, wallLayerMask);
+        hit = Physics2D.Raycast(p + (Vector2.right * 5), Vector2.down, 20, wallLayerMask);
         if (hit.collider != null)
         {
             r.y = hit.point.y;
@@ -314,5 +318,29 @@ public class LevelManager : MonoBehaviour
         GameObject newIron = Instantiate(ironPrefab, new Vector2(spawnX, _spawnY), Quaternion.identity);
         activeObjects.Add(newIron);
         newIron.transform.parent = ironPool;
+    }
+
+    public void SpawnCholera(float _spawnY = -100)
+    {
+        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 5;
+        if (_spawnY == -100)
+        {
+            Vector2 ySpawnRange = SpawnRange();
+            _spawnY = Random.Range(ySpawnRange.x, ySpawnRange.y);
+        }
+        for (int i = 0; i < choleraPool.childCount; i++)
+        {
+            var curr = choleraPool.GetChild(i);
+            if (!curr.gameObject.activeInHierarchy)
+            {
+                curr.position = new Vector2(spawnX, _spawnY);
+                curr.gameObject.SetActive(true);
+                activeObjects.Add(curr.gameObject);
+                return;
+            }
+        }
+        GameObject newCholera = Instantiate(choleraPrefab, new Vector2(spawnX, _spawnY), Quaternion.identity);
+        activeObjects.Add(newCholera);
+        newCholera.transform.parent = choleraPool;
     }
 }

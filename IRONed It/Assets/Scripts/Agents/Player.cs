@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
         fe3BarFill.fillAmount += amount;
     }
 
-    void IronPickup()
+    void IronPickup() // gets called by motile
     {
         ChangeIronCount(fe3PickupWorth);
     }
@@ -125,12 +125,12 @@ public class Player : MonoBehaviour
         atpBarFill.fillAmount += amount;
     }
 
-    void EnergyPickup()
+    void EnergyPickup() // gets called by motile
     {
         ChangeEnergyCount(atpPickupWorth);
     }
 
-    void ChangeLifeCount(int amount)
+    void ChangeLifeCount(int amount) // also gets called by motile
     {
         if (amount > 0)
         {

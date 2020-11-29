@@ -37,13 +37,13 @@ public class Motile : MonoBehaviour
 
     [Header("Component References")]
     Rigidbody2D rb;
-    PolygonCollider2D pc;
+    CapsuleCollider2D cc;
 
     void Awake()
     {
         wallLayerMask = LayerMask.GetMask("Wall");
         rb = GetComponent<Rigidbody2D>();
-        pc = GetComponent<PolygonCollider2D>();
+        cc = GetComponent<CapsuleCollider2D>();
     }
 
     void FixedUpdate()
@@ -56,7 +56,7 @@ public class Motile : MonoBehaviour
     {
         for (int i = -1; i < 2; i += 2)
         {
-            RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x + (i * (pc.bounds.size.x / 2)), transform.position.y - (pc.bounds.size.y / 2)), Vector2.down, .02f, wallLayerMask);
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x + (i * (cc.bounds.size.x / 2)), transform.position.y + cc.offset.y - (cc.bounds.size.y / 2)), Vector2.down, .02f, wallLayerMask);
             if (hit.collider != null)
             {
                 //Debug.Log("bottom collision");
@@ -64,7 +64,7 @@ public class Motile : MonoBehaviour
                 StartCoroutine(Helpers.instance.Timer(endBounce => bottomBounced = false, bounceDuration));
                 rb.velocity = new Vector2(rb.velocity.x, bounceForce);
             }
-            hit = Physics2D.Raycast(new Vector2(transform.position.x + (i * (pc.bounds.size.x / 2)), transform.position.y + (pc.bounds.size.y / 2)), Vector2.up, .02f, wallLayerMask);
+            hit = Physics2D.Raycast(new Vector2(transform.position.x + (i * (cc.bounds.size.x / 2)), transform.position.y + cc.offset.y + (cc.bounds.size.y / 2)), Vector2.up, .02f, wallLayerMask);
             if (hit.collider != null)
             {
                 //Debug.Log("top collision");
@@ -76,12 +76,15 @@ public class Motile : MonoBehaviour
             //if (hit.collider != null)
             //{
             //    Debug.Log("forward collision");
+            //    (problem rn is that forward collision also logs top and bottom collisions because the raycasts are starting from the same corners)
             //}
         }
     }
 
     public void SetMovementVector(Vector2 _movement)
     {
+        if (_movement.x != 0) _movement.x /= Mathf.Abs(_movement.x);
+        if (_movement.y != 0) _movement.y /= Mathf.Abs(_movement.y);
         movementVector = _movement;
     }
 

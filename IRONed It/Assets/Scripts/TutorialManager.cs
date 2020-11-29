@@ -73,7 +73,8 @@ public class TutorialManager : MonoBehaviour
                 break;
             }
         }
-        iron.GetComponent<CircleCollider2D>().enabled = false; // player is not allowed to pick this one up
+        iron.transform.GetChild(0).GetComponent<CircleCollider2D>().enabled = false; // player is not allowed to pick this one up
+        iron.GetComponent<CircleCollider2D>().enabled = false;
         StartCoroutine(MoveIron(iron));
 
         yield return new WaitUntil(() => iron.transform.position.x < 3);
@@ -95,9 +96,10 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         StartCoroutine(UpdateTutorialText("Sometimes you'll get lucky!"));
-        yield return new WaitUntil(() => !iron.activeInHierarchy);
+        yield return new WaitUntil(() => iron.transform.position.x < CameraFollow.instance.GetComponent<Camera>().ViewportToWorldPoint(Vector2.zero).x);
 
         StartCoroutine(UpdateTutorialText("Not this time, though."));
+        iron.transform.GetChild(0).GetComponent<CircleCollider2D>().enabled = true;
         iron.GetComponent<CircleCollider2D>().enabled = true;
         yield return new WaitForSeconds(2);
 
@@ -141,6 +143,7 @@ public class TutorialManager : MonoBehaviour
         cm.GetGeneDisplay().SetActive(true);
         // active gene ui, animate it etc
 
+        LevelManager.instance.SpawnCholera();
         yield return new WaitUntil(() => player.activeGene == ActiveGene.viuA);
         yield return new WaitForSeconds(.5f);
         StartCoroutine(UpdateTutorialText("You have a 100% chance of picking up chelated iron while your viuA gene is active."));

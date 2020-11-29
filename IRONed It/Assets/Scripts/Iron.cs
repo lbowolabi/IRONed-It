@@ -43,6 +43,7 @@ public class Iron : MonoBehaviour
         cc.isTrigger = false;
         childSR.enabled = false;
         childSR.transform.localScale = Vector3.one;
+        if (LevelManager.instance.targetedIron.Contains(transform)) LevelManager.instance.targetedIron.Remove(transform);
     }
 
     private void OnEnable()
