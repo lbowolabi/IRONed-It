@@ -151,11 +151,14 @@ public class Player : MonoBehaviour
         motile.agentCanMove = false;
         expendingResources = false;
         motile.iFrames = true;
+        GetComponent<CapsuleCollider2D>().enabled = false;
+
         if (motile.lives != 0)
         {
             StartCoroutine(Helpers.instance.Timer(revive => motile.agentCanMove = true, motile.deathDuration));
             StartCoroutine(Helpers.instance.Timer(revive => expendingResources = true, motile.deathDuration));
             StartCoroutine(Helpers.instance.Timer(revive => motile.iFrames = false, motile.deathDuration));
+            StartCoroutine(Helpers.instance.Timer(revive => GetComponent<CapsuleCollider2D>().enabled = true, motile.deathDuration));
             while (!motile.agentCanMove)
             {
                 sr.color = sr.color == Color.grey ? defaultColor : Color.grey;

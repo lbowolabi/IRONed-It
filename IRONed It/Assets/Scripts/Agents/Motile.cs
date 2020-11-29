@@ -20,7 +20,7 @@ public class Motile : MonoBehaviour
 
     [Header("Wall Bounce")]
     [SerializeField] private float bounceForce;
-    [Tooltip("how long until player can agent back in the direction of the bounced wall")]
+    [Tooltip("how long until agent can bounce back in the direction of the bounced wall")]
     [SerializeField] private float bounceDuration;
     LayerMask wallLayerMask;
 
@@ -152,11 +152,11 @@ public class Motile : MonoBehaviour
                 for (int i = 0; i < numParticlesAlive; i++)
                 {
                     //If the collision was close enough to the particle position, destroy it
-                    if (Vector3.Magnitude(m_Particles[i].position - coll.intersection) < 0.05f)
+                    if (Vector3.Magnitude(m_Particles[i].position - coll.intersection) <= m_Particles[i].GetCurrentSize(m_System) / 2)
                     {
                         m_Particles[i].remainingLifetime = -1; //Kills the particle
                         m_System.SetParticles(m_Particles); // Update particle system
-                        return;
+                        //return;
                     }
                 }
             }

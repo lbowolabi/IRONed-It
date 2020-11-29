@@ -825,7 +825,7 @@ MonoBehaviour:
   defaultIronProbability: 0
   ironSpeedRange: {x: 0, y: 0}
   targetedIron: []
-  choleraSpeedRange: {x: 0.5, y: 0.5}
+  choleraSpeedRange: {x: 80, y: 80}
   wallSpeed: 0
   wallPool: {fileID: 989709285}
   ironPool: {fileID: 65622574}
@@ -1293,6 +1293,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4865682728571942353, guid: 35710bb65811c7d44a0bb8a37c1f3371,
+        type: 3}
+      propertyPath: CollisionModule.m_Bounce.scalar
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4865682728881232708, guid: 35710bb65811c7d44a0bb8a37c1f3371,
         type: 3}
       propertyPath: m_Name
@@ -1351,6 +1356,11 @@ PrefabInstance:
     - target: {fileID: 4865682728881232824, guid: 35710bb65811c7d44a0bb8a37c1f3371,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865682729270562308, guid: 35710bb65811c7d44a0bb8a37c1f3371,
+        type: 3}
+      propertyPath: CollisionModule.m_Bounce.scalar
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

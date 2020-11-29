@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         if (target == null) target = FindNearestIron();
-        else if (target.position.x > transform.position.x)
+        else if (target.position.x > transform.position.x || !target.parent.gameObject.activeInHierarchy)
         {
             if (LevelManager.instance.targetedIron.Contains(target.parent)) LevelManager.instance.targetedIron.Remove(target.parent);
             target = null;
@@ -99,13 +99,14 @@ public class Enemy : MonoBehaviour
         StopAllCoroutines();
         target = null;
         sr.color = defaultColor;
+        motile.lives = 3;
     }
 
     void ChangeLifeCount(int amount) // gets called by motile
     {
         if (amount > 0)
         {
-
+            Debug.Log("Enemy gained a life. That shouldn't happen.");
         }
         else if (amount < 0)
         {
@@ -147,6 +148,7 @@ public class Enemy : MonoBehaviour
     {
         if (c.transform == target)
         {
+            if (LevelManager.instance.targetedIron.Contains(target.parent)) LevelManager.instance.targetedIron.Remove(target.parent);
             target = null;
         }
     }
