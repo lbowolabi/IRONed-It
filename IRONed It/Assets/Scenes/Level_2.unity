@@ -138,17 +138,17 @@ PrefabInstance:
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.88658094
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.9119808
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.3150943
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -228,12 +228,12 @@ PrefabInstance:
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.b
-      value: 0.87484354
+      value: 0.91588455
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.5415094
+      value: 0.6924528
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -477,17 +477,17 @@ PrefabInstance:
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.b
-      value: 1
+      value: 0.88658094
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.9119808
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.r
-      value: 0.3150943
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -781,12 +781,12 @@ PrefabInstance:
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.b
-      value: 0.87484354
+      value: 0.91588455
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.5415094
+      value: 0.6924528
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432157, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -1407,6 +1407,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3265232916081386748, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1689825668}
+    - target: {fileID: 3265232916081386748, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ActivateHuta
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785505892156579734, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1689825668}
+    - target: {fileID: 3785505892156579734, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ActivateFhua
+      objectReference: {fileID: 0}
+    - target: {fileID: 8445304634214502158, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1689825668}
+    - target: {fileID: 8445304634214502158, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ActivateIrga
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}

@@ -935,14 +935,13 @@ MonoBehaviour:
   ironSpeedRange: {x: 0, y: 0}
   targetedIron: []
   choleraSpeedRange: {x: 80, y: 80}
+  coliSpeedRange: {x: 0, y: 0}
   wallSpeed: 0
   wallPool: {fileID: 989709285}
   ironPool: {fileID: 65622574}
   choleraPool: {fileID: 361116276}
   coliPool: {fileID: 0}
   sphaerogenaPool: {fileID: 0}
-  doxycycline: {fileID: 0}
-  energy: {fileID: 0}
 --- !u!4 &1757370878
 Transform:
   m_ObjectHideFlags: 0
@@ -1164,6 +1163,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: ActivateViua
       objectReference: {fileID: 0}
+    - target: {fileID: 716983755406598989, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1815143022256871457, guid: 7a4325e47ad24e64ab972f553e00cd51,
         type: 3}
       propertyPath: m_Name
@@ -1283,6 +1287,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FillAmount
       value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063664751754211945, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7019453243032895928, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}

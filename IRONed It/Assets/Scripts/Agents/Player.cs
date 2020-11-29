@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     // player states
     [HideInInspector] public bool expendingResources = true;
     public ActiveGene activeGene { get; private set; } = ActiveGene.None;
+    [SerializeField] bool canViua = true, canIrga = true, canHuta = true, canFhua = true;
 
     [Header("Component References")]
     Motile motile;
@@ -60,6 +61,23 @@ public class Player : MonoBehaviour
             ChangeIronCount(-Time.deltaTime * fe3LossRateOverTime);
             //ChangeEnergyCount(-Time.deltaTime * atpLossRateOverTime);
         }
+
+        if (Input.GetKeyDown(KeyCode.Q)) // to make configurable later
+        {
+            ActivateViua();
+        }
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            ActivateIrga();
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            ActivateHuta();
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            ActivateFhua();
+        }
     }
 
     private void FixedUpdate()
@@ -69,7 +87,7 @@ public class Player : MonoBehaviour
 
     public void ActivateViua()
     {
-        if (fe3BarFill.fillAmount > 0)
+        if (fe3BarFill.fillAmount > 0 && canViua)
         {
             if (activeGene != ActiveGene.viuA)
             {
@@ -82,9 +100,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ActiveIrga()
+    public void ActivateIrga()
     {
-        if (fe3BarFill.fillAmount > 0)
+        if (fe3BarFill.fillAmount > 0 && canIrga)
         {
             if (activeGene != ActiveGene.irgA)
             {
@@ -99,7 +117,7 @@ public class Player : MonoBehaviour
 
     public void ActivateHuta()
     {
-        if (fe3BarFill.fillAmount > 0)
+        if (fe3BarFill.fillAmount > 0 && canHuta)
         {
             if (activeGene != ActiveGene.hutA)
             {
@@ -114,7 +132,7 @@ public class Player : MonoBehaviour
 
     public void ActivateFhua()
     {
-        if (fe3BarFill.fillAmount > 0)
+        if (fe3BarFill.fillAmount > 0 && canFhua)
         {
             if (activeGene != ActiveGene.fhuA)
             {
