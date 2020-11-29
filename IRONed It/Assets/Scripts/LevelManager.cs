@@ -276,7 +276,7 @@ public class LevelManager : MonoBehaviour
         Vector2 r = Vector2.zero;
 
         Vector2 p = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
-        RaycastHit2D hit = Physics2D.Raycast(p, Vector2.down, 20, wallLayerMask);
+        RaycastHit2D hit = Physics2D.Raycast(p, Vector2.up, 20, wallLayerMask);
         if (hit.collider != null)
         {
             r.x = hit.point.y;
@@ -292,23 +292,26 @@ public class LevelManager : MonoBehaviour
         return r;
     }
 
-    public void SpawnIron()
+    public void SpawnIron(float _spawnY = -100)
     {
         float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 5;
-        Vector2 ySpawnRange = SpawnRange();
-        float spawnY = Random.Range(ySpawnRange.x, ySpawnRange.y);
+        if (_spawnY == -100)
+        {
+            Vector2 ySpawnRange = SpawnRange();
+            _spawnY = Random.Range(ySpawnRange.x, ySpawnRange.y);
+        }
         for (int i = 0; i < ironPool.childCount; i++)
         {
             var curr = ironPool.GetChild(i);
             if (!curr.gameObject.activeInHierarchy)
             {
-                curr.position = new Vector2(spawnX, spawnY);
+                curr.position = new Vector2(spawnX, _spawnY);
                 curr.gameObject.SetActive(true);
                 activeObjects.Add(curr.gameObject);
                 return;
             }
         }
-        GameObject newIron = Instantiate(ironPrefab, new Vector2(spawnX, spawnY), Quaternion.identity);
+        GameObject newIron = Instantiate(ironPrefab, new Vector2(spawnX, _spawnY), Quaternion.identity);
         activeObjects.Add(newIron);
         newIron.transform.parent = ironPool;
     }
