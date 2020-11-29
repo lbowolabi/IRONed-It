@@ -6,13 +6,38 @@ using TMPro;
 
 public class CanvasManager : MonoBehaviour
 {
-    public Image fe3BarFill;
-    public Image atpBarFill;
-    public TextMeshProUGUI lifeCount;
-    public Button viua;
-    public GameObject genes;
+    [SerializeField] Image fe3BarFill;
+    [SerializeField] Image atpBarFill;
+    [SerializeField] TextMeshProUGUI lifeCount;
+    [SerializeField] Button viua;
+    [SerializeField] GameObject genes;
 
     public static CanvasManager instance;
+
+    public Image GetFe3BarFill()
+    {
+        return fe3BarFill;
+    }
+
+    public Image GetAtpBarFill()
+    {
+        return atpBarFill;
+    }
+
+    public TextMeshProUGUI GetLifeCountText()
+    {
+        return lifeCount;
+    }
+
+    public GameObject GetGeneDisplay()
+    {
+        return genes;
+    }
+
+    public Button GetViuaButton()
+    {
+        return viua;
+    }
 
     private void Awake()
     {

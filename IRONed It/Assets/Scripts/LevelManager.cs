@@ -2,39 +2,49 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ChelatedBy { None, Cholera, Coli, Heme, Sphaerogena };
+
 public class LevelManager : MonoBehaviour
 {
+    [Header("Progression")]
+    [SerializeField] float levelLengthInSeconds;
 
     [Header("RNG")] // one out of probability, called multiple times per second
-    public int defaultDoxyProbability;
-    public int defaultEnergyProbability;
-    public int defaultIronProbability;
+    [SerializeField] int defaultDoxyProbability;
+    [SerializeField] int defaultEnergyProbability;
+    [SerializeField] int defaultIronProbability;
     int currentDoxyProbability;
     int currentEnergyProbability;
     int currentIronProbability;
 
     [Header("Resources")]
     public Vector2 ironSpeedRange;
-    public Vector2 ironSpawnYRange;
     GameObject ironPrefab;
 
+    [Header("Enemies")]
+    GameObject choleraPrefab;
+    GameObject coliPrefab;
+
     [Header("Walls")]
-    public float wallSpeed;
+    [SerializeField] float wallSpeed;
+    float currentWallSpeed = 1;
+    float wallSpeedSmoothing;
     float topWallY;
     float bottomWallY;
     LayerMask wallLayerMask;
 
     [Header("Component References")]
-    public Transform wallPool;
-    public Transform ironPool;
+    [SerializeField] Transform wallPool;
+    [SerializeField] Transform ironPool;
     public ParticleSystem doxycycline { get; private set; }
     public ParticleSystem energy { get; private set; }
 
     Transform player;
+    Motile playerMovement;
     Rigidbody2D playerRB;
 
     Camera mainCam;
-    Plane[] cameraBounds;
+    //Plane[] cameraBounds;
 
     List<GameObject> activeObjects = new List<GameObject>();
 
@@ -53,11 +63,12 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        cameraBounds = GeometryUtility.CalculateFrustumPlanes(mainCam);
+        //cameraBounds = GeometryUtility.CalculateFrustumPlanes(mainCam);
 
         player = Player.instance.transform;
         playerRB = player.GetComponent<Rigidbody2D>();
-        if (CanvasManager.instance.atpBarFill.fillAmount == 1)
+        playerMovement = player.GetComponent<Motile>();
+        if (CanvasManager.instance.GetAtpBarFill().fillAmount == 1)
         {
             SetEnergySpawnProbability(false);
         }
@@ -92,6 +103,23 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (levelLengthInSeconds > 0)
+        {
+            if (playerMovement.agentCanMove)
+            {
+                levelLengthInSeconds -= Time.deltaTime;
+                // on hitting zero, spawn victory gate as part of level; when it moves past player, end game
+                if (currentWallSpeed != wallSpeed)
+                {
+                    currentWallSpeed += Mathf.SmoothDamp(currentWallSpeed, wallSpeed, ref wallSpeedSmoothing, 2 * Time.deltaTime);
+                }
+            }
+            else
+            {
+                currentWallSpeed += Mathf.SmoothDamp(currentWallSpeed, 1, ref wallSpeedSmoothing, 2 * Time.deltaTime);
+            }
+        }
+
         for (int i = 0; i < activeObjects.Count; i++) // loop through all in-scene objects
         {
             Transform curr = activeObjects[i].transform;
@@ -108,7 +136,7 @@ public class LevelManager : MonoBehaviour
             }
             else if (LayerMask.LayerToName(activeObjects[i].layer) == "Wall")
             {
-                curr.Translate(Vector2.left * wallSpeed * Time.deltaTime);
+                curr.Translate(Vector2.left * currentWallSpeed * Time.deltaTime);
             }
         }
     }
@@ -230,7 +258,7 @@ public class LevelManager : MonoBehaviour
                 return;
             }
         }
-        Debug.Log("no more walls in pool to pick from");
+        Debug.Log("no more walls in pool to take from");
     }
 
     public void SpawnDoxy()
@@ -243,10 +271,32 @@ public class LevelManager : MonoBehaviour
         energy.Play();
     }
 
+    Vector2 SpawnRange()
+    {
+        Vector2 r = Vector2.zero;
+
+        Vector2 p = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
+        RaycastHit2D hit = Physics2D.Raycast(p, Vector2.down, 20, wallLayerMask);
+        if (hit.collider != null)
+        {
+            r.x = hit.point.y;
+        }
+
+        p = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
+        hit = Physics2D.Raycast(p, Vector2.down, 20, wallLayerMask);
+        if (hit.collider != null)
+        {
+            r.y = hit.point.y;
+        }
+
+        return r;
+    }
+
     public void SpawnIron()
     {
         float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 5;
-        float spawnY = Random.Range(ironSpawnYRange.x, ironSpawnYRange.y);
+        Vector2 ySpawnRange = SpawnRange();
+        float spawnY = Random.Range(ySpawnRange.x, ySpawnRange.y);
         for (int i = 0; i < ironPool.childCount; i++)
         {
             var curr = ironPool.GetChild(i);

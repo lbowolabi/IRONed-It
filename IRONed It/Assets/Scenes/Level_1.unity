@@ -304,31 +304,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: atpPickupWorth
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: fe3PickupWorth
-      value: 0.03
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608866, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: m_Color.b
-      value: 0.5029666
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608866, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: m_Color.g
-      value: 0.5029666
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608866, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: m_Color.r
-      value: 0.9245283
-      objectReference: {fileID: 0}
     - target: {fileID: 8648719865275608867, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}
       propertyPath: m_RootOrder
@@ -433,6 +408,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faecb2be4ea2f664d998c52c93210d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelLengthInSeconds: 0
   defaultDoxyProbability: 500
   defaultEnergyProbability: 500
   defaultIronProbability: 500
@@ -843,7 +819,7 @@ PrefabInstance:
       objectReference: {fileID: 403783829}
     - target: {fileID: 1981983677, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ActivateGene
+      value: ActivateViua
       objectReference: {fileID: 0}
     - target: {fileID: 1815143022256871457, guid: 7a4325e47ad24e64ab972f553e00cd51,
         type: 3}

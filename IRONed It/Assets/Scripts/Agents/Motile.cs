@@ -1,149 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
-public class Player : MonoBehaviour
+public class Motile : MonoBehaviour
 {
-    [Header("Resources")]
-    public int lives = 3;
-    TextMeshProUGUI lifeCount;
-    Image fe3BarFill;
-    public float fe3LossRateOverTime;
-    public float fe3PickupWorth;
-    Image atpBarFill;
-    //public float atpLossRateOverTime;
-    public float atpPickupWorth;
-    public float atpCostToActivateGene;
-
     [Header("Movement")]
-    public float maxYSpeed = 7;
+    Vector2 movementVector;
+    [SerializeField] private float maxYSpeed = 7;
     //public float maxXSpeed;
-    [Range(0.01f, .5f)] public float timeToMaxSpeed = .22f; // arbitrary range, feel free to modify. (don't make it zero)
+    [SerializeField] [Range(0.01f, .5f)] private float timeToMaxSpeed = .22f; // arbitrary range, feel free to modify. (don't make it zero)
 
     [Header("Friction")]
     [Tooltip("bigger number is faster direction change")]
-    public float directionChangeMultiplier = 3f;
+    [SerializeField] private float directionChangeMultiplier = 3f;
     [Tooltip("bigger number is faster stop")]
-    public float stopMultiplier = 4f;
+    [SerializeField] private float stopMultiplier = 4f;
     //private float xSpeedSmoothing;
     private float ySpeedSmoothing;
 
     [Header("Wall Bounce")]
-    public float bounceForce;
-    [Tooltip("how long until player can move back in the direction of the bounced wall")]
-    public float bounceDuration;
+    [SerializeField] private float bounceForce;
+    [Tooltip("how long until player can agent back in the direction of the bounced wall")]
+    [SerializeField] private float bounceDuration;
     LayerMask wallLayerMask;
 
-    [Header("Miscellaneous")]
+    [Header("Death")]
+    public float lives = 3;
     public float deathDuration;
     public float deathFlashInterval;
 
-    // player states
-    public bool playerCanMove = true;
-    public bool expendingResources = true;
-    bool iFrames;
+    // agent states
+    [HideInInspector] public bool agentCanMove = true;
+    [HideInInspector] public bool iFrames = false;
     bool topBounced;
     bool bottomBounced;
-    public bool viuaActive { get; private set; }
 
     [Header("Component References")]
     Rigidbody2D rb;
     BoxCollider2D bc;
-    SpriteRenderer sr;
-    Color defaultColor;
-
-    public static Player instance;
 
     void Awake()
     {
-        instance = this;
         wallLayerMask = LayerMask.GetMask("Wall");
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
-        sr = GetComponent<SpriteRenderer>();
-        defaultColor = sr.color;
-    }
-
-    private void Start()
-    {
-        lifeCount = CanvasManager.instance.lifeCount;
-        fe3BarFill = CanvasManager.instance.fe3BarFill;
-        atpBarFill = CanvasManager.instance.atpBarFill;
-        lifeCount.text = lives.ToString();
-    }
-
-    void Update()
-    {
-        if (expendingResources)
-        {
-            ChangeIronCount(-Time.deltaTime * fe3LossRateOverTime);
-            //ChangeEnergyCount(-Time.deltaTime * atpLossRateOverTime);
-        }
-    }
-
-    public void ActivateGene()
-    {
-        if (fe3BarFill.fillAmount > 0 && !viuaActive)
-        {
-            viuaActive = true;
-            ChangeEnergyCount(-atpCostToActivateGene);
-            StartCoroutine(Helpers.instance.Timer(deactivateGene => viuaActive = false, 10));
-        }
-    }
-
-    void ChangeLifeCount(int amount)
-    {
-        if (amount > 0)
-        {
-
-        }
-        else if (amount < 0)
-        {
-            StartCoroutine(Death());
-        }
-
-        lives += amount;
-        lifeCount.text = lives.ToString();
-    }
-
-    void ChangeIronCount(float amount)
-    {
-        if (amount > 0)
-        {
-
-        }
-        else if (amount < 0)
-        {
-
-        }
-
-        fe3BarFill.fillAmount += amount;
-    }
-
-    public void ChangeEnergyCount(float amount)
-    {
-        if (amount > 0)
-        {
-            if (atpBarFill.fillAmount + amount >= 1)
-            {
-                if (lives < 3 && atpBarFill.fillAmount != 1)
-                {
-                    ChangeLifeCount(1);
-                }
-                LevelManager.instance.SetEnergySpawnProbability(false); // turn off energy spawn if player at max energy
-            }
-        }
-        else if (amount < 0)
-        {
-            if (atpBarFill.fillAmount == 1)
-            {
-                LevelManager.instance.SetEnergySpawnProbability(true); // turn energy spawn back on
-            }
-        }
-
-        atpBarFill.fillAmount += amount;
     }
 
     void FixedUpdate()
@@ -180,9 +80,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void SetMovementVector(Vector2 _movement)
+    {
+        movementVector = _movement;
+    }
+
     void Movement()
     {
-        Vector2 input = new Vector2(0, playerCanMove ? Input.GetAxisRaw("Vertical") : 0); // get player movement input
+        Vector2 input = new Vector2(0, agentCanMove ? movementVector.y : 0); // get player movement input
 
         //float xSpeed = maxXSpeed / timeToMaxSpeed * input.x * Time.fixedDeltaTime;
         float ySpeed = maxYSpeed / timeToMaxSpeed * input.y * Time.fixedDeltaTime; // amount to change current vertical speed by
@@ -206,48 +111,19 @@ public class Player : MonoBehaviour
         }
     }
 
-    IEnumerator Death()
-    {
-        playerCanMove = false;
-        expendingResources = false;
-        iFrames = true;
-        if (lives != 0)
-        {
-            StartCoroutine(Helpers.instance.Timer(revive => playerCanMove = true, deathDuration));
-            StartCoroutine(Helpers.instance.Timer(revive => expendingResources = true, deathDuration));
-            StartCoroutine(Helpers.instance.Timer(revive => iFrames = false, deathDuration));
-            while (!playerCanMove)
-            {
-                sr.color = sr.color == Color.grey ? defaultColor : Color.grey;
-                yield return new WaitForSecondsRealtime(deathFlashInterval);
-            }
-            sr.color = defaultColor;
-        }
-        else
-        {
-            while (deathFlashInterval < 3)
-            {
-                sr.color = sr.color == Color.grey ? defaultColor : Color.grey;
-                yield return new WaitForSecondsRealtime(deathFlashInterval);
-                deathFlashInterval *= 1.3f;
-            }
-            sr.color = Color.grey;
-        }
-    }
-
     private void OnParticleCollision(GameObject p)
     {
         bool destroyParticle = true;
 
         if (p.CompareTag("Energy"))
         {
-            ChangeEnergyCount(atpPickupWorth);
+            SendMessage("EnergyPickup", SendMessageOptions.DontRequireReceiver);
         }
         if (p.CompareTag("Doxycycline"))
         {
             if (!iFrames)
             {
-                ChangeLifeCount(-1);
+                SendMessage("ChangeLifeCount", -1, SendMessageOptions.DontRequireReceiver);
             }
             else
             {
@@ -288,29 +164,13 @@ public class Player : MonoBehaviour
     {
         if (c.CompareTag("Iron"))
         {
-            if (!c.transform.parent.GetComponent<Iron>().chelated)
+            if (c.transform.parent.GetComponent<Iron>().chelatedBy == ChelatedBy.None)
             {
                 int r = Random.Range(0, 10);
                 if (r == 0)
                 {
-                    Debug.Log("hrm");
                     c.transform.parent.gameObject.SetActive(false);
-                    ChangeIronCount(fe3PickupWorth);
-                }
-            }
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D c)
-    {
-        if (c.CompareTag("Iron"))
-        {
-            if (c.transform.parent.GetComponent<Iron>().chelated)
-            {
-                if (viuaActive)
-                {
-                    c.transform.parent.gameObject.SetActive(false);
-                    ChangeIronCount(fe3PickupWorth);
+                    SendMessage("IronPickup", SendMessageOptions.DontRequireReceiver);
                 }
             }
         }
