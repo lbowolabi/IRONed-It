@@ -114,7 +114,7 @@ public class TutorialManager : MonoBehaviour
         vibriobactin.Play();
         yield return new WaitForSeconds(.5f);
 
-        StartCoroutine(UpdateTutorialText("First: vibriobactin! They chelate iron and allow efficient uptake."));
+        StartCoroutine(UpdateTutorialText("The first thing is vibriobactin! It chelates iron and allows efficient uptake."));
         lm.SpawnIron(false, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
         GameObject iron = null;
@@ -139,7 +139,7 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitUntil(() => iron.GetComponent<Iron>().chelatedBy != ChelatedBy.None);
         yield return new WaitForSeconds(2);
-        StartCoroutine(UpdateTutorialText("But to pick up chelated iron, you must first activate your viuA gene."));
+        StartCoroutine(UpdateTutorialText("But to pick up chelated iron, you must first activate your viuA gene. Press Q."));
         cm.GetGeneDisplay().SetActive(true);
         // active gene ui, animate it etc
 
