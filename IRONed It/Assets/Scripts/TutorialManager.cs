@@ -56,7 +56,7 @@ public class TutorialManager : MonoBehaviour
     IEnumerator IronIntro() // all concrete numbers are guesstimates <.< will need to tweak
     {
         yield return null;
-        StartCoroutine(UpdateTutorialText("This is iron."));
+        StartCoroutine(UpdateTutorialText("Use the up and down arrows to move."));
         lm.SpawnIron(false, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
         GameObject iron = null;
@@ -81,15 +81,15 @@ public class TutorialManager : MonoBehaviour
 
         float defaultIronSpeed = ironSpeed;
         ironSpeed = 0;
-        StartCoroutine(UpdateTutorialText("Collect iron to replenish your iron bar!"));
+        StartCoroutine(UpdateTutorialText("This is iron. Vibrio need iron to stay alive."));
         cm.GetFe3BarFill().transform.parent.gameObject.SetActive(true);
         // animate the iron bar, etc, something to draw attention to it
         yield return new WaitForSecondsRealtime(4);
 
-        StartCoroutine(UpdateTutorialText("Your iron bar automatically depletes over time. (You're safe in this tutorial, though.)"));
+        StartCoroutine(UpdateTutorialText("As your body uses up iron, your iron bar decreases."));
         yield return new WaitForSecondsRealtime(4);
 
-        StartCoroutine(UpdateTutorialText("But you can't usually pick up free-floating iron while it's in this form."));
+        StartCoroutine(UpdateTutorialText("Vibrio can't always pick up free-floating iron."));
         yield return new WaitForSecondsRealtime(3.5f);
 
         ironSpeed = defaultIronSpeed;
@@ -114,7 +114,7 @@ public class TutorialManager : MonoBehaviour
         vibriobactin.Play();
         yield return new WaitForSeconds(.5f);
 
-        StartCoroutine(UpdateTutorialText("These are vibriobactin! When they touch iron, they create chelated iron."));
+        StartCoroutine(UpdateTutorialText("First: vibriobactin! They chelate iron and allow efficient uptake."));
         lm.SpawnIron(false, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
         GameObject iron = null;
@@ -138,15 +138,15 @@ public class TutorialManager : MonoBehaviour
         ironSpeed = 0;
 
         yield return new WaitUntil(() => iron.GetComponent<Iron>().chelatedBy != ChelatedBy.None);
-        yield return new WaitForSeconds(1);
-        StartCoroutine(UpdateTutorialText("To pick up chelated iron, first activate your viuA gene."));
+        yield return new WaitForSeconds(2);
+        StartCoroutine(UpdateTutorialText("But to pick up chelated iron, you must first activate your viuA gene."));
         cm.GetGeneDisplay().SetActive(true);
         // active gene ui, animate it etc
 
         LevelManager.instance.SpawnCholera();
         yield return new WaitUntil(() => player.activeGene == ActiveGene.viuA);
-        yield return new WaitForSeconds(.5f);
-        StartCoroutine(UpdateTutorialText("You have a 100% chance of picking up chelated iron while your viuA gene is active."));
+        yield return new WaitForSeconds(3.5f);
+        StartCoroutine(UpdateTutorialText("With the viuA gene, your chance of iron uptake is 100%."));
         ironSpeed = defaultIronSpeed;
 
         yield return new WaitUntil(() => !iron.activeInHierarchy);
@@ -156,14 +156,14 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator EnergyIntro()
     {
-        StartCoroutine(UpdateTutorialText("Activating your viuA gene depleted some of your energy."));
+        StartCoroutine(UpdateTutorialText("Expressing the viuA gene depleted some of your energy."));
 
         yield return new WaitForSeconds(2);
         cm.GetAtpBarFill().transform.parent.gameObject.SetActive(true);
         // animate it etc
 
         yield return new WaitForSeconds(2);
-        StartCoroutine(UpdateTutorialText("Collect ATP to replenish some energy."));
+        StartCoroutine(UpdateTutorialText("Collect ATP to replenish your energy stock."));
 
         float timer = .2f;
         while (timer > 0)
@@ -192,7 +192,7 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator DoxyIntro()
     {
-        StartCoroutine(UpdateTutorialText("You'll also encounter antibiotics!"));
+        StartCoroutine(UpdateTutorialText("Be careful! You may also encounter antibiotics!"));
         yield return new WaitForSeconds(3);
         lm.SpawnDoxy();
 
@@ -214,7 +214,7 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(UpdateTutorialText("You're a cholera bacterium, so antibiotics are bad for you."));
 
         yield return new WaitForSeconds(4);
-        StartCoroutine(UpdateTutorialText("Your movement is powered by protein. You can't move after doxycycline damages your protein production."));
+        StartCoroutine(UpdateTutorialText("Your movement is powered by your ability to make proteins. You can't move after doxycycline damages you."));
 
         yield return new WaitForSeconds(4);
         StartCoroutine(LifeIntro());
