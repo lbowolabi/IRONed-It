@@ -9,8 +9,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] ChelatedBy targetType;
     Transform target;
     CircleCollider2D targetCollider;
-    float maxSpeed, currentSpeed;
-    float speedSmoothing;
 
     [Header("Component References")]
     Motile motile;
@@ -28,18 +26,6 @@ public class Enemy : MonoBehaviour
         defaultLayer = LayerMask.NameToLayer("Default");
     }
 
-    private void OnEnable()
-    {
-        if (targetType == ChelatedBy.Cholera)
-        {
-            maxSpeed = currentSpeed = Random.Range(LevelManager.instance.choleraSpeedRange.x, LevelManager.instance.choleraSpeedRange.y);
-        }
-        else if (targetType == ChelatedBy.Coli)
-        {
-            maxSpeed = currentSpeed = Random.Range(LevelManager.instance.coliSpeedRange.x, LevelManager.instance.coliSpeedRange.y);
-        }
-    }
-
     void Update()
     {
         if (target == null) target = FindNearestIron();
@@ -52,8 +38,6 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.Translate(Vector2.left * currentSpeed * Time.fixedDeltaTime);
-
         if (target != null)
         {
             if (Mathf.Abs(target.position.y - transform.position.y) <= targetCollider.bounds.size.x / 2)
@@ -68,22 +52,6 @@ public class Enemy : MonoBehaviour
         else
         {
             motile.SetMovementVector(Vector2.zero);
-        }
-
-        if (!motile.agentCanMove)
-        {
-            if (Motile.playerInstance.agentCanMove)
-            {
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, 2, ref speedSmoothing, 2 * Time.fixedDeltaTime);
-            }
-            else
-            {
-                currentSpeed = Mathf.SmoothDamp(currentSpeed, 1, ref speedSmoothing, 2 * Time.fixedDeltaTime);
-            }
-        }
-        else if (currentSpeed < maxSpeed)
-        {
-            currentSpeed = Mathf.SmoothDamp(currentSpeed, maxSpeed, ref speedSmoothing, 2 * Time.fixedDeltaTime);
         }
     }
 
@@ -182,6 +150,7 @@ public class Enemy : MonoBehaviour
             if (currentIron.chelatedBy == targetType)
             {
                 c.transform.parent.gameObject.SetActive(false);
+                LevelManager.instance.RemoveFromActiveObjects(c.transform.parent.gameObject);
                 target = null;
             }
         }

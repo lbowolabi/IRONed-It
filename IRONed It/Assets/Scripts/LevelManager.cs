@@ -17,8 +17,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] int defaultCholeraProbability = -1;
     [SerializeField] int defaultColiProbability = -1;
     [SerializeField] int defaultSphaerogenaProbability = -1;
-    int currentDoxyProbability, currentEnergyProbability, currentIronProbability, currentHemeProbability;
-    int currentCholeraProbability, currentColiProbability, currentSphaerogenaProbability;
+    int currentDoxyProbability = -1, currentEnergyProbability = -1, currentIronProbability = -1, currentHemeProbability = -1;
+    int currentCholeraProbability = -1, currentColiProbability = -1, currentSphaerogenaProbability = -1;
 
     [Header("Resources")]
     public Vector2 ironSpeedRange;
@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
     GameObject choleraPrefab;
     public Vector2 coliSpeedRange;
     GameObject coliPrefab;
+    public Vector2 sphaerogenaSpeedRange;
     GameObject sphaerogenaPrefab;
 
     [Header("Walls")]
@@ -39,6 +40,9 @@ public class LevelManager : MonoBehaviour
     float topWallY;
     float bottomWallY;
     LayerMask wallLayerMask;
+
+    [Header("Player Interactions")]
+    public float playerDeathSpeedMultiplier = .3f;
 
     [Header("Component References")]
     [SerializeField] Transform wallPool;
@@ -51,7 +55,7 @@ public class LevelManager : MonoBehaviour
     public ParticleSystem energy { get; private set; }
     GameObject victoryGate;
 
-    Transform player;
+    //Transform player;
 
     Camera mainCam;
     //Plane[] cameraBounds;
@@ -69,7 +73,9 @@ public class LevelManager : MonoBehaviour
         coliPrefab = (GameObject)Resources.Load("Prefabs/Coli");
         sphaerogenaPrefab = (GameObject)Resources.Load("Prefabs/Sphaerogena");
 
-        SetAllResourceSpawnsToDefault();
+        currentIronProbability = defaultIronProbability;
+        currentEnergyProbability = defaultEnergyProbability;
+        StartCoroutine(Helpers.instance.Timer(startDoxySpawns => SetAllResourceSpawnsToDefault(), 7));
     }
 
     // Start is called before the first frame update
@@ -77,10 +83,10 @@ public class LevelManager : MonoBehaviour
     {
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         //cameraBounds = GeometryUtility.CalculateFrustumPlanes(mainCam);
-        player = Player.instance.transform;
+        //player = Player.instance.transform;
 
         victoryGate = GameObject.FindGameObjectWithTag("Victory");
-        victoryGate.SetActive(false);
+        if (victoryGate != null) victoryGate.SetActive(false);
 
         if (CanvasManager.instance.GetAtpBarFill().fillAmount == 1)
         {
@@ -124,7 +130,7 @@ public class LevelManager : MonoBehaviour
                 levelLengthInSeconds -= Time.deltaTime;
                 if (currentWallSpeed < wallSpeed - .05f || currentWallSpeed > wallSpeed + .05f)
                 {
-                    currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, wallSpeed, ref wallSpeedSmoothing, 2 * Time.deltaTime);
+                    currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, wallSpeed, ref wallSpeedSmoothing, Motile.playerInstance.deathDuration * Time.deltaTime);
                 }
 
                 if (levelLengthInSeconds <= 0)
@@ -138,7 +144,25 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
-                currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, 1, ref wallSpeedSmoothing, 2 * Time.deltaTime);
+                currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, wallSpeed * playerDeathSpeedMultiplier, ref wallSpeedSmoothing, Motile.playerInstance.deathDuration * Time.deltaTime);
+
+                // change particles' speeds too; work in progress
+                var particles = new ParticleSystem.Particle[doxycycline.main.maxParticles];
+                int aliveParticlesCount = doxycycline.GetParticles(particles);
+                // Change only the particles that are alive
+                for (int i = 0; i < aliveParticlesCount; i++)
+                {
+                    //particles[i].velocity = particles[i].velocity.normalized * (particles[i].velocity.magnitude * playerDeathSpeedMultiplier);
+                }
+                doxycycline.SetParticles(particles, aliveParticlesCount);
+
+                particles = new ParticleSystem.Particle[energy.main.maxParticles];
+                aliveParticlesCount = energy.GetParticles(particles);
+                for (int i = 0; i < aliveParticlesCount; i++)
+                {
+                    //particles[i].velocity = particles[i].velocity.normalized * (particles[i].velocity.magnitude * playerDeathSpeedMultiplier);
+                }
+                energy.SetParticles(particles, aliveParticlesCount);
             }
         }
 
@@ -160,6 +184,23 @@ public class LevelManager : MonoBehaviour
             {
                 curr.Translate(Vector2.left * currentWallSpeed * Time.deltaTime);
             }
+        }
+    }
+
+    public void RemoveFromActiveObjects(GameObject g)
+    {
+        activeObjects.Remove(g);
+    }
+
+    public void PlayerCanMove(bool newValue)
+    {
+        for (int i = 0; i < activeObjects.Count; i++)
+        {
+            if (activeObjects[i].transform.parent == wallPool)
+            {
+                continue;
+            }
+            activeObjects[i].GetComponent<TranslateSpeed>().MatchSpeedToPlayer(newValue);
         }
     }
 
@@ -188,43 +229,43 @@ public class LevelManager : MonoBehaviour
         {
             if (currentDoxyProbability != -1)
             {
-                int r = (int)Random.Range(0, currentDoxyProbability / wallSpeed);
+                int r = (int)Random.Range(0, currentDoxyProbability / currentWallSpeed);
                 if (r == 0) SpawnDoxy();
             }
 
-            if (currentEnergyProbability != -1)
+            if (currentEnergyProbability != -1 && CanvasManager.instance.GetAtpBarFill().fillAmount < 1)
             {
-                int r = (int)Random.Range(0, currentEnergyProbability / wallSpeed);
+                int r = (int)Random.Range(0, currentEnergyProbability / currentWallSpeed);
                 if (r == 0) SpawnEnergy();
             }
 
             if (currentIronProbability != -1)
             {
-                int r = (int)Random.Range(0, currentIronProbability / wallSpeed);
+                int r = (int)Random.Range(0, currentIronProbability / currentWallSpeed);
                 if (r == 0) SpawnIron(false);
             }
 
             if (currentHemeProbability != -1)
             {
-                int r = (int)Random.Range(0, currentHemeProbability / wallSpeed);
+                int r = (int)Random.Range(0, currentHemeProbability / currentWallSpeed);
                 if (r == 0) SpawnIron(true);
             }
 
             if (currentCholeraProbability != -1)
             {
-                int r = (int)Random.Range(0, currentCholeraProbability / wallSpeed);
+                int r = (int)Random.Range(0, currentCholeraProbability / currentWallSpeed);
                 if (r == 0) SpawnCholera();
             }
 
             if (currentColiProbability != -1)
             {
-                int r = (int)Random.Range(0, currentColiProbability / wallSpeed);
+                int r = (int)Random.Range(0, currentColiProbability / currentWallSpeed);
                 if (r == 0) SpawnColi();
             }
 
             if (currentSphaerogenaProbability != -1)
             {
-                int r = (int)Random.Range(0, currentSphaerogenaProbability / wallSpeed);
+                int r = (int)Random.Range(0, currentSphaerogenaProbability / currentWallSpeed);
                 if (r == 0) SpawnSphaerogena();
             }
         }

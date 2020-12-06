@@ -57,6 +57,7 @@ public class TutorialManager : MonoBehaviour
     {
         yield return null;
         StartCoroutine(UpdateTutorialText("Use the up and down arrows to move."));
+        yield return new WaitForSeconds(2);
         lm.SpawnIron(false, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
         GameObject iron = null;
@@ -82,15 +83,15 @@ public class TutorialManager : MonoBehaviour
         float defaultIronSpeed = ironSpeed;
         ironSpeed = 0;
         StartCoroutine(UpdateTutorialText("This is iron. Vibrio need iron to stay alive."));
-        cm.GetFe3BarFill().transform.parent.gameObject.SetActive(true);
         // animate the iron bar, etc, something to draw attention to it
-        yield return new WaitForSecondsRealtime(4);
+        yield return new WaitForSeconds(4);
 
         StartCoroutine(UpdateTutorialText("As your body uses up iron, your iron bar decreases."));
-        yield return new WaitForSecondsRealtime(4);
+        cm.GetFe3BarFill().transform.parent.gameObject.SetActive(true);
+        yield return new WaitForSeconds(4);
 
         StartCoroutine(UpdateTutorialText("Vibrio can't always pick up free-floating iron."));
-        yield return new WaitForSecondsRealtime(3.5f);
+        yield return new WaitForSeconds(3.5f);
 
         ironSpeed = defaultIronSpeed;
         yield return new WaitForSeconds(.5f);
@@ -139,13 +140,15 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitUntil(() => iron.GetComponent<Iron>().chelatedBy != ChelatedBy.None);
         yield return new WaitForSeconds(2);
-        StartCoroutine(UpdateTutorialText("But to pick up chelated iron, you must first activate your viuA gene. Press Q."));
+        string s = GameManager.instance.viuaKey.ToString();
+        if (s.Contains("Alpha")) s = s.Remove(0, 5);
+        StartCoroutine(UpdateTutorialText("But to pick up chelated iron, you must first activate your viuA gene. Press " + s + "."));
         cm.GetGeneDisplay().SetActive(true);
+        Player.instance.canViua = true;
         // active gene ui, animate it etc
 
-        LevelManager.instance.SpawnCholera();
         yield return new WaitUntil(() => player.activeGene == ActiveGene.viuA);
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(1f);
         StartCoroutine(UpdateTutorialText("With the viuA gene, your chance of iron uptake is 100%."));
         ironSpeed = defaultIronSpeed;
 

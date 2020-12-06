@@ -4827,6 +4827,7 @@ GameObject:
   - component: {fileID: 2568251669123349620}
   - component: {fileID: 7687724931358567603}
   - component: {fileID: 3204719054681717210}
+  - component: {fileID: 8306724583542968173}
   m_Layer: 8
   m_Name: Cholera
   m_TagString: Untagged
@@ -4993,3 +4994,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetType: 1
+--- !u!114 &8306724583542968173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3204719054681717211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 404c93fefbe6e074f996f1430ff5fec3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

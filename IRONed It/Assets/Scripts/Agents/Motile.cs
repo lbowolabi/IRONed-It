@@ -134,12 +134,16 @@ public class Motile : MonoBehaviour
         {
             if (!iFrames)
             {
-                if (playerScript != null) playerScript.ChangeLifeCount(-1);
-                else if (enemyScript != null) enemyScript.ChangeLifeCount(-1);
+                if (playerScript != null)
+                {
+                    playerScript.ChangeLifeCount(-1);
+                    StartCoroutine(Helpers.instance.Shake(CameraFollow.instance.transform, .08f, .06f));
+                }
+                else if (enemyScript != null) destroyParticle = false; //enemyScript.ChangeLifeCount(-1);
             }
             else
             {
-                destroyParticle = false;
+                //destroyParticle = false;
             }
         }
 
@@ -163,9 +167,9 @@ public class Motile : MonoBehaviour
                     //If the collision was close enough to the particle position, destroy it
                     if (Vector3.Magnitude(m_Particles[i].position - coll.intersection) <= m_Particles[i].GetCurrentSize(m_System) / 2)
                     {
-                        m_Particles[i].remainingLifetime = -1; //Kills the particle
+                        m_Particles[i].remainingLifetime = -1f; //Kills the particle
                         m_System.SetParticles(m_Particles); // Update particle system
-                        break;
+                        //break;
                     }
                 }
             }
@@ -181,6 +185,7 @@ public class Motile : MonoBehaviour
                 int r = Random.Range(0, 10);
                 if (r == 0)
                 {
+                    LevelManager.instance.RemoveFromActiveObjects(c.transform.parent.gameObject);
                     c.transform.parent.gameObject.SetActive(false);
                     if (playerScript != null) playerScript.IronPickup();
                 }

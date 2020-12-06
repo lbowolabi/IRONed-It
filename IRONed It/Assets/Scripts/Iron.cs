@@ -9,7 +9,6 @@ public class Iron : MonoBehaviour
     // child collides with player, parent collides with particles
 
     public ChelatedBy chelatedBy { get; private set; } = ChelatedBy.None;
-    float speed;
 
     CircleCollider2D cc;
     SpriteRenderer childSR;
@@ -30,11 +29,6 @@ public class Iron : MonoBehaviour
         childSR.color = Color.red;
     }
 
-    private void FixedUpdate()
-    {
-        transform.Translate(Vector2.left * speed * Time.fixedDeltaTime);
-    }
-
     private void OnParticleCollision(GameObject p)
     {
         if (chelatedBy == ChelatedBy.None)
@@ -42,7 +36,7 @@ public class Iron : MonoBehaviour
             if (p.name == "Vibriobactin")
             {
                 chelatedBy = ChelatedBy.Cholera;
-                childSR.color = Color.blue;
+                childSR.color = Color.cyan;
             }
             else if (p.name == "Enterobactin") // linear enterobactin
             {
@@ -67,10 +61,5 @@ public class Iron : MonoBehaviour
         childSR.enabled = false;
         childSR.transform.localScale = Vector3.one;
         if (LevelManager.instance.targetedIron.Contains(transform)) LevelManager.instance.targetedIron.Remove(transform);
-    }
-
-    private void OnEnable()
-    {
-        speed = Random.Range(LevelManager.instance.ironSpeedRange.x, LevelManager.instance.ironSpeedRange.y);
     }
 }
