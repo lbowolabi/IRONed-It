@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Motile))]
+[RequireComponent(typeof(EnemyPickup))]
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] ChelatedBy targetType;
-    Transform target;
-    CircleCollider2D targetCollider;
+    [HideInInspector] public Transform target;
+    ChelatedBy targetType;
+    //CircleCollider2D targetCollider;
 
     [Header("Component References")]
     Motile motile;
@@ -24,11 +25,15 @@ public class Enemy : MonoBehaviour
         cc = GetComponent<CapsuleCollider2D>();
         defaultColor = sr.color;
         defaultLayer = LayerMask.NameToLayer("Default");
+        targetType = GetComponent<EnemyPickup>().targetType;
     }
 
     void Update()
     {
-        if (target == null) target = FindNearestIron();
+        if (target == null)
+        {
+            target = FindNearestIron();
+        }
         else if (target.position.x > transform.position.x || !target.parent.gameObject.activeInHierarchy)
         {
             if (LevelManager.instance.targetedIron.Contains(target.parent)) LevelManager.instance.targetedIron.Remove(target.parent);
@@ -40,7 +45,7 @@ public class Enemy : MonoBehaviour
     {
         if (target != null)
         {
-            if (Mathf.Abs(target.position.y - transform.position.y) <= targetCollider.bounds.size.x / 2)
+            if (Mathf.Abs(target.position.y - transform.position.y) <= cc.bounds.size.x / 2)
             {
                 motile.SetMovementVector(Vector2.zero);
             }
@@ -76,7 +81,7 @@ public class Enemy : MonoBehaviour
         if (nearestIron != null)
         {
             LevelManager.instance.targetedIron.Add(nearestIron.transform.parent);
-            targetCollider = nearestIron.GetComponent<CircleCollider2D>();
+            //targetCollider = nearestIron.GetComponent<CircleCollider2D>();
         }
         return nearestIron;
     }
@@ -139,20 +144,6 @@ public class Enemy : MonoBehaviour
         {
             if (LevelManager.instance.targetedIron.Contains(target.parent)) LevelManager.instance.targetedIron.Remove(target.parent);
             target = null;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D c)
-    {
-        if (c.CompareTag("Iron"))
-        {
-            var currentIron = c.transform.parent.GetComponent<Iron>();
-            if (currentIron.chelatedBy == targetType)
-            {
-                c.transform.parent.gameObject.SetActive(false);
-                LevelManager.instance.RemoveFromActiveObjects(c.transform.parent.gameObject);
-                target = null;
-            }
         }
     }
 }

@@ -385,26 +385,6 @@ PrefabInstance:
       propertyPath: canIrga
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: atpPickupWorth
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: fe3PickupWorth
-      value: 0.033
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: fe3LossRateOverTime
-      value: 0.037
-      objectReference: {fileID: 0}
-    - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
-        type: 3}
-      propertyPath: atpCostToActivateGene
-      value: 0.14
-      objectReference: {fileID: 0}
     - target: {fileID: 8648719865275608867, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}
       propertyPath: m_RootOrder

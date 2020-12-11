@@ -180,10 +180,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915ce67b4a5c6f043b50def190c7d451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fe3LossRateOverTime: 0.05
-  fe3PickupWorth: 0.08
-  atpPickupWorth: 0.02
-  atpCostToActivateGene: 0.1
+  fe3LossRateOverTime: 0.034
+  fe3PickupWorth: 0.033
+  atpPickupWorth: 0.04
+  atpCostToActivateGene: 0.18
   expendingResources: 1
   playerCanAct: 1
   canViua: 1
@@ -201,26 +201,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8648719865275608867}
     m_Modifications:
-    - target: {fileID: 1033969208393610044, guid: ac409ad4122b46149bd2770fe5162485,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1033969208393610044, guid: ac409ad4122b46149bd2770fe5162485,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1033969208393610044, guid: ac409ad4122b46149bd2770fe5162485,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.9235808
-      objectReference: {fileID: 0}
-    - target: {fileID: 1033969208393610044, guid: ac409ad4122b46149bd2770fe5162485,
-        type: 3}
-      propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.26666665
-      objectReference: {fileID: 0}
     - target: {fileID: 1033969208393610045, guid: ac409ad4122b46149bd2770fe5162485,
         type: 3}
       propertyPath: m_RootOrder

@@ -216,7 +216,7 @@ public class LevelManager : MonoBehaviour
         float smoothing = 0;
         while (Player.instance.transform.position.x < cameraEdge.x + 5)
         {
-            Player.instance.transform.Translate(playerTranslateSpeed * Vector2.right);
+            Player.instance.transform.Translate(playerTranslateSpeed * Vector2.right * Time.deltaTime);
             playerTranslateSpeed = Mathf.SmoothDamp(playerTranslateSpeed, wallSpeed / 8, ref smoothing, 3);
             yield return null;
         }

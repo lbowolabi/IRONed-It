@@ -12,7 +12,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] Image fe3BarFill;
     [SerializeField] Image atpBarFill;
     [SerializeField] TextMeshProUGUI lifeCount;
-    [SerializeField] List<Button> geneButtons;
+    [SerializeField] Button[] geneButtons;
     [SerializeField] GameObject genes;
 
     [Header("Pause Menu")]

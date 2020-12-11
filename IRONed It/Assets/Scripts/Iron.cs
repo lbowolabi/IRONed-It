@@ -26,7 +26,7 @@ public class Iron : MonoBehaviour
         cc.isTrigger = true;
         childSR.transform.localScale *= 1.5f;
         childSR.enabled = true;
-        childSR.color = Color.red;
+        childSR.color = Color.white;
     }
 
     private void OnParticleCollision(GameObject p)
@@ -41,7 +41,7 @@ public class Iron : MonoBehaviour
             else if (p.name == "Enterobactin") // linear enterobactin
             {
                 chelatedBy = ChelatedBy.Coli;
-                childSR.color = Color.black;
+                childSR.color = Color.blue;
             }
             else if (p.name == "Ferrichrome")
             {
