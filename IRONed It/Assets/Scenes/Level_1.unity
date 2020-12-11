@@ -403,7 +403,7 @@ PrefabInstance:
     - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}
       propertyPath: atpCostToActivateGene
-      value: 0.2
+      value: 0.14
       objectReference: {fileID: 0}
     - target: {fileID: 8648719865275608867, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}

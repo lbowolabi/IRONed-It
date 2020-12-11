@@ -166,10 +166,10 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < activeObjects.Count; i++) // loop through all static in-scene objects
+        for (int i = 0; i < activeObjects.Count; i++) // loop through all non-particle, non-player in-scene objects
         {
             Transform curr = activeObjects[i].transform;
-            if (curr.position.x < -15) // if object has moved out of camera range
+            if (curr.position.x < -12) // if object has moved out of camera range
             {
                 curr.gameObject.SetActive(false); // deactivate
                 if (curr.parent == wallPool) // if object is a wall
@@ -453,7 +453,7 @@ public class LevelManager : MonoBehaviour
 
     public void SpawnIron(bool heme, float _spawnY = -100)
     {
-        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 3;
+        float spawnX = mainCam.ViewportToWorldPoint(new Vector2(1, 1)).x + 1;
         if (_spawnY == -100)
         {
             Vector2 ySpawnRange = SpawnRange();
