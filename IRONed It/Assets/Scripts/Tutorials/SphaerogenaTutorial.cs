@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+[RequireComponent(typeof(UpdateText))]
+
 public class SphaerogenaTutorial : MonoBehaviour
 {
     [SerializeField] private Transform sphaerogenaPool;
     [SerializeField] int sphaerogenaSpawnProbability;
-
     float wallSpeedSmoothing;
 
     UpdateText ut;
@@ -38,7 +39,7 @@ public class SphaerogenaTutorial : MonoBehaviour
     IEnumerator ColiIntro()
     {
         float initialWallSpeed = LevelManager.instance.wallSpeed;
-        LevelManager.instance.SpawnColi();
+        LevelManager.instance.SpawnSphaerogena(0);
         yield return new WaitUntil(() => sphaerogenaPool.childCount > 0);
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
         StartCoroutine(ut.UpdateTutorialText("Here comes a <i>U. sphaerogena</i> particle!"));
@@ -47,7 +48,7 @@ public class SphaerogenaTutorial : MonoBehaviour
         sph.GetComponent<TranslateSpeed>().StopMovement();
         while (sph.position.x > 3)
         {
-            sph.transform.Translate(Vector2.left * Time.deltaTime * 3);
+            sph.Translate(Vector2.left * Time.deltaTime * 3);
             LevelManager.instance.wallSpeed = Mathf.SmoothDamp(LevelManager.instance.wallSpeed, 2, ref wallSpeedSmoothing, 1);
             yield return null;
         }
@@ -74,7 +75,7 @@ public class SphaerogenaTutorial : MonoBehaviour
 
         while (sph.gameObject.activeInHierarchy)
         {
-            sph.transform.Translate(Vector2.left * Time.deltaTime * 10);
+            sph.Translate(Vector2.left * Time.deltaTime * 10);
             LevelManager.instance.wallSpeed = Mathf.SmoothDamp(LevelManager.instance.wallSpeed, initialWallSpeed, ref wallSpeedSmoothing, 1);
             yield return null;
         }

@@ -18,6 +18,7 @@ public class Iron : MonoBehaviour
         cc = GetComponent<CircleCollider2D>();
         childSR = transform.GetChild(0).GetComponent<SpriteRenderer>();
         childSR.enabled = false;
+        childSR.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     public void HemeIron()
@@ -27,6 +28,7 @@ public class Iron : MonoBehaviour
         childSR.transform.localScale *= 1.5f;
         childSR.enabled = true;
         childSR.color = Color.white;
+        childSR.transform.GetChild(0).gameObject.SetActive(true);
     }
 
     private void OnParticleCollision(GameObject p)
@@ -51,6 +53,7 @@ public class Iron : MonoBehaviour
             cc.isTrigger = true; // this object can't collide with particles again
             childSR.transform.localScale *= 1.5f;
             childSR.enabled = true;
+            childSR.transform.GetChild(0).gameObject.SetActive(true);
         }
     }
 
@@ -60,6 +63,7 @@ public class Iron : MonoBehaviour
         cc.isTrigger = false;
         childSR.enabled = false;
         childSR.transform.localScale = Vector3.one;
+        childSR.transform.GetChild(0).gameObject.SetActive(false);
         if (LevelManager.instance.targetedIron.Contains(transform)) LevelManager.instance.targetedIron.Remove(transform);
     }
 }

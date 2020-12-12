@@ -420,7 +420,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1832797568e63024184d4dade230ba32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialText: {fileID: 1815143021606320828}
   ironSpeed: 3
   vibriobactin: {fileID: 740895114}
 --- !u!4 &516668095
@@ -559,7 +558,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -2
+  m_SortingOrder: -5
   m_Sprite: {fileID: 21300000, guid: f985d69f559771f4b98f429e57627932, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1342,18 +1341,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}
---- !u!114 &1815143021606320828 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 736638748, guid: 7a4325e47ad24e64ab972f553e00cd51,
-    type: 3}
-  m_PrefabInstance: {fileID: 1815143021606320827}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3270571014980996592
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -40,7 +40,7 @@ public class ColiTutorial : MonoBehaviour
     IEnumerator ColiIntro()
     {
         float initialWallSpeed = LevelManager.instance.wallSpeed;
-        LevelManager.instance.SpawnColi();
+        LevelManager.instance.SpawnColi(0);
         yield return new WaitUntil(() => coliPool.childCount > 0);
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
         StartCoroutine(ut.UpdateTutorialText("Here comes an <i>E. Coli</i> bacterium!"));
@@ -49,7 +49,7 @@ public class ColiTutorial : MonoBehaviour
         coli.GetComponent<TranslateSpeed>().StopMovement();
         while (coli.position.x > 3)
         {
-            coli.transform.Translate(Vector2.left * Time.deltaTime * 3);
+            coli.Translate(Vector2.left * Time.deltaTime * 3);
             LevelManager.instance.wallSpeed = Mathf.SmoothDamp(LevelManager.instance.wallSpeed, 2, ref wallSpeedSmoothing, 1);
             yield return null;
         }
@@ -68,7 +68,7 @@ public class ColiTutorial : MonoBehaviour
         CanvasManager.instance.GetIrgaButton().gameObject.SetActive(true);
 
         yield return new WaitForSeconds(6);
-        CanvasManager.instance.GetTutorialText().gameObject.gameObject.SetActive(false);
+        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
         LevelManager.instance.SetAllResourceSpawnsToDefault();
         LevelManager.instance.SetColiSpawnProbability(false, coliSpawnProbability);
         LevelManager.instance.SetCholeraSpawnProbability(false, 7000);
