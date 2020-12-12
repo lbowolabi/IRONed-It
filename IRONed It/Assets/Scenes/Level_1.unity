@@ -492,7 +492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faecb2be4ea2f664d998c52c93210d5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelLengthInSeconds: 90
+  levelLengthInSeconds: 60
   defaultDoxyProbability: 600
   defaultEnergyProbability: 700
   defaultIronProbability: 100
@@ -505,7 +505,7 @@ MonoBehaviour:
   choleraSpeedRange: {x: 0, y: 0}
   coliSpeedRange: {x: 0, y: 0}
   sphaerogenaSpeedRange: {x: 0, y: 0}
-  wallSpeed: 8
+  wallSpeed: 6
   playerDeathSpeedMultiplier: 0.3
   wallPool: {fileID: 332350348}
   ironPool: {fileID: 1064181526}

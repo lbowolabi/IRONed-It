@@ -84,25 +84,25 @@ public class TutorialManager : MonoBehaviour
         ironSpeed = 0;
         StartCoroutine(UpdateTutorialText("This is iron. Vibrio need iron to stay alive."));
         // animate the iron bar, etc, something to draw attention to it
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
 
         StartCoroutine(UpdateTutorialText("As your body uses up iron, your iron bar decreases."));
         cm.GetFe3BarFill().transform.parent.gameObject.SetActive(true);
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
 
         StartCoroutine(UpdateTutorialText("Vibrio can't always pick up free-floating iron."));
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(5f);
 
         ironSpeed = defaultIronSpeed;
         yield return new WaitForSeconds(.5f);
 
         StartCoroutine(UpdateTutorialText("Sometimes you'll get lucky!"));
-        yield return new WaitUntil(() => iron.transform.position.x < CameraFollow.instance.GetComponent<Camera>().ViewportToWorldPoint(Vector2.zero).x);
+        yield return new WaitUntil(() => 2+iron.transform.position.x < CameraFollow.instance.GetComponent<Camera>().ViewportToWorldPoint(Vector2.zero).x);
 
         StartCoroutine(UpdateTutorialText("Not this time, though."));
         iron.transform.GetChild(0).GetComponent<CircleCollider2D>().enabled = true;
         iron.GetComponent<CircleCollider2D>().enabled = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
 
         StartCoroutine(ChelatedIronIntro());
     }
@@ -110,7 +110,7 @@ public class TutorialManager : MonoBehaviour
     IEnumerator ChelatedIronIntro()
     {
         StartCoroutine(UpdateTutorialText("To pick up iron efficiently, you need two things."));
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(2f);
 
         vibriobactin.Play();
         yield return new WaitForSeconds(.5f);
@@ -139,7 +139,7 @@ public class TutorialManager : MonoBehaviour
         ironSpeed = 0;
 
         yield return new WaitUntil(() => iron.GetComponent<Iron>().chelatedBy != ChelatedBy.None);
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         string s = GameManager.instance.viuaKey.ToString();
         if (s.Contains("Alpha")) s = s.Remove(0, 5);
         StartCoroutine(UpdateTutorialText("But to pick up chelated iron, you must first activate your viuA gene. Press " + s + "."));
@@ -148,7 +148,7 @@ public class TutorialManager : MonoBehaviour
         // active gene ui, animate it etc
 
         yield return new WaitUntil(() => player.activeGene == ActiveGene.viuA);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         StartCoroutine(UpdateTutorialText("With the viuA gene, your chance of iron uptake is 100%."));
         ironSpeed = defaultIronSpeed;
 
@@ -161,11 +161,11 @@ public class TutorialManager : MonoBehaviour
     {
         StartCoroutine(UpdateTutorialText("Expressing the viuA gene depleted some of your energy."));
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         cm.GetAtpBarFill().transform.parent.gameObject.SetActive(true);
         // animate it etc
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         StartCoroutine(UpdateTutorialText("Collect ATP to replenish your energy stock."));
 
         float timer = .2f;
@@ -177,7 +177,7 @@ public class TutorialManager : MonoBehaviour
         }
         StartCoroutine(ClampPlayerEnergy());
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
         StartCoroutine(UpdateTutorialText("You don't need to do anything special to pick up ATP. Just swim into it."));
 
         yield return new WaitForSeconds(4);
@@ -196,12 +196,12 @@ public class TutorialManager : MonoBehaviour
     IEnumerator DoxyIntro()
     {
         StartCoroutine(UpdateTutorialText("Be careful! You may also encounter antibiotics!"));
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(5);
         lm.SpawnDoxy();
 
         yield return new WaitForSeconds(1);
-        StartCoroutine(UpdateTutorialText("This is doxycycline. It inhibits your protein production."));
-        yield return new WaitForSeconds(4);
+        StartCoroutine(UpdateTutorialText("This is doxycycline. It inhibits protein production."));
+        yield return new WaitForSeconds(5);
 
         float timer = .2f;
         while (timer > 0)
@@ -216,10 +216,10 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitUntil(() => playerMovemt.agentCanMove);
         StartCoroutine(UpdateTutorialText("You're a cholera bacterium, so antibiotics are bad for you."));
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
         StartCoroutine(UpdateTutorialText("Your movement is powered by your ability to make proteins. You can't move after doxycycline damages you."));
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
         StartCoroutine(LifeIntro());
     }
 
@@ -228,7 +228,7 @@ public class TutorialManager : MonoBehaviour
         StartCoroutine(UpdateTutorialText("You have three lives. It's game over once you lose them all."));
         cm.GetLifeCountText().gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
         StartCoroutine(UpdateTutorialText("But you can recover a lost life! Just fully replenish your energy."));
 
         while (cm.GetAtpBarFill().fillAmount < 1)
@@ -238,7 +238,7 @@ public class TutorialManager : MonoBehaviour
         }
         StartCoroutine(UpdateTutorialText("Hoorah!"));
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         StartCoroutine(UpdateTutorialText("That's the end of the tutorial."));
 
         yield return new WaitForSeconds(4);
