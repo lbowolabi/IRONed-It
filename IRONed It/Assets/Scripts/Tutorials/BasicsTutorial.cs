@@ -7,7 +7,6 @@ using TMPro;
 
 public class BasicsTutorial : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI tutorialText;
     [SerializeField] float ironSpeed;
 
     LevelManager lm;
@@ -20,7 +19,6 @@ public class BasicsTutorial : MonoBehaviour
     void Awake()
     {
         ut = GetComponent<UpdateText>();
-        ut.SetTutorialText(tutorialText);
     }
 
     // Start is called before the first frame update

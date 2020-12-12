@@ -311,7 +311,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -361, y: -154}
+  m_AnchoredPosition: {x: -361, y: -161}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1981983679
@@ -833,7 +833,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 128, y: -161}
+  m_AnchoredPosition: {x: 123, y: -161}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8401536918149395077
@@ -1253,6 +1253,7 @@ MonoBehaviour:
   - {fileID: 3265232916081386748}
   - {fileID: 3785505892156579734}
   genes: {fileID: 2058256213047554655}
+  tutorialText: {fileID: 736638748}
   pauseMenu: {fileID: 5348634428474019106}
   viuaKeyText: {fileID: 2264208362654925254}
   irgaKeyText: {fileID: 324144393416280523}

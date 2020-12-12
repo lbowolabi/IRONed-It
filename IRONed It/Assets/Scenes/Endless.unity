@@ -154,7 +154,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 0
   levelProgressing: 1
-  endlessLevel: 1
   defaultDoxyProbability: 600
   defaultEnergyProbability: 700
   defaultIronProbability: 100
@@ -370,6 +369,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
+        type: 3}
+      propertyPath: fe3LossRateOverTime
+      value: 0.036
       objectReference: {fileID: 0}
     - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}

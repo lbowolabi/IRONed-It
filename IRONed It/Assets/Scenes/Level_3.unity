@@ -253,6 +253,7 @@ GameObject:
   m_Component:
   - component: {fileID: 154121617}
   - component: {fileID: 154121616}
+  - component: {fileID: 154121618}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -274,13 +275,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 90
   levelProgressing: 1
-  endlessLevel: 0
   defaultDoxyProbability: 600
   defaultEnergyProbability: 700
   defaultIronProbability: 100
-  defaultHemeProbability: -1
-  defaultCholeraProbability: 4500
-  defaultColiProbability: 2000
+  defaultHemeProbability: 100
+  defaultCholeraProbability: -1
+  defaultColiProbability: -1
   defaultSphaerogenaProbability: -1
   ironSpeedRange: {x: 3, y: 8}
   targetedIron: []
@@ -307,6 +307,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &154121618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154121615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c3e2ea31b9b66a4696cc9a27a9d139b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sphaerogenaPool: {fileID: 1226311170}
+  sphaerogenaSpawnProbability: 0
 --- !u!1001 &229721784
 PrefabInstance:
   m_ObjectHideFlags: 0

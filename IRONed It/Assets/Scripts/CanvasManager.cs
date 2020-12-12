@@ -15,6 +15,9 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] Button[] geneButtons;
     [SerializeField] GameObject genes;
 
+    [Header("Tutorials")]
+    [SerializeField] TextMeshProUGUI tutorialText;
+
     [Header("Pause Menu")]
     public GameObject pauseMenu;
     [SerializeField] TextMeshProUGUI viuaKeyText, irgaKeyText, hutaKeyText, fhuaKeyText;
@@ -65,6 +68,11 @@ public class CanvasManager : MonoBehaviour
     public Button GetFhuaButton()
     {
         return geneButtons[3];
+    }
+
+    public TextMeshProUGUI GetTutorialText()
+    {
+        return tutorialText;
     }
 
     private void Awake()

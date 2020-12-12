@@ -7,7 +7,6 @@ using TMPro;
 
 public class ColiTutorial : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI tutorialText;
     [SerializeField] private Transform coliPool;
     [SerializeField] int coliSpawnProbability;
 
@@ -18,13 +17,12 @@ public class ColiTutorial : MonoBehaviour
     void Awake()
     {
         ut = GetComponent<UpdateText>();
-        ut.SetTutorialText(tutorialText);
-        tutorialText.gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
         StartCoroutine(WaitToStartTutorial());
     }
 
@@ -44,7 +42,7 @@ public class ColiTutorial : MonoBehaviour
         float initialWallSpeed = LevelManager.instance.wallSpeed;
         LevelManager.instance.SpawnColi();
         yield return new WaitUntil(() => coliPool.childCount > 0);
-        tutorialText.gameObject.SetActive(true);
+        CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
         StartCoroutine(ut.UpdateTutorialText("Here comes an <i>E. Coli</i> bacterium!"));
 
         Transform coli = coliPool.GetChild(0);
@@ -70,7 +68,7 @@ public class ColiTutorial : MonoBehaviour
         CanvasManager.instance.GetIrgaButton().gameObject.SetActive(true);
 
         yield return new WaitForSeconds(6);
-        tutorialText.gameObject.SetActive(false);
+        CanvasManager.instance.GetTutorialText().gameObject.gameObject.SetActive(false);
         LevelManager.instance.SetAllResourceSpawnsToDefault();
         LevelManager.instance.SetColiSpawnProbability(false, coliSpawnProbability);
         LevelManager.instance.SetCholeraSpawnProbability(false, 7000);
