@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
     //public float atpLossRateOverTime;
     [SerializeField] private float atpPickupWorth;
     [SerializeField] private float atpCostToActivateGene;
+    IEnumerator atpShake;
+    Vector3 atpBarStartPosition;
     IEnumerator geneDurationTimer;
 
     [Header("Player States")]
@@ -227,7 +229,18 @@ public class Player : MonoBehaviour
         }
         else if (amount < 0)
         {
-            StartCoroutine(Helpers.instance.Shake(atpBarFill.transform.parent, .1f, 2.5f));
+            if (atpShake != null)
+            {
+                StopCoroutine(atpShake);
+                atpBarFill.transform.parent.position = atpBarStartPosition;
+            }
+            else
+            {
+                atpBarStartPosition = atpBarFill.transform.parent.position;
+            }
+
+            atpShake = Helpers.instance.Shake(atpBarFill.transform.parent, .1f, 2.5f);
+            StartCoroutine(atpShake);
         }
 
         atpBarFill.fillAmount += amount;

@@ -188,7 +188,7 @@ PrefabInstance:
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5
+      value: -3.0699997
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -273,6 +273,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 90
+  levelProgressing: 1
+  endlessLevel: 0
   defaultDoxyProbability: 600
   defaultEnergyProbability: 700
   defaultIronProbability: 100
@@ -286,7 +288,6 @@ MonoBehaviour:
   coliSpeedRange: {x: 1, y: 1}
   sphaerogenaSpeedRange: {x: 2, y: 8}
   wallSpeed: 6
-  playerDeathSpeedMultiplier: 0.3
   wallPool: {fileID: 1100662049}
   ironPool: {fileID: 1362597734}
   choleraPool: {fileID: 1781111047}
@@ -341,7 +342,7 @@ PrefabInstance:
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.24
+      value: 10.67
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -431,7 +432,7 @@ PrefabInstance:
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5
+      value: -3.0699997
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -521,7 +522,7 @@ PrefabInstance:
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.03
+      value: 24.460001
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -778,7 +779,7 @@ PrefabInstance:
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 25.03
+      value: 24.460001
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
@@ -868,7 +869,7 @@ PrefabInstance:
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.24
+      value: 10.67
       objectReference: {fileID: 0}
     - target: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
         type: 3}

@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     [Header("Progression")]
     public float levelLengthInSeconds;
     public bool levelProgressing = true;
+    bool endlessLevel = false;
 
     [Header("RNG")] // one out of probability, called multiple times per second
     [SerializeField] int defaultDoxyProbability = -1;
@@ -88,6 +89,7 @@ public class LevelManager : MonoBehaviour
 
         victoryGate = GameObject.FindGameObjectWithTag("Victory");
         if (victoryGate != null) victoryGate.SetActive(false);
+        else endlessLevel = true;
 
         if (CanvasManager.instance.GetAtpBarFill().fillAmount == 1)
         {
@@ -124,23 +126,25 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (levelLengthInSeconds > 0 && levelProgressing)
+        if ((levelLengthInSeconds > 0 || endlessLevel) && levelProgressing)
         {
             if (Motile.playerInstance.agentCanMove)
             {
-                levelLengthInSeconds -= Time.deltaTime;
+                if (!endlessLevel)
+                {
+                    levelLengthInSeconds -= Time.deltaTime;
+                    if (levelLengthInSeconds <= 0)
+                    {
+                        Vector2 gateSpawnPosition = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
+                        gateSpawnPosition.x += 5;
+                        victoryGate.transform.position = gateSpawnPosition;
+                        victoryGate.SetActive(true);
+                        activeObjects.Add(victoryGate);
+                    }
+                }
                 if (currentWallSpeed < wallSpeed - .05f || currentWallSpeed > wallSpeed + .05f)
                 {
                     currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, wallSpeed, ref wallSpeedSmoothing, Motile.playerInstance.deathDuration * Time.deltaTime);
-                }
-
-                if (levelLengthInSeconds <= 0)
-                {
-                    Vector2 gateSpawnPosition = mainCam.ViewportToWorldPoint(new Vector2(1, .5f));
-                    gateSpawnPosition.x += 5;
-                    victoryGate.transform.position = gateSpawnPosition;
-                    victoryGate.SetActive(true);
-                    activeObjects.Add(victoryGate);
                 }
             }
             else

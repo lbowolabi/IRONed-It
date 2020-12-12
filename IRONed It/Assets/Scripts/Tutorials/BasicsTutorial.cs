@@ -36,8 +36,8 @@ public class BasicsTutorial : MonoBehaviour
         vibriobactin.Stop();
         StartCoroutine(Helpers.instance.WaitOneFrame(decreaseEnergy => player.ChangeEnergyCount(-2 * player.GetAtpPickupWorth())));
 
-        cm.GetFe3BarFill().transform.parent.gameObject.SetActive(false);
-        cm.GetAtpBarFill().transform.parent.gameObject.SetActive(false);
+        cm.GetFe3BarFill().transform.parent.parent.gameObject.SetActive(false);
+        cm.GetAtpBarFill().transform.parent.parent.gameObject.SetActive(false);
         cm.GetLifeCountText().gameObject.SetActive(false);
         cm.GetGeneDisplay().SetActive(false);
 
@@ -87,7 +87,7 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitForSeconds(5);
 
         StartCoroutine(ut.UpdateTutorialText("As your body uses up iron, your iron bar decreases."));
-        cm.GetFe3BarFill().transform.parent.gameObject.SetActive(true);
+        cm.GetFe3BarFill().transform.parent.parent.gameObject.SetActive(true);
         yield return new WaitForSeconds(5);
 
         StartCoroutine(ut.UpdateTutorialText("Vibrio can't always pick up free-floating iron."));
@@ -160,10 +160,10 @@ public class BasicsTutorial : MonoBehaviour
     IEnumerator EnergyIntro()
     {
         StartCoroutine(ut.UpdateTutorialText("Expressing the viuA gene depleted some of your energy."));
+        cm.GetAtpBarFill().transform.parent.parent.gameObject.SetActive(true);
+        // animate it etc
 
         yield return new WaitForSeconds(5);
-        cm.GetAtpBarFill().transform.parent.gameObject.SetActive(true);
-        // animate it etc
 
         yield return new WaitForSeconds(5);
         StartCoroutine(ut.UpdateTutorialText("Collect ATP to replenish your energy stock."));
