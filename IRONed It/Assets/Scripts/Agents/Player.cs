@@ -102,16 +102,16 @@ public class Player : MonoBehaviour
             case ActiveGene.None:
                 break;
             case ActiveGene.viuA:
-                CanvasManager.instance.GetViuaButton().image.color = Color.white;
+                CanvasManager.instance.GetViuaButton().image.color = canViua ? Color.white : Color.black;
                 break;
             case ActiveGene.irgA:
-                CanvasManager.instance.GetIrgaButton().image.color = Color.white;
+                CanvasManager.instance.GetIrgaButton().image.color = canIrga ? Color.white : Color.black;
                 break;
             case ActiveGene.hutA:
-                CanvasManager.instance.GetHutaButton().image.color = Color.white;
+                CanvasManager.instance.GetHutaButton().image.color = canHuta ? Color.white : Color.black;
                 break;
             case ActiveGene.fhuA:
-                CanvasManager.instance.GetFhuaButton().image.color = Color.white;
+                CanvasManager.instance.GetFhuaButton().image.color = canFhua ? Color.white : Color.black;
                 break;
         }
 
@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
         {
 
         }
-        else if (amount < 0)
+        else if (amount <= 0)
         {
             StartCoroutine(Death());
         }

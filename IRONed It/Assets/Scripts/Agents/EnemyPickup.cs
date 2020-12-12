@@ -33,7 +33,7 @@ public class EnemyPickup : MonoBehaviour
 
     private void OnDisable()
     {
-        particleChild.GetComponent<ParticleSystem>().Stop();
+        if (particleChild != null) particleChild.GetComponent<ParticleSystem>().Stop();
     }
 
     private void OnTriggerStay2D(Collider2D c)

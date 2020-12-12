@@ -32,7 +32,6 @@ public class BasicsTutorial : MonoBehaviour
 
         player.expendingResources = false;
         vibriobactin.Stop();
-        StartCoroutine(Helpers.instance.WaitOneFrame(decreaseEnergy => player.ChangeEnergyCount(-2 * player.GetAtpPickupWorth())));
 
         cm.GetFe3BarFill().transform.parent.parent.gameObject.SetActive(false);
         cm.GetAtpBarFill().transform.parent.parent.gameObject.SetActive(false);
@@ -54,6 +53,7 @@ public class BasicsTutorial : MonoBehaviour
     IEnumerator IronIntro() // all concrete numbers are guesstimates <.< will need to tweak
     {
         yield return null;
+        CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
         StartCoroutine(ut.UpdateTutorialText("Use the up and down arrows to move."));
         yield return new WaitForSeconds(2);
         lm.SpawnIron(false, 0);
