@@ -7,7 +7,8 @@ public enum ChelatedBy { None, Cholera, Coli, Heme, Sphaerogena };
 public class LevelManager : MonoBehaviour
 {
     [Header("Progression")]
-    [SerializeField] float levelLengthInSeconds;
+    public float levelLengthInSeconds;
+    public bool levelProgressing = true;
 
     [Header("RNG")] // one out of probability, called multiple times per second
     [SerializeField] int defaultDoxyProbability = -1;
@@ -34,15 +35,15 @@ public class LevelManager : MonoBehaviour
     GameObject sphaerogenaPrefab;
 
     [Header("Walls")]
-    [SerializeField] float wallSpeed;
+    public float wallSpeed;
     float currentWallSpeed = 1;
     float wallSpeedSmoothing;
     float topWallY;
     float bottomWallY;
     LayerMask wallLayerMask;
 
-    [Header("Player Interactions")]
-    public float playerDeathSpeedMultiplier = .3f;
+    //[Header("Player Interactions")]
+    public float playerDeathSpeedMultiplier { get; private set; } = .3f;
 
     [Header("Component References")]
     [SerializeField] Transform wallPool;
@@ -123,7 +124,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (levelLengthInSeconds > 0)
+        if (levelLengthInSeconds > 0 && levelProgressing)
         {
             if (Motile.playerInstance.agentCanMove)
             {
@@ -169,7 +170,7 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < activeObjects.Count; i++) // loop through all non-particle, non-player in-scene objects
         {
             Transform curr = activeObjects[i].transform;
-            if (curr.position.x < -12) // if object has moved out of camera range
+            if (curr.position.x < -14) // if object has moved out of camera range
             {
                 curr.gameObject.SetActive(false); // deactivate
                 if (curr.parent == wallPool) // if object is a wall
@@ -217,7 +218,7 @@ public class LevelManager : MonoBehaviour
         while (Player.instance.transform.position.x < cameraEdge.x + 5)
         {
             Player.instance.transform.Translate(playerTranslateSpeed * Vector2.right * Time.deltaTime);
-            playerTranslateSpeed = Mathf.SmoothDamp(playerTranslateSpeed, wallSpeed / 8, ref smoothing, 3);
+            playerTranslateSpeed = Mathf.SmoothDamp(playerTranslateSpeed, wallSpeed * 7, ref smoothing, 2);
             yield return null;
         }
         // call victory, etc
@@ -281,6 +282,18 @@ public class LevelManager : MonoBehaviour
         SetColiSpawnProbability(true);
         SetCholeraSpawnProbability(true);
         SetSphaerogenaSpawnProbability(true);
+    }
+
+    public void StopAllResourceSpawns()
+    {
+        SetIronSpawnProbability(false);
+        SetEnergySpawnProbability(false);
+        SetDoxySpawnProbability(false);
+        SetHemeSpawnProbability(false);
+
+        SetColiSpawnProbability(false);
+        SetCholeraSpawnProbability(false);
+        SetSphaerogenaSpawnProbability(false);
     }
 
     public void SetIronSpawnProbability(bool resetToDefault, int newIron = -1)

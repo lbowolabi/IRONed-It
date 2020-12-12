@@ -69,4 +69,9 @@ public class TranslateSpeed : MonoBehaviour
     {
         StopAllCoroutines();
     }
+
+    public void StopMovement()
+    {
+        defaultSpeed = currentSpeed = 0;
+    }
 }

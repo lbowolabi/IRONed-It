@@ -399,9 +399,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 516668095}
+  - component: {fileID: 516668096}
   - component: {fileID: 516668094}
   m_Layer: 0
-  m_Name: TutorialManager
+  m_Name: BasicTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -436,6 +437,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &516668096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 516668093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 107723ed49ff07a4984d0e7446e9ecfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &697126618 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3270571015432432158, guid: d17c48ad8ffb63c41a1a380c4879abcf,
@@ -1040,6 +1053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 0
+  levelProgressing: 1
   defaultDoxyProbability: -1
   defaultEnergyProbability: -1
   defaultIronProbability: -1
@@ -1053,7 +1067,6 @@ MonoBehaviour:
   coliSpeedRange: {x: 0, y: 0}
   sphaerogenaSpeedRange: {x: 0, y: 0}
   wallSpeed: 2
-  playerDeathSpeedMultiplier: 0.4
   wallPool: {fileID: 989709285}
   ironPool: {fileID: 65622574}
   choleraPool: {fileID: 361116276}
@@ -1272,6 +1285,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 736638747, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1901982093, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}
       propertyPath: m_text
       value: viuA [Q]
@@ -1484,7 +1501,7 @@ PrefabInstance:
     - target: {fileID: 6045642171787005023, guid: 7a4325e47ad24e64ab972f553e00cd51,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7019453243032895928, guid: 7a4325e47ad24e64ab972f553e00cd51,
         type: 3}

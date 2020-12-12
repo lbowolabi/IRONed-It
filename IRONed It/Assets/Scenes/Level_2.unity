@@ -661,6 +661,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1063983464}
   - component: {fileID: 1063983463}
+  - component: {fileID: 1063983466}
+  - component: {fileID: 1063983465}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -681,6 +683,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 60
+  levelProgressing: 1
   defaultDoxyProbability: 600
   defaultEnergyProbability: 700
   defaultIronProbability: 100
@@ -691,10 +694,9 @@ MonoBehaviour:
   ironSpeedRange: {x: 3, y: 6}
   targetedIron: []
   choleraSpeedRange: {x: 2, y: 3}
-  coliSpeedRange: {x: 1, y: 1}
+  coliSpeedRange: {x: 3, y: 6}
   sphaerogenaSpeedRange: {x: 0, y: 0}
   wallSpeed: 6
-  playerDeathSpeedMultiplier: 0.3
   wallPool: {fileID: 1696451538}
   ironPool: {fileID: 1754637115}
   choleraPool: {fileID: 901914376}
@@ -714,6 +716,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1063983465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063983462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8745b49f06e02ad46ad557f98608c0dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tutorialText: {fileID: 1743732930}
+  coliPool: {fileID: 1273632418}
+  coliSpawnProbability: 1000
+--- !u!114 &1063983466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1063983462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 107723ed49ff07a4984d0e7446e9ecfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1120226366
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1479,6 +1508,18 @@ PrefabInstance:
       objectReference: {fileID: 1689825668}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}
+--- !u!114 &1743732930 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 736638748, guid: 7a4325e47ad24e64ab972f553e00cd51,
+    type: 3}
+  m_PrefabInstance: {fileID: 1743732929}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1754637114
 GameObject:
   m_ObjectHideFlags: 0

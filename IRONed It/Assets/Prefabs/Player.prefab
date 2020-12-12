@@ -201,6 +201,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8648719865275608867}
     m_Modifications:
+    - target: {fileID: 1033969208393610044, guid: ac409ad4122b46149bd2770fe5162485,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 3.8
+      objectReference: {fileID: 0}
     - target: {fileID: 1033969208393610045, guid: ac409ad4122b46149bd2770fe5162485,
         type: 3}
       propertyPath: m_RootOrder
