@@ -54,20 +54,20 @@ public class ColiTutorial : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(1);
         StartCoroutine(ut.UpdateTutorialText("Unlike you and your vibriobactin, <i>E. Coli</i> secrete linear enterobactin."));
 
         yield return new WaitForSeconds(6);
         StartCoroutine(ut.UpdateTutorialText("Linear enterobactin is a ferric iron chelator Fe(III)."));
 
         yield return new WaitForSeconds(5);
-        StartCoroutine(ut.UpdateTutorialText("You can't pick up iron chelated by linear enterobactin with viuA."));
+        StartCoroutine(ut.UpdateTutorialText("You can't pick up iron chelated by linear enterobactin using viuA."));
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
         StartCoroutine(ut.UpdateTutorialText("Instead, you'll have to express your irgA gene."));
         CanvasManager.instance.GetIrgaButton().gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(5);
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
         LevelManager.instance.SetAllResourceSpawnsToDefault();
         LevelManager.instance.SetColiSpawnProbability(false, coliSpawnProbability);

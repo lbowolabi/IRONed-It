@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Mutagen : MonoBehaviour
 {
+    SpriteRenderer sr;
+    BoxCollider2D bc;
+
+    void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+        bc = GetComponent<BoxCollider2D>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +24,7 @@ public class Mutagen : MonoBehaviour
     {
         float initialLevelLength = LevelManager.instance.levelLengthInSeconds;
         yield return new WaitUntil(() => LevelManager.instance.levelLengthInSeconds <= initialLevelLength * .4f);
-        while (gameObject.activeInHierarchy)
+        while (sr.enabled)
         {
             transform.Translate(Vector2.left * Time.deltaTime * 20);
             yield return null;
@@ -30,7 +39,9 @@ public class Mutagen : MonoBehaviour
             Player.instance.canViua = false;
             Player.instance.ChangeLifeCount(0);
             Player.instance.transform.GetChild(0).GetComponent<ParticleSystem>().Stop();
-            gameObject.SetActive(false);
+            sr.enabled = false;
+            bc.enabled = false;
+            transform.GetChild(0).GetComponent<ParticleSystem>().Play();
         }
     }
 }
