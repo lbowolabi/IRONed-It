@@ -318,25 +318,10 @@ public class Player : MonoBehaviour
             var currentIron = c.transform.parent.GetComponent<Iron>();
             if (currentIron.chelatedBy != ChelatedBy.None)
             {
-                if (activeGene == ActiveGene.viuA && currentIron.chelatedBy == ChelatedBy.Cholera)
-                {
-                    c.transform.parent.gameObject.SetActive(false);
-                    LevelManager.instance.RemoveFromActiveObjects(c.transform.parent.gameObject);
-                    ChangeIronCount(fe3PickupWorth);
-                }
-                else if (activeGene == ActiveGene.irgA && currentIron.chelatedBy == ChelatedBy.Coli)
-                {
-                    c.transform.parent.gameObject.SetActive(false);
-                    LevelManager.instance.RemoveFromActiveObjects(c.transform.parent.gameObject);
-                    ChangeIronCount(fe3PickupWorth);
-                }
-                else if (activeGene == ActiveGene.hutA && currentIron.chelatedBy == ChelatedBy.Heme)
-                {
-                    c.transform.parent.gameObject.SetActive(false);
-                    LevelManager.instance.RemoveFromActiveObjects(c.transform.parent.gameObject);
-                    ChangeIronCount(fe3PickupWorth);
-                }
-                else if (activeGene == ActiveGene.fhuA && currentIron.chelatedBy == ChelatedBy.Sphaerogena)
+                if ((activeGene == ActiveGene.viuA && currentIron.chelatedBy == ChelatedBy.Cholera) ||
+                    (activeGene == ActiveGene.irgA && currentIron.chelatedBy == ChelatedBy.Coli) ||
+                    (activeGene == ActiveGene.hutA && currentIron.chelatedBy == ChelatedBy.Heme) ||
+                    (activeGene == ActiveGene.fhuA && currentIron.chelatedBy == ChelatedBy.Sphaerogena))
                 {
                     c.transform.parent.gameObject.SetActive(false);
                     LevelManager.instance.RemoveFromActiveObjects(c.transform.parent.gameObject);

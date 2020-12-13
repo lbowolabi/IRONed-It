@@ -1145,6 +1145,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 736638748, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 2048
+      objectReference: {fileID: 0}
     - target: {fileID: 1901982093, guid: 7a4325e47ad24e64ab972f553e00cd51, type: 3}
       propertyPath: m_text
       value: viuA [Q]

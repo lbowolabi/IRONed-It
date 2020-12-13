@@ -95,7 +95,7 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         StartCoroutine(ut.UpdateTutorialText("Sometimes you'll get lucky!"));
-        yield return new WaitUntil(() => iron.transform.position.x + 2 < CameraFollow.instance.GetComponent<Camera>().ViewportToWorldPoint(Vector2.zero).x);
+        yield return new WaitUntil(() => iron.transform.position.x < Player.instance.transform.position.x - 3);
 
         StartCoroutine(ut.UpdateTutorialText("Not this time, though."));
         iron.transform.GetChild(0).GetComponent<CircleCollider2D>().enabled = true;

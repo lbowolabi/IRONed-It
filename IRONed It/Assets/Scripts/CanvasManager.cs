@@ -135,7 +135,7 @@ public class CanvasManager : MonoBehaviour
                         else if (changeBindings["irga"])
                         {
                             GameManager.instance.UpdateKeyBinding("irga", k);
-                            viuaKeyText.text = k.ToString();
+                            irgaKeyText.text = k.ToString();
                             if (irgaKeyText.text.Contains("Alpha")) irgaKeyText.text = irgaKeyText.text.Remove(0, 5);
                             GetIrgaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("irgA (" + irgaKeyText.text + ")");
                             ChangeKeyBinding();
@@ -143,7 +143,7 @@ public class CanvasManager : MonoBehaviour
                         else if (changeBindings["huta"])
                         {
                             GameManager.instance.UpdateKeyBinding("huta", k);
-                            viuaKeyText.text = k.ToString();
+                            hutaKeyText.text = k.ToString();
                             if (hutaKeyText.text.Contains("Alpha")) hutaKeyText.text = hutaKeyText.text.Remove(0, 5);
                             GetHutaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("hutA (" + hutaKeyText.text + ")");
                             ChangeKeyBinding();
@@ -151,7 +151,7 @@ public class CanvasManager : MonoBehaviour
                         else if (changeBindings["fhua"])
                         {
                             GameManager.instance.UpdateKeyBinding("fhua", k);
-                            viuaKeyText.text = k.ToString();
+                            fhuaKeyText.text = k.ToString();
                             if (fhuaKeyText.text.Contains("Alpha")) fhuaKeyText.text = fhuaKeyText.text.Remove(0, 5);
                             GetFhuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("fhuA (" + fhuaKeyText.text + ")");
                             ChangeKeyBinding();

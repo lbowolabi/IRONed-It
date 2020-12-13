@@ -14,7 +14,7 @@ public class Mutagen : MonoBehaviour
     IEnumerator WaitToSpawn()
     {
         float initialLevelLength = LevelManager.instance.levelLengthInSeconds;
-        yield return new WaitUntil(() => LevelManager.instance.levelLengthInSeconds <= initialLevelLength / 3);
+        yield return new WaitUntil(() => LevelManager.instance.levelLengthInSeconds <= initialLevelLength * .4f);
         while (gameObject.activeInHierarchy)
         {
             transform.Translate(Vector2.left * Time.deltaTime * 20);
