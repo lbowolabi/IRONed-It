@@ -209,6 +209,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void PlayerDeath()
+    {
+        endlessLevel = true;
+    }
+
     public void EndLevel()
     {
         StartCoroutine(EndLevelSequence());
