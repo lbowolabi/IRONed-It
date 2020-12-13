@@ -69,12 +69,7 @@ public class ColiTutorial : MonoBehaviour
 
         yield return new WaitForSeconds(5);
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
-        LevelManager.instance.SetAllResourceSpawnsToDefault();
-        LevelManager.instance.SetColiSpawnProbability(false, coliSpawnProbability);
-        LevelManager.instance.SetCholeraSpawnProbability(false, 7000);
-        LevelManager.instance.levelProgressing = true;
         Player.instance.canIrga = true;
-        Player.instance.expendingResources = true;
 
         while (coli.gameObject.activeInHierarchy)
         {
@@ -82,5 +77,7 @@ public class ColiTutorial : MonoBehaviour
             LevelManager.instance.wallSpeed = Mathf.SmoothDamp(LevelManager.instance.wallSpeed, initialWallSpeed, ref wallSpeedSmoothing, 1);
             yield return null;
         }
+
+        Mutagen.instance.Spawn(coliSpawnProbability);
     }
 }

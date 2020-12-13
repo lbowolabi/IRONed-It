@@ -4,26 +4,28 @@ using UnityEngine;
 
 public class Mutagen : MonoBehaviour
 {
+    int coliSpawnProbability;
+
     SpriteRenderer sr;
     BoxCollider2D bc;
+
+    public static Mutagen instance;
 
     void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         bc = GetComponent<BoxCollider2D>();
+        instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Spawn(int _coliSpawnProbability)
     {
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
-        StartCoroutine(WaitToSpawn());
+        coliSpawnProbability = _coliSpawnProbability;
+        StartCoroutine(MoveMutagen());
     }
 
-    IEnumerator WaitToSpawn()
+    IEnumerator MoveMutagen()
     {
-        float initialLevelLength = LevelManager.instance.levelLengthInSeconds;
-        yield return new WaitUntil(() => LevelManager.instance.levelLengthInSeconds <= initialLevelLength * .4f);
         while (sr.enabled)
         {
             transform.Translate(Vector2.left * Time.deltaTime * 20);
@@ -42,6 +44,16 @@ public class Mutagen : MonoBehaviour
             sr.enabled = false;
             bc.enabled = false;
             transform.GetChild(0).GetComponent<ParticleSystem>().Play();
+            StartCoroutine(Helpers.instance.Timer(x => RestartResourceSpawns(), 3));
         }
+    }
+
+    void RestartResourceSpawns()
+    {
+        LevelManager.instance.SetAllResourceSpawnsToDefault();
+        LevelManager.instance.SetColiSpawnProbability(false, coliSpawnProbability);
+        LevelManager.instance.SetCholeraSpawnProbability(false, 7000);
+        LevelManager.instance.levelProgressing = true;
+        Player.instance.expendingResources = true;
     }
 }
