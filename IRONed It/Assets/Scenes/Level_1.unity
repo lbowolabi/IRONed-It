@@ -501,7 +501,7 @@ MonoBehaviour:
   defaultCholeraProbability: -1
   defaultColiProbability: -1
   defaultSphaerogenaProbability: -1
-  ironSpeedRange: {x: 3, y: 8}
+  ironSpeedRange: {x: 3, y: 6}
   targetedIron: []
   choleraSpeedRange: {x: 0, y: 0}
   coliSpeedRange: {x: 0, y: 0}

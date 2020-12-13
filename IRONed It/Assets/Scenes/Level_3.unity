@@ -284,11 +284,11 @@ MonoBehaviour:
   defaultCholeraProbability: -1
   defaultColiProbability: -1
   defaultSphaerogenaProbability: -1
-  ironSpeedRange: {x: 3, y: 8}
+  ironSpeedRange: {x: 3, y: 6}
   targetedIron: []
-  choleraSpeedRange: {x: 2, y: 3}
-  coliSpeedRange: {x: 1, y: 1}
-  sphaerogenaSpeedRange: {x: 2, y: 8}
+  choleraSpeedRange: {x: 4, y: 7}
+  coliSpeedRange: {x: 4, y: 7}
+  sphaerogenaSpeedRange: {x: 4, y: 7}
   wallSpeed: 6
   wallPool: {fileID: 1100662049}
   ironPool: {fileID: 1362597734}

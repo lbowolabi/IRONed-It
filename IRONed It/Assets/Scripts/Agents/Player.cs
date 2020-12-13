@@ -290,6 +290,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            LevelManager.instance.levelProgressing = false;
             while (motile.deathFlashInterval < 3)
             {
                 sr.color = sr.color == Color.grey ? defaultColor : Color.grey;

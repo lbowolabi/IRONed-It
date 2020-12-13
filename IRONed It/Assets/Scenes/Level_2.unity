@@ -5556,15 +5556,15 @@ MonoBehaviour:
   levelProgressing: 1
   defaultDoxyProbability: 600
   defaultEnergyProbability: 700
-  defaultIronProbability: 70
+  defaultIronProbability: 68
   defaultHemeProbability: -1
   defaultCholeraProbability: 2000
   defaultColiProbability: -1
   defaultSphaerogenaProbability: -1
   ironSpeedRange: {x: 3, y: 6}
   targetedIron: []
-  choleraSpeedRange: {x: 3, y: 6}
-  coliSpeedRange: {x: 3, y: 6}
+  choleraSpeedRange: {x: 4, y: 7}
+  coliSpeedRange: {x: 4, y: 7}
   sphaerogenaSpeedRange: {x: 0, y: 0}
   wallSpeed: 6
   wallPool: {fileID: 1696451538}
@@ -5599,7 +5599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coliPool: {fileID: 1273632418}
-  coliSpawnProbability: 650
+  coliSpawnProbability: 610
 --- !u!114 &1063983466
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6890,7 +6890,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 2
+      value: 1.5
       mode: 0
       spread: 0
       speed:
