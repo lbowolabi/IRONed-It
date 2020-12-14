@@ -276,7 +276,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 90
-  levelProgressing: 1
   defaultDoxyProbability: 600
   defaultEnergyProbability: 600
   defaultIronProbability: 100
@@ -288,7 +287,7 @@ MonoBehaviour:
   targetedIron: []
   choleraSpeedRange: {x: 4, y: 7}
   coliSpeedRange: {x: 4, y: 7}
-  sphaerogenaSpeedRange: {x: 4, y: 7}
+  sphaerogenaSpeedRange: {x: 2, y: 4}
   wallSpeed: 6
   wallPool: {fileID: 1100662049}
   ironPool: {fileID: 1362597734}
@@ -746,6 +745,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900629855395212612, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Endless
       objectReference: {fileID: 0}
     - target: {fileID: 3265232916081386748, guid: 7a4325e47ad24e64ab972f553e00cd51,
         type: 3}

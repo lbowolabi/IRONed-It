@@ -9,7 +9,12 @@ public class Motile : MonoBehaviour
     [Header("Movement")]
     Vector2 movementVector;
     [SerializeField] private float maxYSpeed = 7;
-    //public float maxXSpeed;
+    float currentMaxYSpeed;
+    [Tooltip("only for player")]
+    [SerializeField] private float maxXSpeed;
+    float currentMaxXSpeed;
+    [Tooltip("only for player")]
+    [SerializeField] float diagonalMultiplier;
     [SerializeField] [Range(0.01f, .5f)] private float timeToMaxSpeed = .22f; // arbitrary range, feel free to modify. (don't make it zero)
 
     [Header("Friction")]
@@ -17,7 +22,7 @@ public class Motile : MonoBehaviour
     [SerializeField] private float directionChangeMultiplier = 3f;
     [Tooltip("bigger number is faster stop")]
     [SerializeField] private float stopMultiplier = 4f;
-    //private float xSpeedSmoothing;
+    private float xSpeedSmoothing;
     private float ySpeedSmoothing;
 
     [Header("Wall Bounce")]
@@ -98,27 +103,44 @@ public class Motile : MonoBehaviour
 
     void Movement()
     {
-        Vector2 input = new Vector2(0, agentCanMove ? movementVector.y : 0); // get player movement input
+        Vector2 input = new Vector2(agentCanMove ? movementVector.x : 0, agentCanMove ? movementVector.y : 0); // get player movement input
 
-        //float xSpeed = maxXSpeed / timeToMaxSpeed * input.x * Time.fixedDeltaTime;
+        float xSpeed = maxXSpeed / timeToMaxSpeed * input.x * Time.fixedDeltaTime;
         float ySpeed = maxYSpeed / timeToMaxSpeed * input.y * Time.fixedDeltaTime; // amount to change current vertical speed by
 
-        //if (input.x == 0)
-        //{
-        //    xSpeed = -Mathf.SmoothDamp(rb.velocity.x, 0, ref xSpeedSmoothing, .05f) * Time.fixedDeltaTime; // change horizontal speed by negative amount
-        //}
+        if (input.x == 0)
+        {
+            xSpeed = -Mathf.SmoothDamp(rb.velocity.x, 0, ref xSpeedSmoothing, .05f) * Time.fixedDeltaTime * stopMultiplier; // change horizontal speed by negative amount
+        }
         if (input.y == 0 || input.y == 1 && topBounced || input.y == -1 && bottomBounced) // if no input, or if trying to move back towards wall after bounce
         {
             ySpeed = -Mathf.SmoothDamp(rb.velocity.y, 0, ref ySpeedSmoothing, .05f) * Time.fixedDeltaTime * stopMultiplier; // change vertical speed by negative amount
         }
 
+        if (Mathf.Abs(xSpeed) > .02f && Mathf.Abs(ySpeed) > .02f)
+        {
+            xSpeed *= .75f;
+            ySpeed *= .75f;
+        }
+
         // change current speed
-        rb.velocity += Vector2.up * (input.y == rb.velocity.y / Mathf.Abs(rb.velocity.y) ? ySpeed : ySpeed * directionChangeMultiplier);
+        rb.velocity += new Vector2(input.x == rb.velocity.x / Mathf.Abs(rb.velocity.x) ? xSpeed : xSpeed * directionChangeMultiplier, input.y == rb.velocity.y / Mathf.Abs(rb.velocity.y) ? ySpeed : ySpeed * directionChangeMultiplier);
 
         if (!topBounced && !bottomBounced)
         {
             // limit to max speed
-            rb.velocity = Vector2.up * (Mathf.Abs(rb.velocity.y) > maxYSpeed ? maxYSpeed * input.y : rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.Abs(rb.velocity.x) > currentMaxXSpeed ? currentMaxXSpeed * input.x : rb.velocity.x, Mathf.Abs(rb.velocity.y) > currentMaxYSpeed ? currentMaxYSpeed * input.y : rb.velocity.y);
+        }
+
+        if (Mathf.Abs(rb.velocity.x) > 1f && Mathf.Abs(rb.velocity.y) > 1f) // if moving diagonally
+        {
+            currentMaxXSpeed = maxXSpeed * diagonalMultiplier; // lower max speed
+            currentMaxYSpeed = maxYSpeed * diagonalMultiplier; // lower max speed
+        }
+        else // if not moving diagonally
+        {
+            currentMaxXSpeed = maxXSpeed; // retain max speed
+            currentMaxYSpeed = maxYSpeed;
         }
     }
 }

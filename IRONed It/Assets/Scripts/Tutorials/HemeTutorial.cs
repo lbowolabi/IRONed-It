@@ -26,7 +26,7 @@ public class HemeTutorial : MonoBehaviour
     {
         running = true;
         StartCoroutine(NoSpawns());
-        LevelManager.instance.levelProgressing = false;
+        LevelManager.instance.PauseLevelTimer();
         Player.instance.expendingResources = false;
         float initialWallSpeed = LevelManager.instance.wallSpeed;
         yield return null;
@@ -56,17 +56,23 @@ public class HemeTutorial : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(2);
         StartCoroutine(ut.UpdateTutorialText("Sometimes you'll come across heme-chelated iron floating around."));
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(6);
         StartCoroutine(ut.UpdateTutorialText("To pick it up, you'll have to express your hutA gene."));
         CanvasManager.instance.GetHutaButton().gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(6);
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
-        LevelManager.instance.levelProgressing = true;
         Player.instance.canHuta = true;
+
+        float timer = 6;
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            yield return null;
+            if (Player.instance.activeGene == ActiveGene.hutA && timer > 1) timer = 1;
+        }
+        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
+        LevelManager.instance.UnpauseLevelTimer();
         Player.instance.expendingResources = true;
         running = false;
 

@@ -10,6 +10,7 @@ public enum ActiveGene { None, viuA, irgA, hutA, fhuA };
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] bool horizontalMovement = false;
     [Header("Resources")]
     TextMeshProUGUI lifeCount;
     Image fe3BarFill;
@@ -33,6 +34,7 @@ public class Player : MonoBehaviour
     Motile motile;
     SpriteRenderer sr;
     Color defaultColor;
+    Camera mainCam;
     [HideInInspector] public KeyCode viuaKey, irgaKey, hutaKey, fhuaKey;
 
     public static Player instance;
@@ -61,6 +63,8 @@ public class Player : MonoBehaviour
         irgaKey = GameManager.instance.irgaKey;
         hutaKey = GameManager.instance.hutaKey;
         fhuaKey = GameManager.instance.fhuaKey;
+
+        mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
 
     void Update()
@@ -74,25 +78,37 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(viuaKey)) // to make configurable later
         {
-            if (playerCanAct) ActivateViua();
+            ActivateViua();
         }
         else if (Input.GetKeyDown(irgaKey))
         {
-            if (playerCanAct) ActivateIrga();
+            ActivateIrga();
         }
         else if (Input.GetKeyDown(hutaKey))
         {
-            if (playerCanAct) ActivateHuta();
+            ActivateHuta();
         }
         else if (Input.GetKeyDown(fhuaKey))
         {
-            if (playerCanAct) ActivateFhua();
+            ActivateFhua();
         }
     }
 
     private void FixedUpdate()
     {
-        motile.SetMovementVector(Vector2.up * Input.GetAxisRaw("Vertical"));
+        if (!horizontalMovement) motile.SetMovementVector(Vector2.up * Input.GetAxisRaw("Vertical"));
+        else
+        {
+            motile.SetMovementVector(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+            if (transform.position.x > mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x)
+            {
+                transform.position = new Vector2(mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x, transform.position.y);
+            }
+            else if (transform.position.x < mainCam.ViewportToWorldPoint(new Vector2(0, 0)).x)
+            {
+                transform.position = new Vector2(mainCam.ViewportToWorldPoint(new Vector2(0, 0)).x, transform.position.y);
+            }
+        }
     }
 
     void ChangeActiveGene(ActiveGene newGene)
@@ -138,7 +154,7 @@ public class Player : MonoBehaviour
 
     public void ActivateViua()
     {
-        if (atpBarFill.fillAmount > atpCostToActivateGene && canViua)
+        if (atpBarFill.fillAmount > atpCostToActivateGene && canViua && playerCanAct)
         {
             if (activeGene != ActiveGene.viuA)
             {
@@ -153,7 +169,7 @@ public class Player : MonoBehaviour
 
     public void ActivateIrga()
     {
-        if (atpBarFill.fillAmount > atpCostToActivateGene && canIrga)
+        if (atpBarFill.fillAmount > atpCostToActivateGene && canIrga && playerCanAct)
         {
             if (activeGene != ActiveGene.irgA)
             {
@@ -168,7 +184,7 @@ public class Player : MonoBehaviour
 
     public void ActivateHuta()
     {
-        if (atpBarFill.fillAmount > atpCostToActivateGene && canHuta)
+        if (atpBarFill.fillAmount > atpCostToActivateGene && canHuta && playerCanAct)
         {
             if (activeGene != ActiveGene.hutA)
             {
@@ -183,7 +199,7 @@ public class Player : MonoBehaviour
 
     public void ActivateFhua()
     {
-        if (atpBarFill.fillAmount > atpCostToActivateGene && canFhua)
+        if (atpBarFill.fillAmount > atpCostToActivateGene && canFhua && playerCanAct)
         {
             if (activeGene != ActiveGene.fhuA)
             {
@@ -290,7 +306,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            LevelManager.instance.PlayerDeath();
+            LevelManager.instance.PauseLevelTimer();
             while (motile.deathFlashInterval < 3)
             {
                 sr.color = sr.color == Color.grey ? defaultColor : Color.grey;

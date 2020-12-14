@@ -53,7 +53,7 @@ public class Mutagen : MonoBehaviour
         LevelManager.instance.SetAllResourceSpawnsToDefault();
         LevelManager.instance.SetColiSpawnProbability(false, coliSpawnProbability);
         LevelManager.instance.SetCholeraSpawnProbability(false, 7000);
-        LevelManager.instance.levelProgressing = true;
+        LevelManager.instance.UnpauseLevelTimer();
         Player.instance.expendingResources = true;
     }
 }

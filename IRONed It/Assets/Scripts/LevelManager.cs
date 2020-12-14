@@ -8,7 +8,6 @@ public class LevelManager : MonoBehaviour
 {
     [Header("Progression")]
     public float levelLengthInSeconds;
-    public bool levelProgressing = true;
     bool endlessLevel = false;
 
     [Header("RNG")] // one out of probability, called multiple times per second
@@ -74,15 +73,15 @@ public class LevelManager : MonoBehaviour
         choleraPrefab = (GameObject)Resources.Load("Prefabs/Cholera");
         coliPrefab = (GameObject)Resources.Load("Prefabs/Coli");
         sphaerogenaPrefab = (GameObject)Resources.Load("Prefabs/Sphaerogena");
-
-        currentIronProbability = defaultIronProbability;
-        currentEnergyProbability = defaultEnergyProbability;
-        StartCoroutine(Helpers.instance.Timer(startDoxySpawns => SetAllResourceSpawnsToDefault(), 7));
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        currentIronProbability = defaultIronProbability;
+        currentEnergyProbability = defaultEnergyProbability;
+        StartCoroutine(Helpers.instance.Timer(startDoxySpawns => SetAllResourceSpawnsToDefault(), 7));
+
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         //cameraBounds = GeometryUtility.CalculateFrustumPlanes(mainCam);
         //player = Player.instance.transform;
@@ -126,7 +125,7 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((levelLengthInSeconds > 0 || endlessLevel) && levelProgressing)
+        if ((levelLengthInSeconds > 0 || endlessLevel))
         {
             if (Motile.playerInstance.agentCanMove)
             {
@@ -209,9 +208,14 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    public void PlayerDeath()
+    public void PauseLevelTimer()
     {
         endlessLevel = true;
+    }
+
+    public void UnpauseLevelTimer()
+    {
+        endlessLevel = false;
     }
 
     public void EndLevel()
@@ -230,6 +234,8 @@ public class LevelManager : MonoBehaviour
             playerTranslateSpeed = Mathf.SmoothDamp(playerTranslateSpeed, wallSpeed * 7, ref smoothing, 2);
             yield return null;
         }
+        yield return new WaitUntil(() => !CanvasManager.instance.pauseMenu.activeInHierarchy);
+        CanvasManager.instance.endMenu.SetActive(true);
         // call victory, etc
     }
 

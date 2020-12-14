@@ -171,6 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxYSpeed: 8.5
+  maxXSpeed: 8
+  diagonalMultiplier: 0.7
   timeToMaxSpeed: 0.15
   directionChangeMultiplier: 5
   stopMultiplier: 4
@@ -193,6 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915ce67b4a5c6f043b50def190c7d451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  horizontalMovement: 0
   fe3LossRateOverTime: 0.034
   fe3PickupWorth: 0.033
   atpPickupWorth: 0.04

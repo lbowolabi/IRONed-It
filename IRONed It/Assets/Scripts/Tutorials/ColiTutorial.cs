@@ -30,7 +30,7 @@ public class ColiTutorial : MonoBehaviour
     {
         float initialLevelLength = LevelManager.instance.levelLengthInSeconds;
         yield return new WaitUntil(() => LevelManager.instance.levelLengthInSeconds <= initialLevelLength / 2);
-        LevelManager.instance.levelProgressing = false;
+        LevelManager.instance.PauseLevelTimer();
         LevelManager.instance.StopAllResourceSpawns();
         Player.instance.expendingResources = false;
         yield return new WaitForSeconds(6);

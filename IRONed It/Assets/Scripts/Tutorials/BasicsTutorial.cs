@@ -140,14 +140,14 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitForSeconds(4);
         string s = GameManager.instance.viuaKey.ToString();
         if (s.Contains("Alpha")) s = s.Remove(0, 5);
-        StartCoroutine(ut.UpdateTutorialText("But to pick up chelated iron, you must first activate your viuA gene. Press " + s + "."));
+        StartCoroutine(ut.UpdateTutorialText("But to pick up chelated iron, you must first express your viuA gene. Press " + s + "."));
         cm.GetGeneDisplay().SetActive(true);
         Player.instance.canViua = true;
         // active gene ui, animate it etc
 
         yield return new WaitUntil(() => player.activeGene == ActiveGene.viuA);
         yield return new WaitForSeconds(.5f);
-        StartCoroutine(ut.UpdateTutorialText("With the viuA gene, your chance of iron uptake is 100%."));
+        StartCoroutine(ut.UpdateTutorialText("With the viuA gene, your chance of vibriobactin chelated-iron uptake is 100%."));
         ironSpeed = defaultIronSpeed;
 
         yield return new WaitUntil(() => !iron.activeInHierarchy);
@@ -161,7 +161,7 @@ public class BasicsTutorial : MonoBehaviour
         cm.GetAtpBarFill().transform.parent.parent.gameObject.SetActive(true);
         // animate it etc
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
         StartCoroutine(ut.UpdateTutorialText("Collect ATP to replenish your energy stock."));
 
         float timer = .2f;
@@ -176,7 +176,7 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitForSeconds(6);
         StartCoroutine(ut.UpdateTutorialText("You don't need to do anything special to pick up ATP. Just swim into it."));
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
         StartCoroutine(DoxyIntro());
     }
 
@@ -212,10 +212,10 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitUntil(() => playerMovemt.agentCanMove);
         StartCoroutine(ut.UpdateTutorialText("You're a cholera bacterium, so antibiotics are bad for you."));
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
         StartCoroutine(ut.UpdateTutorialText("Your movement is powered by your ability to make proteins. You can't move after doxycycline damages you."));
         
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
         StartCoroutine(LifeIntro());
     }
 
@@ -224,7 +224,7 @@ public class BasicsTutorial : MonoBehaviour
         StartCoroutine(ut.UpdateTutorialText("You have three attempts. It's game over once you lose them all."));
         cm.GetLifeCountText().gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(6);
         StartCoroutine(ut.UpdateTutorialText("But you can recover a lost life! Just fully replenish your energy."));
 
         while (cm.GetAtpBarFill().fillAmount < 1)

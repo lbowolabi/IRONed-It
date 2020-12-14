@@ -28,6 +28,9 @@ public class CanvasManager : MonoBehaviour
         { "fhua", false }
     };
 
+    [Header("Level End")]
+    public GameObject endMenu;
+
     public static CanvasManager instance;
 
     public Image GetFe3BarFill()
@@ -82,6 +85,7 @@ public class CanvasManager : MonoBehaviour
 
     private void Start()
     {
+        //endMenu.SetActive(false);
         pauseMenu.SetActive(false);
         geneButtons[0].onClick.AddListener(() => Player.instance.ActivateViua());
         geneButtons[1].onClick.AddListener(() => Player.instance.ActivateIrga());
@@ -108,7 +112,7 @@ public class CanvasManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !endMenu.activeInHierarchy)
         {
             Player.instance.playerCanAct = pauseMenu.activeInHierarchy ? true : false;
             genes.SetActive(pauseMenu.activeInHierarchy);
@@ -205,9 +209,9 @@ public class CanvasManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void QuitToMenu()
+    public void LoadLevel(string nextLevel)
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(nextLevel);
     }
 }

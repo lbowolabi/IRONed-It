@@ -29,7 +29,7 @@ public class SphaerogenaTutorial : MonoBehaviour
     {
         float initialLevelLength = LevelManager.instance.levelLengthInSeconds;
         yield return new WaitUntil(() => LevelManager.instance.levelLengthInSeconds <= initialLevelLength / 2);
-        LevelManager.instance.levelProgressing = false;
+        LevelManager.instance.PauseLevelTimer();
         LevelManager.instance.StopAllResourceSpawns();
         Player.instance.expendingResources = false;
         yield return new WaitForSeconds(6);
@@ -69,7 +69,7 @@ public class SphaerogenaTutorial : MonoBehaviour
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
         LevelManager.instance.SetAllResourceSpawnsToDefault();
         LevelManager.instance.SetSphaerogenaSpawnProbability(false, sphaerogenaSpawnProbability);
-        LevelManager.instance.levelProgressing = true;
+        LevelManager.instance.UnpauseLevelTimer();
         Player.instance.canFhua = true;
         Player.instance.expendingResources = true;
 
