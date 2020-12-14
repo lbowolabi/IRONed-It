@@ -153,7 +153,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelLengthInSeconds: 0
-  levelProgressing: 1
   defaultDoxyProbability: 600
   defaultEnergyProbability: 700
   defaultIronProbability: 100
@@ -373,7 +372,7 @@ PrefabInstance:
     - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}
       propertyPath: fe3LossRateOverTime
-      value: 0.036
+      value: 0.0375
       objectReference: {fileID: 0}
     - target: {fileID: 8648719865275608863, guid: de5e5e807dc00ca478d4647a4612ed33,
         type: 3}
@@ -1146,6 +1145,11 @@ PrefabInstance:
       value: ActivateFhua
       objectReference: {fileID: 0}
     - target: {fileID: 4063664751754211945, guid: 7a4325e47ad24e64ab972f553e00cd51,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6187176391624029341, guid: 7a4325e47ad24e64ab972f553e00cd51,
         type: 3}
       propertyPath: m_IsActive
       value: 1

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public enum ChelatedBy { None, Cholera, Coli, Heme, Sphaerogena };
 
@@ -55,6 +56,7 @@ public class LevelManager : MonoBehaviour
     public ParticleSystem doxycycline { get; private set; }
     public ParticleSystem energy { get; private set; }
     GameObject victoryGate;
+    TextMeshProUGUI timer;
 
     //Transform player;
 
@@ -85,6 +87,8 @@ public class LevelManager : MonoBehaviour
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         //cameraBounds = GeometryUtility.CalculateFrustumPlanes(mainCam);
         //player = Player.instance.transform;
+
+        timer = CanvasManager.instance.timer.GetComponent<TextMeshProUGUI>();
 
         victoryGate = GameObject.FindGameObjectWithTag("Victory");
         if (victoryGate != null) victoryGate.SetActive(false);
@@ -125,7 +129,12 @@ public class LevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((levelLengthInSeconds > 0 || endlessLevel))
+        if (timer.gameObject.activeInHierarchy && Motile.playerInstance.agentCanMove)
+        {
+            levelLengthInSeconds -= Time.deltaTime;
+            timer.text = string.Format("time: " + (-levelLengthInSeconds).ToString("n1"));
+        }
+        if (levelLengthInSeconds > 0 || endlessLevel)
         {
             if (Motile.playerInstance.agentCanMove)
             {

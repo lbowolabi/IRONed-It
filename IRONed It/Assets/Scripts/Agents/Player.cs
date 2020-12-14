@@ -97,7 +97,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (!horizontalMovement) motile.SetMovementVector(Vector2.up * Input.GetAxisRaw("Vertical"));
-        else
+        else if (motile.agentCanMove)
         {
             motile.SetMovementVector(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
             if (transform.position.x > mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x)

@@ -14,6 +14,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI lifeCount;
     [SerializeField] Button[] geneButtons;
     [SerializeField] GameObject genes;
+    public GameObject timer;
 
     [Header("Tutorials")]
     [SerializeField] TextMeshProUGUI tutorialText;

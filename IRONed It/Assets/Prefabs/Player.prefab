@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxYSpeed: 8.5
-  maxXSpeed: 8
+  maxXSpeed: 10
   diagonalMultiplier: 0.7
   timeToMaxSpeed: 0.15
   directionChangeMultiplier: 5
