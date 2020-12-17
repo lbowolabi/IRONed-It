@@ -10,22 +10,28 @@ public class Iron : MonoBehaviour
 
     public ChelatedBy chelatedBy { get; private set; } = ChelatedBy.None;
 
+    Color purple; // for sphaerogena
+    Vector3 originalScale;
+
     CircleCollider2D cc;
     SpriteRenderer childSR;
 
     private void Awake()
     {
+        purple = new Color(247, 0, 255, 1);
+
         cc = GetComponent<CircleCollider2D>();
         childSR = transform.GetChild(0).GetComponent<SpriteRenderer>();
         childSR.enabled = false;
         childSR.transform.GetChild(0).gameObject.SetActive(false);
+        originalScale = childSR.transform.localScale;
     }
 
     public void HemeIron()
     {
         chelatedBy = ChelatedBy.Heme;
         cc.isTrigger = true;
-        childSR.transform.localScale *= 1.5f;
+        childSR.transform.localScale = originalScale * 1.5f;
         childSR.enabled = true;
         childSR.color = Color.white;
         childSR.transform.GetChild(0).gameObject.SetActive(true);
@@ -48,10 +54,10 @@ public class Iron : MonoBehaviour
             else if (p.name == "Ferrichrome")
             {
                 chelatedBy = ChelatedBy.Sphaerogena;
-                childSR.color = Color.green;
+                childSR.color = purple;
             }
             cc.isTrigger = true; // this object can't collide with particles again
-            childSR.transform.localScale *= 1.5f;
+            childSR.transform.localScale = originalScale * 1.5f;
             childSR.enabled = true;
             childSR.transform.GetChild(0).gameObject.SetActive(true);
         }
@@ -62,7 +68,7 @@ public class Iron : MonoBehaviour
         chelatedBy = ChelatedBy.None;
         cc.isTrigger = false;
         childSR.enabled = false;
-        childSR.transform.localScale = Vector3.one;
+        childSR.transform.localScale = originalScale;
         childSR.transform.GetChild(0).gameObject.SetActive(false);
         if (LevelManager.instance.targetedIron.Contains(transform)) LevelManager.instance.targetedIron.Remove(transform);
     }

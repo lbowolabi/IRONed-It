@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 [RequireComponent(typeof(UpdateText))]
 
@@ -54,22 +53,24 @@ public class ColiTutorial : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Unlike you and your vibriobactin, <i>E. Coli</i> secrete linear enterobactin."));
 
-        yield return new WaitForSeconds(6);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Linear enterobactin is a ferric iron chelator Fe(III)."));
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("You can't pick up iron chelated by linear enterobactin using viuA."));
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Instead, you'll have to express your irgA gene."));
         CanvasManager.instance.GetIrgaButton().gameObject.SetActive(true);
+        CanvasManager.instance.GetIrgaButton().image.color = Color.yellow;
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(() => ut.hasClicked);
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
         Player.instance.canIrga = true;
+        CanvasManager.instance.GetIrgaButton().image.color = Color.white;
 
         while (coli.gameObject.activeInHierarchy)
         {

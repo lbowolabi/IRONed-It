@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 [RequireComponent(typeof(UpdateText))]
 
@@ -53,24 +52,24 @@ public class SphaerogenaTutorial : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Unlike you and your vibriobactin, <i>U. sphaerogena</i> secrete ferrichrome."));
 
-        yield return new WaitForSeconds(6);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Like linear enterobactin, ferrichrome is a ferric iron chelator Fe(III)."));
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("To pick up ferrichrome-chelated iron, you'll need to express your fhuA gene."));
         CanvasManager.instance.GetFhuaButton().gameObject.SetActive(true);
+        CanvasManager.instance.GetFhuaButton().image.color = Color.yellow;
 
-        yield return new WaitForSeconds(6);
-
-        yield return new WaitForSeconds(6);
+        yield return new WaitUntil(() => ut.hasClicked);
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
         LevelManager.instance.SetAllResourceSpawnsToDefault();
         LevelManager.instance.SetSphaerogenaSpawnProbability(false, sphaerogenaSpawnProbability);
         LevelManager.instance.UnpauseLevelTimer();
         Player.instance.canFhua = true;
+        CanvasManager.instance.GetFhuaButton().image.color = Color.white;
         Player.instance.expendingResources = true;
 
         while (sph.gameObject.activeInHierarchy)

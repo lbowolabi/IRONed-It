@@ -5,8 +5,17 @@ using TMPro;
 
 public class UpdateText : MonoBehaviour
 {
+    [HideInInspector] public bool hasClicked;
+    public static UpdateText instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
+
     public IEnumerator UpdateTutorialText(string newText)
     {
+        hasClicked = false;
         TextMeshProUGUI tutorialText = CanvasManager.instance.GetTutorialText();
         tutorialText.text = newText;
         tutorialText.maxVisibleCharacters = 0;
@@ -34,7 +43,7 @@ public class UpdateText : MonoBehaviour
             }
         }
 
-        while (tutorialText.maxVisibleCharacters < newText.Length)
+        while (tutorialText.maxVisibleCharacters <= newText.Length)
         {
             if (Time.timeScale != 0)
             {
@@ -53,5 +62,7 @@ public class UpdateText : MonoBehaviour
         }
         //tutorialText.text = tutorialText.text.Remove(newText.Length - 1, 10);
         //tutorialText.text = tutorialText.text.Remove(unformatted.Length, 7);
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        hasClicked = true;
     }
 }

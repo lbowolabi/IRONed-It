@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     Color defaultColor;
     Camera mainCam;
     [HideInInspector] public KeyCode viuaKey, irgaKey, hutaKey, fhuaKey;
+    Dictionary<Transform, Vector3> buttonLocations = new Dictionary<Transform, Vector3>();
 
     public static Player instance;
 
@@ -119,15 +120,19 @@ public class Player : MonoBehaviour
                 break;
             case ActiveGene.viuA:
                 CanvasManager.instance.GetViuaButton().image.color = canViua ? Color.white : Color.black;
+                CanvasManager.instance.GetViuaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.irgA:
                 CanvasManager.instance.GetIrgaButton().image.color = canIrga ? Color.white : Color.black;
+                CanvasManager.instance.GetIrgaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.hutA:
                 CanvasManager.instance.GetHutaButton().image.color = canHuta ? Color.white : Color.black;
+                CanvasManager.instance.GetHutaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.fhuA:
                 CanvasManager.instance.GetFhuaButton().image.color = canFhua ? Color.white : Color.black;
+                CanvasManager.instance.GetFhuaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
         }
 
@@ -136,20 +141,33 @@ public class Player : MonoBehaviour
             case ActiveGene.None:
                 break;
             case ActiveGene.viuA:
-                CanvasManager.instance.GetViuaButton().image.color = Color.grey;
+                StartCoroutine(GeneTimerIndicator(CanvasManager.instance.GetViuaButton().transform.GetChild(1).GetComponent<Image>()));
                 break;
             case ActiveGene.irgA:
-                CanvasManager.instance.GetIrgaButton().image.color = Color.grey;
+                StartCoroutine(GeneTimerIndicator(CanvasManager.instance.GetIrgaButton().transform.GetChild(1).GetComponent<Image>()));
                 break;
             case ActiveGene.hutA:
-                CanvasManager.instance.GetHutaButton().image.color = Color.grey;
+                StartCoroutine(GeneTimerIndicator(CanvasManager.instance.GetHutaButton().transform.GetChild(1).GetComponent<Image>()));
                 break;
             case ActiveGene.fhuA:
-                CanvasManager.instance.GetFhuaButton().image.color = Color.grey;
+                StartCoroutine(GeneTimerIndicator(CanvasManager.instance.GetFhuaButton().transform.GetChild(1).GetComponent<Image>()));
                 break;
         }
 
         activeGene = newGene;
+    }
+
+    IEnumerator GeneTimerIndicator(Image geneFill)
+    {
+        if (!buttonLocations.ContainsKey(geneFill.transform.parent)) buttonLocations.Add(geneFill.transform.parent, geneFill.transform.parent.localPosition);
+        geneFill.fillAmount = 1;
+        while (geneFill.fillAmount > 0)
+        {
+            geneFill.transform.parent.localPosition = buttonLocations[geneFill.transform.parent];
+            geneFill.fillAmount -= Time.deltaTime / 10;
+            yield return null;
+        }
+        StartCoroutine(Helpers.instance.Shake(geneFill.transform.parent, .08f, 1.6f));
     }
 
     public void ActivateViua()

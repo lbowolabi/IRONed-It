@@ -56,20 +56,21 @@ public class HemeTutorial : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Sometimes you'll come across heme-chelated iron floating around."));
 
-        yield return new WaitForSeconds(6);
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("To pick it up, you'll have to express your hutA gene."));
         CanvasManager.instance.GetHutaButton().gameObject.SetActive(true);
         Player.instance.canHuta = true;
 
-        float timer = 6;
-        while (timer > 0)
+        while (!ut.hasClicked)
         {
-            timer -= Time.deltaTime;
+            if (Player.instance.activeGene == ActiveGene.hutA)
+            {
+                break;
+            }
             yield return null;
-            if (Player.instance.activeGene == ActiveGene.hutA && timer > 1) timer = 1;
         }
         CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
         LevelManager.instance.UnpauseLevelTimer();
