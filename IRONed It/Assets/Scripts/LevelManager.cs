@@ -43,11 +43,17 @@ public class LevelManager : MonoBehaviour
     float bottomWallY;
     LayerMask wallLayerMask;
 
+    [Header("Background")]
+    [SerializeField] float backgroundSpeed;
+    float currentBackgroundSpeed;
+    float backgroundSpeedSmoothing;
+
     //[Header("Player Interactions")]
     public float playerDeathSpeedMultiplier { get; private set; } = .3f;
 
     [Header("Component References")]
     [SerializeField] Transform wallPool;
+    [SerializeField] Transform backgroundPool;
     [SerializeField] Transform ironPool;
     [Tooltip("unfortunate names <.<")]
     [SerializeField] Transform choleraPool;
@@ -115,6 +121,14 @@ public class LevelManager : MonoBehaviour
             }
         }
 
+        for (int i = 0; i < backgroundPool.childCount; i++)
+        {
+            if (backgroundPool.GetChild(i).gameObject.activeInHierarchy)
+            {
+                activeObjects.Add(backgroundPool.GetChild(i).gameObject);
+            }
+        }
+
         doxycycline = GameObject.FindGameObjectWithTag("Doxycycline").GetComponent<ParticleSystem>();
         energy = GameObject.FindGameObjectWithTag("Energy").GetComponent<ParticleSystem>();
         for (int i = 0; i < ironPool.childCount; i++)
@@ -154,35 +168,44 @@ public class LevelManager : MonoBehaviour
                 {
                     currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, wallSpeed, ref wallSpeedSmoothing, Motile.playerInstance.deathDuration * Time.deltaTime);
                 }
+                if (currentBackgroundSpeed < backgroundSpeed - .05f || currentBackgroundSpeed > backgroundSpeed + .05f)
+                {
+                    currentBackgroundSpeed = Mathf.SmoothDamp(currentBackgroundSpeed, backgroundSpeed, ref backgroundSpeedSmoothing, Motile.playerInstance.deathDuration * Time.deltaTime);
+                }
             }
             else
             {
                 currentWallSpeed = Mathf.SmoothDamp(currentWallSpeed, wallSpeed * playerDeathSpeedMultiplier, ref wallSpeedSmoothing, Motile.playerInstance.deathDuration * Time.deltaTime);
+                currentBackgroundSpeed = Mathf.SmoothDamp(currentBackgroundSpeed, backgroundSpeed * playerDeathSpeedMultiplier, ref backgroundSpeedSmoothing, Motile.playerInstance.deathDuration * Time.deltaTime);
 
                 // change particles' speeds too; work in progress
-                var particles = new ParticleSystem.Particle[doxycycline.main.maxParticles];
-                int aliveParticlesCount = doxycycline.GetParticles(particles);
+                //var particles = new ParticleSystem.Particle[doxycycline.main.maxParticles];
+                //int aliveParticlesCount = doxycycline.GetParticles(particles);
                 // Change only the particles that are alive
-                for (int i = 0; i < aliveParticlesCount; i++)
-                {
-                    //particles[i].velocity = particles[i].velocity.normalized * (particles[i].velocity.magnitude * playerDeathSpeedMultiplier);
-                }
-                doxycycline.SetParticles(particles, aliveParticlesCount);
+                //for (int i = 0; i < aliveParticlesCount; i++)
+                //{
+                //particles[i].velocity = particles[i].velocity.normalized * (particles[i].velocity.magnitude * playerDeathSpeedMultiplier);
+                //}
+                //doxycycline.SetParticles(particles, aliveParticlesCount);
 
-                particles = new ParticleSystem.Particle[energy.main.maxParticles];
-                aliveParticlesCount = energy.GetParticles(particles);
-                for (int i = 0; i < aliveParticlesCount; i++)
-                {
-                    //particles[i].velocity = particles[i].velocity.normalized * (particles[i].velocity.magnitude * playerDeathSpeedMultiplier);
-                }
-                energy.SetParticles(particles, aliveParticlesCount);
+                //particles = new ParticleSystem.Particle[energy.main.maxParticles];
+                //aliveParticlesCount = energy.GetParticles(particles);
+                //for (int i = 0; i < aliveParticlesCount; i++)
+                //{
+                //particles[i].velocity = particles[i].velocity.normalized * (particles[i].velocity.magnitude * playerDeathSpeedMultiplier);
+                //}
+                //energy.SetParticles(particles, aliveParticlesCount);
             }
         }
 
         for (int i = 0; i < activeObjects.Count; i++) // loop through all non-particle, non-player in-scene objects
         {
             Transform curr = activeObjects[i].transform;
-            if (curr.position.x < -14) // if object has moved out of camera range
+            if (curr.parent == backgroundPool && curr.position.x > -25)
+            {
+                curr.Translate(Vector2.left * currentBackgroundSpeed * Time.deltaTime);
+            }
+            else if (curr.position.x < -14) // if object has moved out of camera range
             {
                 curr.gameObject.SetActive(false); // deactivate
                 if (curr.parent == wallPool) // if object is a wall
@@ -190,12 +213,20 @@ public class LevelManager : MonoBehaviour
                     if (curr.position.y > 0) SpawnWall(true); // spawn a new upper wall
                     else SpawnWall(false); // or spawn a new lower wall
                 }
+                else if (curr.parent == backgroundPool)
+                {
+                    LoopBackground(curr);
+                }
                 activeObjects.RemoveAt(i); // remove object from list of active objects
                 i--; // decrease loop count
             }
             else if (LayerMask.LayerToName(activeObjects[i].layer) == "Wall")
             {
                 curr.Translate(Vector2.left * currentWallSpeed * Time.deltaTime);
+            }
+            else if (curr.parent == backgroundPool)
+            {
+                curr.Translate(Vector2.left * currentBackgroundSpeed * Time.deltaTime);
             }
         }
     }
@@ -209,11 +240,12 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < activeObjects.Count; i++)
         {
-            if (activeObjects[i].transform.parent == wallPool)
+            var x = activeObjects[i].GetComponent<TranslateSpeed>();
+            if (x == null)
             {
                 continue;
             }
-            activeObjects[i].GetComponent<TranslateSpeed>().MatchSpeedToPlayer(newValue);
+            x.MatchSpeedToPlayer(newValue);
         }
     }
 
@@ -423,6 +455,7 @@ public class LevelManager : MonoBehaviour
                         Vector2 newWallPosition = new Vector2(newWallX, topWallY);
                         curr.position = newWallPosition;
                         curr.localScale = new Vector2(curr.localScale.x, Mathf.Abs(curr.localScale.y));
+                        curr.GetComponent<SpriteRenderer>().flipX = false;
                         curr.gameObject.SetActive(true);
                         activeObjects.Add(curr.gameObject);
                     }
@@ -443,6 +476,7 @@ public class LevelManager : MonoBehaviour
                         Vector2 newWallPosition = new Vector2(newWallX, bottomWallY);
                         curr.position = newWallPosition;
                         curr.localScale = new Vector2(curr.localScale.x, -Mathf.Abs(curr.localScale.y));
+                        curr.GetComponent<SpriteRenderer>().flipX = true;
                         curr.gameObject.SetActive(true);
                         activeObjects.Add(curr.gameObject);
                     }
@@ -455,6 +489,23 @@ public class LevelManager : MonoBehaviour
             }
         }
         Debug.Log("no more walls in pool to take from");
+    }
+
+    void LoopBackground(Transform backgroundToLoop)
+    {
+        Transform rightmost = null;
+        float rightmostX = -100;
+        for (int i = 0; i < backgroundPool.childCount; i++)
+        {
+            if (backgroundPool.GetChild(i).localPosition.x > rightmostX)
+            {
+                rightmost = backgroundPool.GetChild(i);
+                rightmostX = rightmost.localPosition.x;
+            }
+        }
+        backgroundToLoop.localPosition = new Vector2(rightmost.GetComponent<SpriteRenderer>().bounds.size.x + rightmostX, backgroundToLoop.localPosition.y);
+        backgroundToLoop.gameObject.SetActive(true);
+        activeObjects.Add(backgroundToLoop.gameObject);
     }
 
     public void SpawnDoxy()

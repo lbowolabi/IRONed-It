@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Helpers : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class Helpers : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
+    }
+
+    private void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
+    {
+        StopAllCoroutines();
     }
 
     public IEnumerator Timer(Action<bool> assigner, float timer)
@@ -39,10 +46,5 @@ public class Helpers : MonoBehaviour
             yield return null;
         }
         t.position = startPosition;
-    }
-
-    private void OnLevelWasLoaded(int level)
-    {
-        StopAllCoroutines();
     }
 }

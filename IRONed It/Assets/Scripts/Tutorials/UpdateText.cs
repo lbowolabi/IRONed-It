@@ -62,6 +62,7 @@ public class UpdateText : MonoBehaviour
         }
         //tutorialText.text = tutorialText.text.Remove(newText.Length - 1, 10);
         //tutorialText.text = tutorialText.text.Remove(unformatted.Length, 7);
+        yield return new WaitForSeconds(.2f);
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
         hasClicked = true;
     }
