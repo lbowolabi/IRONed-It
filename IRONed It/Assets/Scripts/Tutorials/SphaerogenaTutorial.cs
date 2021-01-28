@@ -20,7 +20,7 @@ public class SphaerogenaTutorial : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(false);
         StartCoroutine(WaitToStartTutorial());
     }
 
@@ -32,15 +32,21 @@ public class SphaerogenaTutorial : MonoBehaviour
         LevelManager.instance.StopAllResourceSpawns();
         Player.instance.expendingResources = false;
         yield return new WaitForSeconds(6);
-        StartCoroutine(ColiIntro());
+        StartCoroutine(SphaerogenaIntro());
     }
 
-    IEnumerator ColiIntro()
+    IEnumerator SphaerogenaIntro()
     {
+        Player.instance.horizontalMovement = false;
+        while (Player.instance.transform.position.x < -.5f || Player.instance.transform.position.x > .5f)
+        {
+            Player.instance.GetComponent<Motile>().SetMovementVector(new Vector2(Player.instance.transform.position.x < -.5f ? 1 : -1, Input.GetAxisRaw("Vertical")));
+            yield return null;
+        }
         float initialWallSpeed = LevelManager.instance.wallSpeed;
         LevelManager.instance.SpawnSphaerogena(0);
         yield return new WaitUntil(() => sphaerogenaPool.childCount > 0);
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
         StartCoroutine(ut.UpdateTutorialText("Here comes a <i>U. sphaerogena</i> particle!"));
 
         Transform sph = sphaerogenaPool.GetChild(0);
@@ -64,12 +70,13 @@ public class SphaerogenaTutorial : MonoBehaviour
         CanvasManager.instance.GetFhuaButton().image.color = Color.yellow;
 
         yield return new WaitUntil(() => ut.hasClicked);
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(false);
         LevelManager.instance.SetAllResourceSpawnsToDefault();
         LevelManager.instance.SetSphaerogenaSpawnProbability(false, sphaerogenaSpawnProbability);
         LevelManager.instance.UnpauseLevelTimer();
         Player.instance.canFhua = true;
         CanvasManager.instance.GetFhuaButton().image.color = Color.white;
+        Player.instance.horizontalMovement = true;
         Player.instance.expendingResources = true;
 
         while (sph.gameObject.activeInHierarchy)

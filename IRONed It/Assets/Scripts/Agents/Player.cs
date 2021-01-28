@@ -10,25 +10,26 @@ public enum ActiveGene { None, viuA, irgA, hutA, fhuA };
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] bool horizontalMovement = false;
+    [HideInInspector] public bool horizontalMovement = true;
     [Header("Resources")]
-    TextMeshProUGUI lifeCount;
-    Image fe3BarFill;
     [SerializeField] private float fe3LossRateOverTime;
     [SerializeField] private float fe3PickupWorth;
     Image atpBarFill;
     //public float atpLossRateOverTime;
     [SerializeField] private float atpPickupWorth;
     [SerializeField] private float atpCostToActivateGene;
+    TextMeshProUGUI lifeCount;
+    Image fe3BarFill;
     IEnumerator atpShake;
     Vector3 atpBarStartPosition;
     IEnumerator geneDurationTimer;
 
     [Header("Player States")]
+    public bool canViua = true;
+    public bool canIrga = true, canHuta = true, canFhua = true;
+    public ActiveGene activeGene { get; private set; } = ActiveGene.None;
     [HideInInspector] public bool expendingResources = true;
     [HideInInspector] public bool playerCanAct = true;
-    public ActiveGene activeGene { get; private set; } = ActiveGene.None;
-    public bool canViua = true, canIrga = true, canHuta = true, canFhua = true;
 
     [Header("Component References")]
     Motile motile;
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour
         motile = GetComponent<Motile>();
         sr = GetComponent<SpriteRenderer>();
         defaultColor = sr.color;
+        horizontalMovement = true;
     }
 
     private void Start()
@@ -64,6 +66,11 @@ public class Player : MonoBehaviour
         irgaKey = GameManager.instance.irgaKey;
         hutaKey = GameManager.instance.hutaKey;
         fhuaKey = GameManager.instance.fhuaKey;
+
+        CanvasManager.instance.GetViuaButton().image.color = Color.cyan;
+        CanvasManager.instance.GetIrgaButton().image.color = Color.blue;
+        CanvasManager.instance.GetHutaButton().image.color = Color.white;
+        CanvasManager.instance.GetFhuaButton().image.color = new Color(247, 0, 255, 1);
 
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
@@ -98,7 +105,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         if (!horizontalMovement) motile.SetMovementVector(Vector2.up * Input.GetAxisRaw("Vertical"));
-        else if (motile.agentCanMove)
+        else
         {
             motile.SetMovementVector(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
             if (transform.position.x > mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x)
@@ -119,11 +126,11 @@ public class Player : MonoBehaviour
             case ActiveGene.None:
                 break;
             case ActiveGene.viuA:
-                CanvasManager.instance.GetViuaButton().image.color = canViua ? Color.white : Color.black;
+                CanvasManager.instance.GetViuaButton().image.color = canViua ? Color.cyan : Color.black;
                 CanvasManager.instance.GetViuaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.irgA:
-                CanvasManager.instance.GetIrgaButton().image.color = canIrga ? Color.white : Color.black;
+                CanvasManager.instance.GetIrgaButton().image.color = canIrga ? Color.blue : Color.black;
                 CanvasManager.instance.GetIrgaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.hutA:
@@ -131,7 +138,7 @@ public class Player : MonoBehaviour
                 CanvasManager.instance.GetHutaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.fhuA:
-                CanvasManager.instance.GetFhuaButton().image.color = canFhua ? Color.white : Color.black;
+                CanvasManager.instance.GetFhuaButton().image.color = canFhua ? new Color(247, 0, 255, 1) : Color.black;
                 CanvasManager.instance.GetFhuaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
         }

@@ -167,6 +167,16 @@ public class CanvasManager : MonoBehaviour
             }
         }
     }
+
+    public void Unpause()
+    {
+        Player.instance.playerCanAct = true;
+        genes.SetActive(true);
+        Time.timeScale = 1;
+        pauseMenu.SetActive(false);
+        ChangeKeyBinding();
+    }
+
     public void ChangeKeyBinding(string s = "")
     {
         s = s.ToLower();
@@ -205,14 +215,23 @@ public class CanvasManager : MonoBehaviour
         }
     }
 
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     public void QuitGame()
     {
         Application.Quit();
     }
 
-    public void LoadLevel(string nextLevel)
+    private void OnDestroy()
     {
         Time.timeScale = 1;
+    }
+
+    public void LoadLevel(string nextLevel)
+    {
         SceneManager.LoadScene(nextLevel);
     }
 }

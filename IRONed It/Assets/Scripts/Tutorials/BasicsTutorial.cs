@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 [RequireComponent(typeof(UpdateText))]
 
@@ -50,13 +49,21 @@ public class BasicsTutorial : MonoBehaviour
         }
     }
 
-    IEnumerator IronIntro() // all concrete numbers are guesstimates <.< will need to tweak
+    IEnumerator IronIntro()
     {
         yield return null;
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
-        StartCoroutine(ut.UpdateTutorialText("Use the up and down arrows or W and S to move.<br>(Click anywhere to continue.)"));
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
+        StartCoroutine(ut.UpdateTutorialText("Use the arrows keys or WASD keys to move.<br>(Click anywhere to continue.)"));
 
         yield return new WaitUntil(() => ut.hasClicked);
+        StartCoroutine(ut.UpdateTutorialText("(During tutorials, horizontal movement is temporarily disabled.)"));
+        player.horizontalMovement = false;
+        while (player.transform.position.x < -.5f || player.transform.position.x > .5f)
+        {
+            player.GetComponent<Motile>().SetMovementVector(new Vector2(player.transform.position.x < -.5f ? 1 : -1, Input.GetAxisRaw("Vertical")));
+            yield return null;
+        }
+        yield return new WaitUntil(() => Input.GetMouseButtonDown(0) && !CanvasManager.instance.pauseMenu.activeInHierarchy);
         StartCoroutine(ut.UpdateTutorialText("This is iron. Vibrio need iron to stay alive."));
         lm.SpawnIron(false, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
@@ -143,7 +150,7 @@ public class BasicsTutorial : MonoBehaviour
         while (timer > 0)
         {
             timer -= Time.deltaTime;
-            if (Input.GetMouseButtonDown(0)) break;
+            if (Input.GetMouseButtonDown(0) && !CanvasManager.instance.pauseMenu.activeInHierarchy) break;
             yield return null;
         }
         string s = GameManager.instance.viuaKey.ToString();
@@ -183,8 +190,7 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("You don't need to do anything special to pick up ATP. Just swim into it."));
 
-        yield return new WaitForSeconds(3);
-        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(DoxyIntro());
     }
 
@@ -208,8 +214,7 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitForSeconds(.5f);
         StartCoroutine(ut.UpdateTutorialText("This is doxycycline. It inhibits protein production."));
 
-        yield return new WaitForSeconds(3);
-        yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
+        yield return new WaitUntil(() => ut.hasClicked);
 
         float timer = .2f;
         while (timer > 0)
@@ -251,7 +256,7 @@ public class BasicsTutorial : MonoBehaviour
         while (timer > 0)
         {
             timer -= Time.deltaTime;
-            if (Input.GetMouseButtonDown(0)) break;
+            if (Input.GetMouseButtonDown(0) && !CanvasManager.instance.pauseMenu.activeInHierarchy) break;
             yield return null;
         }
         StartCoroutine(ut.UpdateTutorialText("That's the end of the tutorial. Press ESC to open the pause menu and exit."));

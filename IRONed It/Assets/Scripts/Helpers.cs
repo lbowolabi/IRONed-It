@@ -10,12 +10,19 @@ public class Helpers : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null) instance = this;
         SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
     }
 
     private void SceneManager_activeSceneChanged(Scene arg0, Scene arg1)
     {
+        StopAllCoroutines();
+    }
+
+    private void OnDestroy()
+    {
+        if (instance == this) instance = null;
+        SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
         StopAllCoroutines();
     }
 

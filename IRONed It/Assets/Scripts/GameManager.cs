@@ -10,11 +10,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Debug.LogError("This message will make the console appear in Development Builds");
         if (instance == null) // if unique
         {
             instance = this;
             DontDestroyOnLoad(gameObject); // don't destroy on load
+            Debug.LogError("This message will make the console appear in Development Builds");
         }
         else // if not unique
         {

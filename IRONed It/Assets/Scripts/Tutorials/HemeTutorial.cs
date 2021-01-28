@@ -29,7 +29,13 @@ public class HemeTutorial : MonoBehaviour
         LevelManager.instance.PauseLevelTimer();
         Player.instance.expendingResources = false;
         float initialWallSpeed = LevelManager.instance.wallSpeed;
-        yield return null;
+        new WaitForSeconds(6);
+        Player.instance.horizontalMovement = false;
+        while (Player.instance.transform.position.x < -.5f || Player.instance.transform.position.x > .5f)
+        {
+            Player.instance.GetComponent<Motile>().SetMovementVector(new Vector2(Player.instance.transform.position.x < -.5f ? 1 : -1, Input.GetAxisRaw("Vertical")));
+            yield return null;
+        }
         LevelManager.instance.SpawnIron(true, 0);
         GameObject[] ironSearch = GameObject.FindGameObjectsWithTag("Iron");
         GameObject iron = null;
@@ -46,7 +52,7 @@ public class HemeTutorial : MonoBehaviour
                 break;
             }
         }
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
         StartCoroutine(ut.UpdateTutorialText("Here comes some heme-chelated iron!"));
         iron.GetComponent<TranslateSpeed>().StopMovement();
         while (iron.transform.position.x > 4)
@@ -72,9 +78,10 @@ public class HemeTutorial : MonoBehaviour
             }
             yield return null;
         }
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(false);
         LevelManager.instance.UnpauseLevelTimer();
         Player.instance.expendingResources = true;
+        Player.instance.horizontalMovement = true;
         running = false;
 
         while (iron.activeInHierarchy)

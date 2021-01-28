@@ -21,7 +21,7 @@ public class ColiTutorial : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(false);
         StartCoroutine(WaitToStartTutorial());
     }
 
@@ -38,10 +38,16 @@ public class ColiTutorial : MonoBehaviour
 
     IEnumerator ColiIntro()
     {
+        Player.instance.horizontalMovement = false;
+        while (Player.instance.transform.position.x < -.5f || Player.instance.transform.position.x > .5f)
+        {
+            Player.instance.GetComponent<Motile>().SetMovementVector(new Vector2(Player.instance.transform.position.x < -.5f ? 1 : -1, Input.GetAxisRaw("Vertical")));
+            yield return null;
+        }
         float initialWallSpeed = LevelManager.instance.wallSpeed;
         LevelManager.instance.SpawnColi(0);
         yield return new WaitUntil(() => coliPool.childCount > 0);
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(true);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
         StartCoroutine(ut.UpdateTutorialText("Here comes an <i>E. Coli</i> bacterium!"));
 
         Transform coli = coliPool.GetChild(0);
@@ -68,8 +74,9 @@ public class ColiTutorial : MonoBehaviour
         CanvasManager.instance.GetIrgaButton().image.color = Color.yellow;
 
         yield return new WaitUntil(() => ut.hasClicked);
-        CanvasManager.instance.GetTutorialText().gameObject.SetActive(false);
+        CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(false);
         Player.instance.canIrga = true;
+        Player.instance.horizontalMovement = true;
         CanvasManager.instance.GetIrgaButton().image.color = Color.white;
 
         while (coli.gameObject.activeInHierarchy)
