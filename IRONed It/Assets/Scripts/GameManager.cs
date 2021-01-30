@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public KeyCode viuaKey, irgaKey, hutaKey, fhuaKey;
+    public Color viuaColor = Color.cyan, irgaColor = Color.blue, hutaColor = Color.white, fhuaColor = new Color(111, 255, 107, 1);
 
     public static GameManager instance;
 
@@ -28,19 +29,23 @@ public class GameManager : MonoBehaviour
         switch (gene)
         {
             case "viua":
-                Player.instance.viuaKey = viuaKey = newKey;
+                viuaKey = newKey;
+                if (Player.instance != null) Player.instance.viuaKey = newKey;
                 break;
 
             case "irga":
-                Player.instance.irgaKey = irgaKey = newKey;
+                irgaKey = newKey;
+                if (Player.instance != null) Player.instance.irgaKey = newKey;
                 break;
 
             case "huta":
-                Player.instance.hutaKey = hutaKey = newKey;
+                hutaKey = newKey;
+                if (Player.instance != null) Player.instance.hutaKey = newKey;
                 break;
 
             case "fhua":
-                Player.instance.fhuaKey = fhuaKey = newKey;
+                fhuaKey = newKey;
+                if (Player.instance != null) Player.instance.fhuaKey = newKey;
                 break;
         }
     }

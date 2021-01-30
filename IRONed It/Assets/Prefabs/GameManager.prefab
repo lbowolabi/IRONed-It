@@ -48,6 +48,10 @@ MonoBehaviour:
   irgaKey: 50
   hutaKey: 51
   fhuaKey: 52
+  viuaColor: {r: 0, g: 1, b: 1, a: 1}
+  irgaColor: {r: 0, g: 0, b: 1, a: 1}
+  hutaColor: {r: 1, g: 1, b: 1, a: 1}
+  fhuaColor: {r: 0.43529412, g: 1, b: 0.41960785, a: 1}
 --- !u!114 &3996944280223427889
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,7 +10,6 @@ public class Iron : MonoBehaviour
 
     public ChelatedBy chelatedBy { get; private set; } = ChelatedBy.None;
 
-    Color purple; // for sphaerogena
     Vector3 originalScale;
 
     CircleCollider2D cc;
@@ -18,8 +17,6 @@ public class Iron : MonoBehaviour
 
     private void Awake()
     {
-        purple = new Color(247, 0, 255, 1);
-
         cc = GetComponent<CircleCollider2D>();
         childSR = transform.GetChild(0).GetComponent<SpriteRenderer>();
         childSR.enabled = false;
@@ -33,7 +30,7 @@ public class Iron : MonoBehaviour
         cc.isTrigger = true;
         childSR.transform.localScale = originalScale * 1.5f;
         childSR.enabled = true;
-        childSR.color = Color.white;
+        childSR.color = GameManager.instance.hutaColor;
         childSR.transform.GetChild(0).gameObject.SetActive(true);
     }
 
@@ -44,17 +41,17 @@ public class Iron : MonoBehaviour
             if (p.name == "Vibriobactin")
             {
                 chelatedBy = ChelatedBy.Cholera;
-                childSR.color = Color.cyan;
+                childSR.color = GameManager.instance.viuaColor;
             }
             else if (p.name == "Enterobactin") // linear enterobactin
             {
                 chelatedBy = ChelatedBy.Coli;
-                childSR.color = Color.blue;
+                childSR.color = GameManager.instance.irgaColor;
             }
             else if (p.name == "Ferrichrome")
             {
                 chelatedBy = ChelatedBy.Sphaerogena;
-                childSR.color = purple;
+                childSR.color = GameManager.instance.fhuaColor;
             }
             cc.isTrigger = true; // this object can't collide with particles again
             childSR.transform.localScale = originalScale * 1.5f;

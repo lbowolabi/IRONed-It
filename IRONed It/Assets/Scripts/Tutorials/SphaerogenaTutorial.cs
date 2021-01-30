@@ -67,7 +67,6 @@ public class SphaerogenaTutorial : MonoBehaviour
         yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("To pick up ferrichrome-chelated iron, you'll need to express your fhuA gene."));
         CanvasManager.instance.GetFhuaButton().gameObject.SetActive(true);
-        CanvasManager.instance.GetFhuaButton().image.color = Color.yellow;
 
         yield return new WaitUntil(() => ut.hasClicked);
         CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(false);
@@ -75,7 +74,6 @@ public class SphaerogenaTutorial : MonoBehaviour
         LevelManager.instance.SetSphaerogenaSpawnProbability(false, sphaerogenaSpawnProbability);
         LevelManager.instance.UnpauseLevelTimer();
         Player.instance.canFhua = true;
-        CanvasManager.instance.GetFhuaButton().image.color = Color.white;
         Player.instance.horizontalMovement = true;
         Player.instance.expendingResources = true;
 

@@ -21,7 +21,7 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Pause Menu")]
     public GameObject pauseMenu;
-    [SerializeField] TextMeshProUGUI viuaKeyText, irgaKeyText, hutaKeyText, fhuaKeyText;
+    [SerializeField] TextMeshProUGUI[] viuaKeyText, irgaKeyText, hutaKeyText, fhuaKeyText;
     Dictionary<string, bool> changeBindings = new Dictionary<string, bool>() {
         { "viua", false },
         { "irga", false },
@@ -31,6 +31,12 @@ public class CanvasManager : MonoBehaviour
 
     [Header("Level End")]
     public GameObject endMenu;
+
+    [Header("Death Screen")]
+    public GameObject deathMenu;
+
+    [Header("Endless Title")]
+    public GameObject endlessMenu;
 
     public static CanvasManager instance;
 
@@ -86,28 +92,44 @@ public class CanvasManager : MonoBehaviour
 
     private void Start()
     {
-        //endMenu.SetActive(false);
-        pauseMenu.SetActive(false);
         geneButtons[0].onClick.AddListener(() => Player.instance.ActivateViua());
         geneButtons[1].onClick.AddListener(() => Player.instance.ActivateIrga());
         geneButtons[2].onClick.AddListener(() => Player.instance.ActivateHuta());
         geneButtons[3].onClick.AddListener(() => Player.instance.ActivateFhua());
 
-        viuaKeyText.text = GameManager.instance.viuaKey.ToString();
-        if (viuaKeyText.text.Contains("Alpha")) viuaKeyText.text = viuaKeyText.text.Remove(0, 5);
-        GetViuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("viuA ("+ viuaKeyText.text + ")");
+        for (int i = 0; i < viuaKeyText.Length; i++)
+        {
+            viuaKeyText[i].text = GameManager.instance.viuaKey.ToString();
+            if (viuaKeyText[i].text.Contains("Alpha")) viuaKeyText[i].text = viuaKeyText[i].text.Remove(0, 5);
+        }
+        GetViuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("viuA (" + viuaKeyText[0].text + ")");
 
-        irgaKeyText.text = GameManager.instance.irgaKey.ToString();
-        if (irgaKeyText.text.Contains("Alpha")) irgaKeyText.text = irgaKeyText.text.Remove(0, 5);
-        GetIrgaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("irgA (" + irgaKeyText.text + ")");
+        for (int i = 0; i < irgaKeyText.Length; i++)
+        {
+            irgaKeyText[i].text = GameManager.instance.irgaKey.ToString();
+            if (irgaKeyText[i].text.Contains("Alpha")) irgaKeyText[i].text = irgaKeyText[i].text.Remove(0, 5);
+        }
+        GetIrgaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("irgA (" + irgaKeyText[0].text + ")");
 
-        hutaKeyText.text = GameManager.instance.hutaKey.ToString();
-        if (hutaKeyText.text.Contains("Alpha")) hutaKeyText.text = hutaKeyText.text.Remove(0, 5);
-        GetHutaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("hutA (" + hutaKeyText.text + ")");
+        for (int i = 0; i < hutaKeyText.Length; i++)
+        {
+            hutaKeyText[i].text = GameManager.instance.hutaKey.ToString();
+            if (hutaKeyText[i].text.Contains("Alpha")) hutaKeyText[i].text = hutaKeyText[i].text.Remove(0, 5);
+        }
+        GetHutaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("hutA (" + hutaKeyText[0].text + ")");
 
-        fhuaKeyText.text = GameManager.instance.fhuaKey.ToString();
-        if (fhuaKeyText.text.Contains("Alpha")) fhuaKeyText.text = fhuaKeyText.text.Remove(0, 5);
-        GetFhuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("fhuA (" + fhuaKeyText.text + ")");
+        for (int i = 0; i < fhuaKeyText.Length; i++)
+        {
+            fhuaKeyText[i].text = GameManager.instance.fhuaKey.ToString();
+            if (fhuaKeyText[i].text.Contains("Alpha")) fhuaKeyText[i].text = fhuaKeyText[i].text.Remove(0, 5);
+        }
+        GetFhuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("fhuA (" + fhuaKeyText[0].text + ")");
+
+        if (SceneManager.GetActiveScene().name == "Endless")
+        {
+            Time.timeScale = 0;
+            endlessMenu.SetActive(true);
+        }
     }
 
     // Update is called once per frame
@@ -123,7 +145,7 @@ public class CanvasManager : MonoBehaviour
         }
         else
         {
-            if (pauseMenu.activeInHierarchy)
+            if (pauseMenu.activeInHierarchy || deathMenu.activeInHierarchy)
             {
                 foreach (KeyCode k in Enum.GetValues(typeof(KeyCode)))
                 {
@@ -132,33 +154,45 @@ public class CanvasManager : MonoBehaviour
                         if (changeBindings["viua"])
                         {
                             GameManager.instance.UpdateKeyBinding("viua", k);
-                            viuaKeyText.text = k.ToString();
-                            if (viuaKeyText.text.Contains("Alpha")) viuaKeyText.text = viuaKeyText.text.Remove(0, 5);
-                            GetViuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("viuA (" + viuaKeyText.text + ")");
+                            for (int i = 0; i < viuaKeyText.Length; i++)
+                            {
+                                viuaKeyText[i].text = GameManager.instance.viuaKey.ToString();
+                                if (viuaKeyText[i].text.Contains("Alpha")) viuaKeyText[i].text = viuaKeyText[i].text.Remove(0, 5);
+                            }
+                            GetViuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("viuA (" + viuaKeyText[0].text + ")");
                             ChangeKeyBinding();
                         }
                         else if (changeBindings["irga"])
                         {
                             GameManager.instance.UpdateKeyBinding("irga", k);
-                            irgaKeyText.text = k.ToString();
-                            if (irgaKeyText.text.Contains("Alpha")) irgaKeyText.text = irgaKeyText.text.Remove(0, 5);
-                            GetIrgaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("irgA (" + irgaKeyText.text + ")");
+                            for (int i = 0; i < irgaKeyText.Length; i++)
+                            {
+                                irgaKeyText[i].text = GameManager.instance.irgaKey.ToString();
+                                if (irgaKeyText[i].text.Contains("Alpha")) irgaKeyText[i].text = irgaKeyText[i].text.Remove(0, 5);
+                            }
+                            GetIrgaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("irgA (" + irgaKeyText[0].text + ")");
                             ChangeKeyBinding();
                         }
                         else if (changeBindings["huta"])
                         {
                             GameManager.instance.UpdateKeyBinding("huta", k);
-                            hutaKeyText.text = k.ToString();
-                            if (hutaKeyText.text.Contains("Alpha")) hutaKeyText.text = hutaKeyText.text.Remove(0, 5);
-                            GetHutaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("hutA (" + hutaKeyText.text + ")");
+                            for (int i = 0; i < hutaKeyText.Length; i++)
+                            {
+                                hutaKeyText[i].text = GameManager.instance.hutaKey.ToString();
+                                if (hutaKeyText[i].text.Contains("Alpha")) hutaKeyText[i].text = hutaKeyText[i].text.Remove(0, 5);
+                            }
+                            GetHutaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("hutA (" + hutaKeyText[0].text + ")");
                             ChangeKeyBinding();
                         }
                         else if (changeBindings["fhua"])
                         {
                             GameManager.instance.UpdateKeyBinding("fhua", k);
-                            fhuaKeyText.text = k.ToString();
-                            if (fhuaKeyText.text.Contains("Alpha")) fhuaKeyText.text = fhuaKeyText.text.Remove(0, 5);
-                            GetFhuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("fhuA (" + fhuaKeyText.text + ")");
+                            for (int i = 0; i < fhuaKeyText.Length; i++)
+                            {
+                                fhuaKeyText[i].text = GameManager.instance.fhuaKey.ToString();
+                                if (fhuaKeyText[i].text.Contains("Alpha")) fhuaKeyText[i].text = fhuaKeyText[i].text.Remove(0, 5);
+                            }
+                            GetFhuaButton().GetComponentInChildren<TextMeshProUGUI>().text = string.Format("fhuA (" + fhuaKeyText[0].text + ")");
                             ChangeKeyBinding();
                         }
                         break;
@@ -190,28 +224,43 @@ public class CanvasManager : MonoBehaviour
             switch (s)
             {
                 case "viua":
-                    viuaKeyText.gameObject.SetActive(false);
+                    for (int i = 0; i < viuaKeyText.Length; i++)
+                    {
+                        viuaKeyText[i].gameObject.SetActive(false);
+                    }
                     break;
 
                 case "irga":
-                    irgaKeyText.gameObject.SetActive(false);
+                    for (int i = 0; i < irgaKeyText.Length; i++)
+                    {
+                        irgaKeyText[i].gameObject.SetActive(false);
+                    }
                     break;
 
                 case "huta":
-                    hutaKeyText.gameObject.SetActive(false);
+                    for (int i = 0; i < hutaKeyText.Length; i++)
+                    {
+                        hutaKeyText[i].gameObject.SetActive(false);
+                    }
                     break;
 
                 case "fhua":
-                    fhuaKeyText.gameObject.SetActive(false);
+                    for (int i = 0; i < fhuaKeyText.Length; i++)
+                    {
+                        fhuaKeyText[i].gameObject.SetActive(false);
+                    }
                     break;
             }
         }
         else
         {
-            viuaKeyText.gameObject.SetActive(true);
-            irgaKeyText.gameObject.SetActive(true);
-            hutaKeyText.gameObject.SetActive(true);
-            fhuaKeyText.gameObject.SetActive(true);
+            for (int i = 0; i < viuaKeyText.Length; i++)
+            {
+                viuaKeyText[i].gameObject.SetActive(true);
+                irgaKeyText[i].gameObject.SetActive(true);
+                hutaKeyText[i].gameObject.SetActive(true);
+                fhuaKeyText[i].gameObject.SetActive(true);
+            }
         }
     }
 

@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     [HideInInspector] public bool playerCanAct = true;
 
     [Header("Component References")]
+    [SerializeField] ParticleSystem geneEndNotif;
     Motile motile;
     SpriteRenderer sr;
     Color defaultColor;
@@ -67,10 +68,10 @@ public class Player : MonoBehaviour
         hutaKey = GameManager.instance.hutaKey;
         fhuaKey = GameManager.instance.fhuaKey;
 
-        CanvasManager.instance.GetViuaButton().image.color = Color.cyan;
-        CanvasManager.instance.GetIrgaButton().image.color = Color.blue;
-        CanvasManager.instance.GetHutaButton().image.color = Color.white;
-        CanvasManager.instance.GetFhuaButton().image.color = new Color(247, 0, 255, 1);
+        CanvasManager.instance.GetViuaButton().image.color = GameManager.instance.viuaColor;
+        CanvasManager.instance.GetIrgaButton().image.color = GameManager.instance.irgaColor;
+        CanvasManager.instance.GetHutaButton().image.color = GameManager.instance.hutaColor;
+        CanvasManager.instance.GetFhuaButton().image.color = GameManager.instance.fhuaColor;
 
         mainCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
@@ -84,7 +85,7 @@ public class Player : MonoBehaviour
             //ChangeEnergyCount(-Time.deltaTime * atpLossRateOverTime);
         }
 
-        if (Input.GetKeyDown(viuaKey)) // to make configurable later
+        if (Input.GetKeyDown(viuaKey))
         {
             ActivateViua();
         }
@@ -108,13 +109,16 @@ public class Player : MonoBehaviour
         else
         {
             motile.SetMovementVector(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-            if (transform.position.x > mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x)
+            if (motile.agentCanMove)
             {
-                transform.position = new Vector2(mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x, transform.position.y);
-            }
-            else if (transform.position.x < mainCam.ViewportToWorldPoint(new Vector2(0, 0)).x)
-            {
-                transform.position = new Vector2(mainCam.ViewportToWorldPoint(new Vector2(0, 0)).x, transform.position.y);
+                if (transform.position.x > mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x)
+                {
+                    transform.position = new Vector2(mainCam.ViewportToWorldPoint(new Vector2(1, 0)).x, transform.position.y);
+                }
+                else if (transform.position.x < mainCam.ViewportToWorldPoint(new Vector2(0, 0)).x)
+                {
+                    transform.position = new Vector2(mainCam.ViewportToWorldPoint(new Vector2(0, 0)).x, transform.position.y);
+                }
             }
         }
     }
@@ -126,19 +130,19 @@ public class Player : MonoBehaviour
             case ActiveGene.None:
                 break;
             case ActiveGene.viuA:
-                CanvasManager.instance.GetViuaButton().image.color = canViua ? Color.cyan : Color.black;
+                CanvasManager.instance.GetViuaButton().image.color = canViua ? GameManager.instance.viuaColor : Color.black;
                 CanvasManager.instance.GetViuaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.irgA:
-                CanvasManager.instance.GetIrgaButton().image.color = canIrga ? Color.blue : Color.black;
+                CanvasManager.instance.GetIrgaButton().image.color = canIrga ? GameManager.instance.irgaColor : Color.black;
                 CanvasManager.instance.GetIrgaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.hutA:
-                CanvasManager.instance.GetHutaButton().image.color = canHuta ? Color.white : Color.black;
+                CanvasManager.instance.GetHutaButton().image.color = canHuta ? GameManager.instance.hutaColor : Color.black;
                 CanvasManager.instance.GetHutaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
             case ActiveGene.fhuA:
-                CanvasManager.instance.GetFhuaButton().image.color = canFhua ? new Color(247, 0, 255, 1) : Color.black;
+                CanvasManager.instance.GetFhuaButton().image.color = canFhua ? GameManager.instance.fhuaColor : Color.black;
                 CanvasManager.instance.GetFhuaButton().transform.GetChild(1).GetComponent<Image>().fillAmount = 0;
                 break;
         }
@@ -174,6 +178,9 @@ public class Player : MonoBehaviour
             geneFill.fillAmount -= Time.deltaTime / 10;
             yield return null;
         }
+        var m = geneEndNotif.main;
+        m.startColor = geneFill.transform.parent.GetComponent<Image>().color;
+        geneEndNotif.Play();
         StartCoroutine(Helpers.instance.Shake(geneFill.transform.parent, .08f, 1.6f));
     }
 
@@ -279,7 +286,6 @@ public class Player : MonoBehaviour
             {
                 atpBarStartPosition = atpBarFill.transform.parent.position;
             }
-
             atpShake = Helpers.instance.Shake(atpBarFill.transform.parent, .1f, 2.5f);
             StartCoroutine(atpShake);
         }
@@ -339,6 +345,8 @@ public class Player : MonoBehaviour
                 motile.deathFlashInterval *= 1.3f;
             }
             sr.color = Color.grey;
+            yield return new WaitForSeconds(1);
+            CanvasManager.instance.deathMenu.SetActive(true);
         }
     }
 

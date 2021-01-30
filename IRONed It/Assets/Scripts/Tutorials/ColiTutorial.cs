@@ -71,13 +71,11 @@ public class ColiTutorial : MonoBehaviour
         yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Instead, you'll have to express your irgA gene."));
         CanvasManager.instance.GetIrgaButton().gameObject.SetActive(true);
-        CanvasManager.instance.GetIrgaButton().image.color = Color.yellow;
 
         yield return new WaitUntil(() => ut.hasClicked);
         CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(false);
         Player.instance.canIrga = true;
         Player.instance.horizontalMovement = true;
-        CanvasManager.instance.GetIrgaButton().image.color = Color.white;
 
         while (coli.gameObject.activeInHierarchy)
         {
