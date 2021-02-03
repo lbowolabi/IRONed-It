@@ -56,13 +56,14 @@ public class BasicsTutorial : MonoBehaviour
         StartCoroutine(ut.UpdateTutorialText("Hi! I'm Vibrio Cholerae, but my friends call me Vibrio! It seems I've found myself in someone's intestine. Use your arrows keys or WASD keys to help me move.<br>[Click anywhere to continue.]"));
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("[During tutorials, horizontal movement is temporarily disabled.]"));
+        StartCoroutine(ut.UpdateTutorialText("[During tutorials, horizontal movement is temporarily disabled.] [Click.]"));
         player.horizontalMovement = false;
         while (player.transform.position.x < -.5f || player.transform.position.x > .5f)
         {
             player.GetComponent<Motile>().SetMovementVector(new Vector2(player.transform.position.x < -.5f ? 1 : -1, Input.GetAxisRaw("Vertical")));
             yield return null;
         }
+        yield return new WaitForSeconds(1);
         yield return new WaitUntil(() => Input.GetMouseButtonDown(0) && !CanvasManager.instance.pauseMenu.activeInHierarchy);
         StartCoroutine(ut.UpdateTutorialText("This is iron and I need it to stay alive."));
         lm.SpawnIron(false, 0);
@@ -178,14 +179,14 @@ public class BasicsTutorial : MonoBehaviour
         yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("Help me collect ATP to replenish my energy stock. [Click]"));
 
-        float timer = .2f;
+        float timer = 1f;
+        StartCoroutine(ClampPlayerEnergy());
         while (timer > 0)
         {
             lm.SpawnEnergy();
             timer -= Time.deltaTime;
             yield return null;
         }
-        StartCoroutine(ClampPlayerEnergy());
 
         yield return new WaitUntil(() => ut.hasClicked);
         StartCoroutine(ut.UpdateTutorialText("We don't need to do anything special to pick up ATP. We just swim into it! [Click]"));
@@ -196,7 +197,7 @@ public class BasicsTutorial : MonoBehaviour
 
     IEnumerator ClampPlayerEnergy()
     {
-        float timer = 3;
+        float timer = 5;
         while (timer > 0)
         {
             timer -= Time.deltaTime;
@@ -216,7 +217,7 @@ public class BasicsTutorial : MonoBehaviour
 
         yield return new WaitUntil(() => ut.hasClicked);
 
-        float timer = .2f;
+        float timer = .4f;
         while (timer > 0)
         {
             lm.SpawnDoxy();

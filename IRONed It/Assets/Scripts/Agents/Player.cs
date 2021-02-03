@@ -343,10 +343,10 @@ public class Player : MonoBehaviour
                 sr.color = sr.color == Color.grey ? defaultColor : Color.grey;
                 yield return new WaitForSeconds(motile.deathFlashInterval);
                 motile.deathFlashInterval *= 1.3f;
+                if (motile.deathFlashInterval > 1f) CanvasManager.instance.deathMenu.SetActive(true);
             }
             sr.color = Color.grey;
             yield return new WaitForSeconds(1);
-            CanvasManager.instance.deathMenu.SetActive(true);
         }
     }
 
