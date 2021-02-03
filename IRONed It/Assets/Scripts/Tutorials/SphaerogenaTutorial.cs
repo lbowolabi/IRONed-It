@@ -47,7 +47,7 @@ public class SphaerogenaTutorial : MonoBehaviour
         LevelManager.instance.SpawnSphaerogena(0);
         yield return new WaitUntil(() => sphaerogenaPool.childCount > 0);
         CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
-        StartCoroutine(ut.UpdateTutorialText("Here comes a <i>U. sphaerogena</i> particle!"));
+        StartCoroutine(ut.UpdateTutorialText("Here comes a <i>U. sphaerogena</i>!"));
 
         Transform sph = sphaerogenaPool.GetChild(0);
         sph.GetComponent<TranslateSpeed>().StopMovement();
@@ -59,13 +59,13 @@ public class SphaerogenaTutorial : MonoBehaviour
         }
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("Unlike you and your vibriobactin, <i>U. sphaerogena</i> secrete ferrichrome."));
+        StartCoroutine(ut.UpdateTutorialText("I've heard he's a FUN GUY! Get it? A Fungus! Haha! [Click]"));
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("Like linear enterobactin, ferrichrome is a ferric iron chelator Fe(III)."));
+        StartCoroutine(ut.UpdateTutorialText("Looks like that fun guy is secreting ferrichrome to trap iron. [Click]"));
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("To pick up ferrichrome-chelated iron, you'll need to express your fhuA gene."));
+        StartCoroutine(ut.UpdateTutorialText("You'll need to express my fhuA gene to pick that up. [Click]"));
         CanvasManager.instance.GetFhuaButton().gameObject.SetActive(true);
 
         yield return new WaitUntil(() => ut.hasClicked);

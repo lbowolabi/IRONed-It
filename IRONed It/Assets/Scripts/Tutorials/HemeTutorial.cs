@@ -53,7 +53,7 @@ public class HemeTutorial : MonoBehaviour
             }
         }
         CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
-        StartCoroutine(ut.UpdateTutorialText("Here comes some heme-chelated iron!"));
+        StartCoroutine(ut.UpdateTutorialText("Hey look, that's heme-chelated iron!"));
         iron.GetComponent<TranslateSpeed>().StopMovement();
         while (iron.transform.position.x > 4)
         {
@@ -63,10 +63,10 @@ public class HemeTutorial : MonoBehaviour
         }
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("Sometimes you'll come across heme-chelated iron floating around."));
+        StartCoroutine(ut.UpdateTutorialText("Heme comes from the person or animal that we're floating in. [Click]"));
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("To pick it up, you'll have to express your hutA gene."));
+        StartCoroutine(ut.UpdateTutorialText("To pick up heme, you'll have to express my hutA gene. [Click]"));
         CanvasManager.instance.GetHutaButton().gameObject.SetActive(true);
         Player.instance.canHuta = true;
 

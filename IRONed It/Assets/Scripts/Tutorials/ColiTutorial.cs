@@ -48,7 +48,7 @@ public class ColiTutorial : MonoBehaviour
         LevelManager.instance.SpawnColi(0);
         yield return new WaitUntil(() => coliPool.childCount > 0);
         CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
-        StartCoroutine(ut.UpdateTutorialText("Here comes an <i>E. Coli</i> bacterium!"));
+        StartCoroutine(ut.UpdateTutorialText("Here comes <i>E. Coli</i>! [Click]"));
 
         Transform coli = coliPool.GetChild(0);
         coli.GetComponent<TranslateSpeed>().StopMovement();
@@ -60,16 +60,16 @@ public class ColiTutorial : MonoBehaviour
         }
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("Unlike you and your vibriobactin, <i>E. Coli</i> secrete linear enterobactin."));
+        StartCoroutine(ut.UpdateTutorialText("It looks like <i>E. Coli</i> secretes linear enterobactin. [Click]"));
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("Linear enterobactin is a ferric iron chelator Fe(III)."));
+        StartCoroutine(ut.UpdateTutorialText("Linear enterobactin chelates the same type of iron that I need to survive! [Click]"));
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("You can't pick up iron chelated by linear enterobactin using viuA."));
+        StartCoroutine(ut.UpdateTutorialText("Unfortunately, I can't pick up iron chelated by linear enterobactin using my trusty viuA gene."));
 
         yield return new WaitUntil(() => ut.hasClicked);
-        StartCoroutine(ut.UpdateTutorialText("Instead, you'll have to express your irgA gene."));
+        StartCoroutine(ut.UpdateTutorialText("Instead, we'll have to express the irgA gene. [Click]"));
         CanvasManager.instance.GetIrgaButton().gameObject.SetActive(true);
 
         yield return new WaitUntil(() => ut.hasClicked);
