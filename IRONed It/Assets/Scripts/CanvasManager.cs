@@ -135,7 +135,7 @@ public class CanvasManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !endMenu.activeInHierarchy)
+        if (Input.GetKeyDown(KeyCode.Escape) && !endMenu.activeInHierarchy && !deathMenu.activeInHierarchy && !endlessMenu.activeInHierarchy && SceneManager.GetActiveScene().name != "Settings")
         {
             Player.instance.playerCanAct = pauseMenu.activeInHierarchy ? true : false;
             genes.SetActive(pauseMenu.activeInHierarchy);
