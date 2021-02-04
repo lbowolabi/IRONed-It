@@ -1325,5 +1325,5 @@ ScriptsOnlyBuild:
   - Assets/Scenes/Endless.unity
   - Assets/Scenes/Credits.unity
   - Assets/Scenes/Settings.unity
-  playerPath: C:/Users/loiso/Documents/DeskDocs/Ironed IT Builds/Build-V6-V2-PC/IRONed
+  playerPath: C:/Users/loiso/Documents/DeskDocs/Ironed IT Builds/Build-10-PC/IRONed
     It.exe

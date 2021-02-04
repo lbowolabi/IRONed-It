@@ -53,7 +53,7 @@ public class HemeTutorial : MonoBehaviour
             }
         }
         CanvasManager.instance.GetTutorialText().transform.parent.gameObject.SetActive(true);
-        StartCoroutine(ut.UpdateTutorialText("Hey look, that's heme-chelated iron!"));
+        StartCoroutine(ut.UpdateTutorialText("Hey look, that's heme-chelated iron! [Click]"));
         iron.GetComponent<TranslateSpeed>().StopMovement();
         while (iron.transform.position.x > 4)
         {
